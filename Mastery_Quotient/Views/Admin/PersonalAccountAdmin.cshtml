@@ -79,11 +79,10 @@
                     <br />
                     <input class="personalAccountInput" type="email" value="@Model.Employee.EmailEmployee" required name="emailUser" placeholder="Электронная почта" />
                     <br />
-                    <label hidden>Введите роль</label>
+                    
+                    <input class="personalAccountInput" type="text" value="@Model.Role.NameRole"  readonly required name="roleUser" placeholder="Роль" />
                     <br />
-                    <input class="personalAccountInput" type="text" value="@Model.Role.NameRole" readonly required name="roleUser" placeholder="Роль" />
-                    <br />
-                    <input  class="personalAccount_glow_button" type="submit" value="Изменить" />
+                    <input class="personalAccount_glow_button" type="submit" value="Изменить" />
 
                 </form>
 

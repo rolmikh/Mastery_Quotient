@@ -1,11 +1,9 @@
-﻿* {
+﻿
+* {
     cursor: auto;
 }
 
-input[type="submit"],
-a,
-button,
-select {
+input[type="submit"], a, button, select {
     cursor: pointer;
 }
 
@@ -30,22 +28,17 @@ select {
     padding: 0 15px;
     box-sizing: border-box;
     padding-right: 30px;
-    background-position: right 10px center;
 }
 
 
     .authorizationSelect option {
         border-style: solid;
         border-color: #6b9ac4;
-        font-size: 20px;
-        font-family: Mulish;
     }
-
-
 
 ::placeholder {
     font-family: Mulish;
-    /* padding-left: 15px;*/
+   /* padding-left: 15px;*/
 }
 
 

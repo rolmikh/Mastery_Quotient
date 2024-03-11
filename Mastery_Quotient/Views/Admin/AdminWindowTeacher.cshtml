@@ -93,7 +93,7 @@
                             <form id="deleteForm" asp-controller="admin" asp-action="DeleteTeacher" method="post">
                                 <input type="hidden" value="@employee.IdEmployee" name="IdEmployee" />
                                 <button class="image_button" width="50" height="50" type="button">
-                                    <img src="../images/delete.png" width="50" height="50">
+                                    <img >
                                 </button>
                                 @* <input type="image"  width="50" height="50" src="../images/delete.png" /> *@
                             </form>
@@ -124,12 +124,12 @@
             var closeButton = document.querySelector('.modal-content .close');
 
             // Добавляем обработчик события к кнопкам удаления
-            document.querySelectorAll('.image_button').forEach(function (btn) {
+            document.querySelectorAll('.confirmDeleteBtn').forEach(function (btn) {
                 btn.addEventListener('click', function () {
                     // При нажатии кнопки удаления открываем модальное окно
                     modal.style.display = 'block';
                     // Устанавливаем значение скрытого поля idEmployeeInput равным id сотрудника из соответствующей строки таблицы
-                    idEmployeeInput.value = btn.closest('form').querySelector('[name="IdEmployee"]').value;
+                    idEmployeeInput.value = btn.closest('tr').querySelector('[name="IdEmployee"]').value;
                 });
             });
 
@@ -154,7 +154,6 @@
             };
 
         </script>
-
 
 
     </main>
