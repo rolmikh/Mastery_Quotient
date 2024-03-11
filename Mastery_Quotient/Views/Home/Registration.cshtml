@@ -1,0 +1,88 @@
+﻿@model IEnumerable<Mastery_Quotient.Models.StudyGroup>
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/autoRegStyle.css">
+    <link rel="stylesheet" href="../css/mainStyle.css">
+    <link href="https://fonts.googleapis.com/css?family=Mulish:200,300,regular,500,600,700,800,900,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic"
+          rel="stylesheet" />
+
+    <title>Регистрация</title>
+</head>
+
+<body>
+    <main>
+        <div></div>
+        <div class="container">
+            <div class="img_authorization">
+                <img src="../images/Image.png">
+            </div>
+            <div class="authorizationCenter">
+                <p class="divSignUp">
+                    Есть аккаунт?
+                    <a asp-controller="home" asp-action="authorization"> Авторизуйтесь</a>
+                </p>
+                <div class="form_registration">
+
+                    <h1 class="h1Auto">Регистрация</h1>
+                    <form asp-antiforgery="true" asp-action="Registration" asp-controller="Home">
+                        <label class="authorizationLabel" hidden for="nameUser">Введите ФИО</label>
+                        <br />
+                        <input class="authorizationInput" type="text" required name="nameUser"
+                               placeholder="ФИО" />
+                        <br />
+                        <label class="authorizationLabel" hidden for="emailUser">Введите электронную почту</label>
+                        <br />
+                        <input class="authorizationInput" type="email" required name="emailUser"
+                               placeholder="Электронная почта" />
+                        <br />
+                        <label class="authorizationLabel" hidden for="passwordUser">Введите пароль</label>
+                        <br />
+                        <input class="authorizationInput" type="password" required name="passwordUser"
+                               placeholder="Пароль" />
+                        <br />
+                        <label class="authorizationLabel" hidden for="groupUser">Введите группу</label>
+                        <br />
+                        <select class="authorizationSelect" required id="groupUser" name="groupUser" placeholder="Учебная группа">
+                            @foreach(var group in Model)
+                            {
+                                <option   value="@group.IdStudyGroup">@group.NameStudyGroup</option>
+                            }  
+                        </select>
+                        <br />
+                        <input class="glow_button" type="submit" value="Регистрация" />
+
+                    </form>
+                    <div class="containerLine">
+                        <p class="line"></p>
+                        <p>или</p>
+                        <p class="line"></p>
+                    </div>
+                    <div>
+                        <button class="glow_buttonGoogle" type="submit">
+                            <img src="../images/ic_google logo.png" height="15" width="15" alt="Google Logo">
+                            Google
+                        </button>
+                    </div>
+
+
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- <footer>
+        <h1>
+            Здесь обитает пс0е
+        </h1>
+    </footer> -->
+</body>
+
+</html>

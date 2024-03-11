@@ -1,0 +1,64 @@
+﻿@model Mastery_Quotient.Models.StudentModelView
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/mainStyle.css">
+    <link rel="stylesheet" href="../css/crudStyle.css">
+    <link href="https://fonts.googleapis.com/css?family=Mulish:200,300,regular,500,600,700,800,900,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic"
+          rel="stylesheet" />
+    <title>Изменение студента</title>
+</head>
+
+<body>
+    <main>
+        <form asp-antiforgery="true" asp-action="UpdateStudent" asp-controller="Admin">
+            @foreach (var student in Model.Students)
+            {
+                <label hidden>Введите код</label>
+                <input type="text" required name="IdUser" value="@student.IdStudent" placeholder="ФИО" />
+                <br />
+
+                <label hidden>Введите фамилию</label>
+                <input type="text" required name="surnameUser" value="@student.SurnameStudent" placeholder="ФИО" />
+                <br />
+                <label hidden>Введите имя</label>
+                <input type="text" required name="nameUser" value="@student.NameStudent" placeholder="ФИО" />
+                <br />
+                <label hidden>Введите отчество</label>
+                <input type="text" required name="middleNameUser" value="@student.MiddleNameStudent" placeholder="ФИО" />
+                <br />
+                <label hidden>Введите электронную почту</label>
+                <br />
+                <input type="email" required name="emailUser" value="@student.EmailStudent" placeholder="Электронная почта" />
+                <br />
+                <label hidden>Введите пароль</label>
+                <br />
+                <input type="password" required name="passwordUser" value="@student.PasswordStudent" placeholder="Пароль" />
+                <br />
+                <label hidden>Выберите учебную группу</label>
+                <br />
+            }
+
+            <select required id="studyGroupUser" name="studyGroupUser" placeholder="Учебная группа">
+                @foreach (var group in Model.StudyGroups)
+                {
+                    <option value="@group.IdStudyGroup">@group.NameStudyGroup</option>
+                }
+            </select>
+            <br />
+            <input class="glow_button" type="submit" value="Изменить студента" />
+
+
+
+        </form>
+
+    </main>
+
+
+
+</body>
+
+</html>

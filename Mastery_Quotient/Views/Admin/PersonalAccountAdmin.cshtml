@@ -1,0 +1,98 @@
+﻿@model Mastery_Quotient.Models.EmployeePersonalAccountModel
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/navigationStyle.css">
+    <link rel="stylesheet" href="../css/mainStyle.css">
+    <link rel="stylesheet" href="../css/personalAccountStyle.css">
+    <link href="https://fonts.googleapis.com/css?family=Mulish:200,300,regular,500,600,700,800,900,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic"
+          rel="stylesheet" />
+    <title>Личный кабинет</title>
+    <div class="container">
+        <a asp-action="main" asp-controller="admin">
+            <img class="navigation_img" src="../images/3QpbYI-LogoMakr.png">
+        </a>
+
+        <ul class="navigation_ul">
+            <li class="navigation_li"><a class="navigation_a" asp-action="News">Новости</a></li>
+            <li class="navigation_li"><a class="navigation_a" asp-action="Materials">Материалы</a></li>
+            <li class="navigation_li"><a class="navigation_a" asp-action="Course">Курсы</a></li>
+            <li class="navigation_li"><a class="navigation_a" asp-action="Rating">Рейтинг</a></li>
+        </ul>
+        <ul class="navigation_ul_right">
+            <li class="navigation_li_right" style="float: right">
+                <a class="navigation_a_right" asp-action="AdminWindowTeacher" asp-controller="admin">Преподаватели</a>
+            </li>
+            <li class="navigation_li_right" style="float: right"><a class="navigation_a_right" asp-action="AdminWindowStudent" asp-controller="admin">Студенты</a></li>
+        </ul>
+        <button class="glow_button">
+            <a asp-action="PersonalAccountAdmin" asp-controller="admin">
+                Личный кабинет
+            </a>
+        </button>
+    </div>
+
+</head>
+
+<body>
+
+    <main>
+        <div></div>
+        <div class="container">
+            <div class="form_photo">
+                <img src="../images/capybara1.jpg" class="photo" width="50" height="50" />
+                <div class="div_photo">
+                    <a href="">Изменить фото</a>
+                </div>
+                <div class="div_info">@Model.Employee.SurnameEmployee</div>
+                <div class="div_info">@Model.Employee.NameEmployee</div>
+                <div class="div_info">@Model.Employee.MiddleNameEmployee</div>
+                <input class="personalAccount_glow_button" type="submit" value="Изменить пароль" />
+                <a href="@Url.Action("Logout")"><button class ="personalAccount_glow_button">Выйти из аккаунта</button></a>
+            </div>
+            <div class="form">
+
+                
+
+                <h1 class="h1Auto">Личные данные</h1>
+                <form>
+                    <label hidden>Фамилия</label>
+                    <br />
+                    <input class="personalAccountInput" type="text" required name="surnameUser" value="@Model.Employee.SurnameEmployee" placeholder="Фамилия" />
+                    <br />
+
+                    <label hidden>Имя</label>
+                    <br />
+                    <input class="personalAccountInput" type="text" required name="nameUser" value="@Model.Employee.NameEmployee" placeholder="Имя" />
+                    <br />
+
+                    <label hidden>Отчество</label>
+                    <br />
+                    <input class="personalAccountInput" type="text" required value="@Model.Employee.MiddleNameEmployee" name="middleNameUser"
+                           placeholder="Отчество" />
+                    <br />
+
+                    <label hidden>Введите электронную почту</label>
+                    <br />
+                    <input class="personalAccountInput" type="email" value="@Model.Employee.EmailEmployee" required name="emailUser" placeholder="Электронная почта" />
+                    <br />
+                    
+                    <input class="personalAccountInput" type="text" value="@Model.Role.NameRole"  readonly required name="roleUser" placeholder="Роль" />
+                    <br />
+                    <input class="personalAccount_glow_button" type="submit" value="Изменить" />
+
+                </form>
+
+
+
+            </div>
+
+        </div>
+    </main>
+
+</body>
+
+</html>

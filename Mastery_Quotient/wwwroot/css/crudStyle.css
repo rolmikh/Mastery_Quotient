@@ -1,0 +1,84 @@
+﻿.table {
+    width: calc(100% - 20px);
+    margin: 20px 10px;
+    border: 1px solid #dddddd;
+    border-collapse: collapse;
+}
+
+    .table th {
+        font-weight: bold;
+        padding: 5px;
+        background: #efefef;
+        border: 1px solid #dddddd;
+    }
+
+    .table td {
+        border: 1px solid #dddddd;
+        padding: 5px;
+    }
+
+.searchInput {
+    display: inline-block;
+    width: 30%;
+    height: 45px;
+    font-size: 20px;
+    border-radius: 10px;
+    border: 2px solid #add9f4;
+    transition: .15s ease-in-out;
+    padding: 0 15px;
+    margin: 0;
+    margin-left: 20px;
+}
+
+.searchImage {
+    background-color: white;
+    border: none;
+    vertical-align: middle;
+    margin-left: 10px;
+    margin-bottom: 5px;
+}
+
+.searchInput:focus {
+    border-style: solid;
+    border-color: #737373;
+}
+
+.newInput {
+    text-decoration: none;
+    display: inline-block;
+    margin-right: 20px;
+    margin-left: 20px;
+    max-width: 400px;
+    max-height: 45px;
+    width: 400px;
+    height: 45px;
+    text-align: center;
+    border-radius: 5px;
+    border: none;
+    background-color: #6b9ac4;
+    font-weight: bold;
+    letter-spacing: 2px;
+    color: white;
+    transition: .15s ease-in-out;
+    font-size: 16px;
+    vertical-align: middle;
+    padding: 10px;
+
+}
+
+    .newInput:hover {
+        background-color: #3b71d3;
+    }
+
+    .newInput a{
+        text-decoration: none;
+        color:white
+    }
+
+.image_button {
+    width: 50px;
+    height: 50px;
+    border: none;
+    background-image: url('../images/delete.png');
+    background-size: cover;
+}

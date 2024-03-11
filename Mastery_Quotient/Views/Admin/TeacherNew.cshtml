@@ -1,0 +1,52 @@
+﻿@model Mastery_Quotient.Models.EmployeeModelView
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/mainStyle.css">
+    <link rel="stylesheet" href="../css/crudStyle.css">
+    <link href="https://fonts.googleapis.com/css?family=Mulish:200,300,regular,500,600,700,800,900,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic"
+          rel="stylesheet" />
+    <title>Добавление преподавателя</title>
+</head>
+
+<body>
+    <main>
+        <form asp-antiforgery="true" asp-action="TeacherNew" asp-controller="Admin">
+            <label class="autorizationLabel" hidden>Введите ФИО</label>
+            <br />
+            <input class="autorizationInput" type="text" required name="nameUser" placeholder="ФИО" />
+            <br />
+            <label class="autorizationLabel" hidden>Введите электронную почту</label>
+            <br />
+            <input class="autorizationInput" type="email" required name="emailUser"
+                   placeholder="Электронная почта" />
+            <br />
+            <label class="autorizationLabel" hidden>Введите пароль</label>
+            <br />
+            <input class="autorizationInput" type="password" required name="passwordUser" placeholder="Пароль" />
+            <br />
+            <label class="autorizationLabel" hidden>Выберите роль</label>
+            <br />
+            <select class="authorizationSelect" required id="roleUser" name="roleUser" placeholder="Роль">
+                @foreach (var role in Model.Roles)
+                {
+                    <option value="@role.IdRole">@role.NameRole</option>
+                }
+            </select>
+            <br />
+            <input class="glow_button" type="submit" value="Добавить сотрудника" />
+                
+
+            
+        </form>
+
+    </main>
+
+
+
+</body>
+
+</html>

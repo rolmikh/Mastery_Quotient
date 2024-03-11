@@ -1,0 +1,29 @@
+﻿@model Mastery_Quotient.Models.StudentModelDetails
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/mainStyle.css">
+    <link href="https://fonts.googleapis.com/css?family=Mulish:200,300,regular,500,600,700,800,900,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic"
+          rel="stylesheet" />
+    <title>Подробная информация о студенте</title>
+</head>
+
+<body>
+    <main>
+
+        <h1>@Model.Student.SurnameStudent @Model.Student.NameStudent @Model.Student.MiddleNameStudent</h1>
+        <h2>@Model.Student.EmailStudent</h2>
+        <h2>@Model.StudyGroup.NameStudyGroup</h2>
+        <h2>@Model.Course.NumberCourse</h2>
+
+
+    </main>
+
+
+
+</body>
+
+</html>
