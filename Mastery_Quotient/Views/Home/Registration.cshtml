@@ -50,6 +50,7 @@
                         <label class="authorizationLabel" hidden for="groupUser">Введите группу</label>
                         <br />
                         <select class="authorizationSelect" required id="groupUser" name="groupUser" placeholder="Учебная группа">
+                            <option selected disabled>Учебная группа</option>
                             @foreach(var group in Model)
                             {
                                 <option   value="@group.IdStudyGroup">@group.NameStudyGroup</option>
