@@ -1,14 +1,16 @@
-﻿<!DOCTYPE html>
+﻿@model Mastery_Quotient.Models.MaterialModelView
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/mainStyle.css">
     <link rel="stylesheet" href="../css/navigationStyle.css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Mulish:200,300,regular,500,600,700,800,900,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic"
-        rel="stylesheet" />
-    <title>Страница администратора</title>
+    <link href="https://fonts.googleapis.com/css?family=Mulish:200,300,regular,500,600,700,800,900,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic"
+          rel="stylesheet" />
+
+    <title>Материалы</title>
     <div class="container">
         <a asp-action="main" asp-controller="admin">
             <img class="navigation_img" src="../images/3QpbYI-LogoMakr.png">
@@ -32,12 +34,23 @@
             </a>
         </button>
     </div>
-     
 </head>
+
 <body>
     <main>
+        @foreach (var item in Model.Materials)
+        {
+            <form asp-action="FileMaterial" asp-antiforgery="true" asp-controller="admin">
+                <input value="Подробнее" type="submit" />
+
+                <input hidden value="@item.FileMaterial" name="nameFile"/>
+            </form>
+            
+        }
+        
 
     </main>
-    
+
 </body>
+
 </html>

@@ -75,8 +75,8 @@ namespace Mastery_Quotient.Controllers
                     {
                         string apiResponseStudent = await responseStudent.Content.ReadAsStringAsync();
                         var students = JsonConvert.DeserializeObject<Student>(apiResponseStudent);
-                       
 
+                        await Authenticate(students.EmailStudent);
                         TempData["AuthUser"] = students.IdStudent;
 
                         return RedirectToAction("MainStudent", "Student");
@@ -86,7 +86,7 @@ namespace Mastery_Quotient.Controllers
                         string apiResponseEmployee = await responseEmployee.Content.ReadAsStringAsync();
                         var employees = JsonConvert.DeserializeObject<Employee>(apiResponseEmployee);
 
-
+                        await Authenticate(employees.EmailEmployee);
                         TempData["AuthUser"] = employees.IdEmployee;
 
                         if (employees.RoleId == 1)
@@ -119,7 +119,17 @@ namespace Mastery_Quotient.Controllers
         }
 
 
-        
+        private async Task Authenticate(string userName)
+        {
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimsIdentity.DefaultNameClaimType, userName)
+            };
+            ClaimsIdentity id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType,
+                ClaimsIdentity.DefaultRoleClaimType);
+
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
+        }
 
 
         public async Task<IActionResult> Logout()

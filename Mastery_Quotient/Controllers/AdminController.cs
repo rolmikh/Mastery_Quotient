@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
+using Mastery_Quotient.Class;
 
 namespace Mastery_Quotient.Controllers
 {
@@ -13,10 +14,13 @@ namespace Mastery_Quotient.Controllers
     {
         private readonly IConfiguration configuration;
 
+        private GoogleDriveService googleDriveService;
+
         public AdminController(IConfiguration configuration, ILogger<AdminController> logger)
         {
             this.configuration = configuration;
             _logger = logger;
+            //googleDriveService = new GoogleDriveService("Configs\\client_secret_376246642795-vhl3460vbdu9crnar0rk92oe4e3ebtkd.apps.googleusercontent.com.json");
         }
 
         private readonly ILogger<AdminController> _logger;
@@ -400,8 +404,13 @@ namespace Mastery_Quotient.Controllers
 
         public async Task<IActionResult> Logout()
         {
-
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            // Очищаем кэш для предотвращения возможности вернуться назад
+            Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
+            Response.Headers["Pragma"] = "no-cache";
+            Response.Headers["Expires"] = "0";
             TempData.Remove("AuthUser");
+           
 
             return RedirectToAction("Authorization", "Home");
         }
@@ -636,5 +645,48 @@ namespace Mastery_Quotient.Controllers
             }
         }
 
+        [HttpGet]
+        public async Task<IActionResult> MaterialsAdmin()
+        {
+            try
+            {
+                var apiUrl = configuration["AppSettings:ApiUrl"];
+
+                List<Material> materials = new List<Material>();
+
+                using (var httpClient = new HttpClient())
+                {
+                    using (var response = await httpClient.GetAsync(apiUrl + "Materials"))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        materials = JsonConvert.DeserializeObject<List<Material>>(apiResponse);
+                    }
+
+                    
+                }
+
+
+                
+                MaterialModelView materialModelView = new MaterialModelView(materials);
+
+                return View(materialModelView);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Ошибка!");
+            }
+            
+        }
+
+
+        public IActionResult FileMaterial(string nameFile)
+        {
+           var fileUrl = googleDriveService.GetFileUrl(nameFile);
+            return View(fileUrl);
+
+        }
     }
+
+
+   
 }

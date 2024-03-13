@@ -19,7 +19,7 @@
 
         <ul class="navigation_ul">
             <li class="navigation_li"><a class="navigation_a" asp-action="News">Новости</a></li>
-            <li class="navigation_li"><a class="navigation_a" asp-action="Materials">Материалы</a></li>
+            <li class="navigation_li"><a class="navigation_a" asp-action="MaterialsAdmin">Материалы</a></li>
             <li class="navigation_li"><a class="navigation_a" asp-action="Course">Курсы</a></li>
             <li class="navigation_li"><a class="navigation_a" asp-action="Rating">Рейтинг</a></li>
         </ul>
@@ -27,11 +27,10 @@
             <li class="navigation_li_right" style="float: right">
                 <a class="navigation_a_right" asp-action="AdminWindowTeacher" asp-controller="admin">Преподаватели</a>
             </li>
-            <li class="navigation_li_right" style="float: right">
-                <a class="navigation_a_right" asp-action="AdminWindowStudent" asp-controller="admin">Студенты</a></li>
+            <li class="navigation_li_right" style="float: right"><a class="navigation_a_right" asp-action="AdminWindowStudent" asp-controller="admin">Студенты</a></li>
         </ul>
         <button class="glow_button">
-            <a asp-action="PersonalAccountAdmin"  asp-controller="admin">
+            <a asp-action="PersonalAccountAdmin" asp-controller="admin">
                 Личный кабинет
             </a>
         </button>
