@@ -14,48 +14,51 @@
 
 <body>
     <main>
-        <form asp-antiforgery="true" asp-action="UpdateTeacher" asp-controller="Admin">
-            @foreach(var employee in Model.Employees)
-            {
-                <input type="password" hidden required name="passwordUser" value="@employee.PasswordEmployee" placeholder="Пароль" />
-                <input type="password" hidden required name="saltUser" value="@employee.SaltEmployee" placeholder="Соль" />
-                <label hidden>Введите код</label>
-                <input type="text" required name="IdUser" readonly hidden value="@employee.IdEmployee" placeholder="" />
-                <br />
-
-                <label hidden>Введите фамилию</label>
-                <input type="text" required name="surnameUser" value="@employee.SurnameEmployee" placeholder="Фамилия" />
-                <br />
-                <label hidden>Введите имя</label>
-                <input type="text" required name="nameUser" value="@employee.NameEmployee" placeholder="Имя" />
-                <br />
-                <label hidden>Введите отчество</label>
-                <input type="text" required name="middleNameUser" value="@employee.MiddleNameEmployee" placeholder="Отчество" />
-                <br />
-                <label hidden>Введите электронную почту</label>
-                <br />
-                <input type="email" required name="emailUser" value="@employee.EmailEmployee" placeholder="Электронная почта" />
-                <br />
-
-                
-                <label hidden>Выберите роль</label>
-                <br />
-
-            }
-            
-            <select  required id="roleUser" name="roleUser" placeholder="Роль">
-                <option selected disabled>Роль</option>
-                @foreach (var role in Model.Roles)
+        <div class="form_new">
+            <form asp-antiforgery="true" asp-action="UpdateTeacher" asp-controller="Admin">
+                @foreach (var employee in Model.Employees)
                 {
-                    <option value="@role.IdRole">@role.NameRole</option>
+                    <input type="password" hidden required name="passwordUser" value="@employee.PasswordEmployee" placeholder="Пароль" />
+                    <input type="password" hidden required name="saltUser" value="@employee.SaltEmployee" placeholder="Соль" />
+                    <label hidden>Введите код</label>
+                    <input type="text" required name="IdUser" class="CrudInput"  readonly hidden value="@employee.IdEmployee" placeholder="" />
+                    <br />
+
+                    <label hidden>Введите фамилию</label>
+                    <input type="text" required name="surnameUser" class="CrudInput" value="@employee.SurnameEmployee" placeholder="Фамилия" />
+                    <br />
+                    <label hidden>Введите имя</label>
+                    <input type="text" required name="nameUser" class="CrudInput" value="@employee.NameEmployee" placeholder="Имя" />
+                    <br />
+                    <label hidden>Введите отчество</label>
+                    <input type="text" required name="middleNameUser" class="CrudInput" value="@employee.MiddleNameEmployee" placeholder="Отчество" />
+                    <br />
+                    <label hidden>Введите электронную почту</label>
+                    <br />
+                    <input type="email" required name="emailUser" class="CrudInput" value="@employee.EmailEmployee" placeholder="Электронная почта" />
+                    <br />
+
+
+                    <label hidden>Выберите роль</label>
+                    <br />
+
                 }
-            </select>
-            <br />
-            <input class="glow_button" type="submit" value="Изменить сотрудника" />
+
+                <select required id="roleUser" class="CrudSelect" name="roleUser" placeholder="Роль">
+                    <option selected disabled>Роль</option>
+                    @foreach (var role in Model.Roles)
+                    {
+                        <option value="@role.IdRole">@role.NameRole</option>
+                    }
+                </select>
+                <br />
+                <input class="newInput" type="submit" value="Изменить сотрудника" />
 
 
 
-        </form>
+            </form>
+        </div>
+        
 
     </main>
 

@@ -98,8 +98,8 @@
                 <span class="close">&times;</span>
                 <p>Выберите файл</p>
                 <form id="uploadForm" asp-antiforgery="true" asp-controller="admin" asp-action="UpdatePhoto" method="post" enctype="multipart/form-data">
-                    <input type="file" id="fileInput" name="photo" />
-                    <button type="submit">Сохранить</button>
+                    <input type="file" id="fileInput"   name="photo" accept="image/*" />
+                    <button type="submit" class="newInput">Сохранить</button>
                 </form>
             </div>
         </div>

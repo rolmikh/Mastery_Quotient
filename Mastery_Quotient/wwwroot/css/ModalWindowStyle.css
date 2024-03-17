@@ -16,10 +16,33 @@
     background-color: #fefefe;
     margin: 15% auto;
     padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
+    border: 5px solid #6b9ac4;
+    width: 50%;
 }
 
+.newInput {
+    text-decoration: none;
+    display: inline-block;
+    margin-right: 20px;
+    margin-left: 20px;
+    margin-top: 20px;
+    width: 150px;
+    text-align: center;
+    border-radius: 5px;
+    border: none;
+    background-color: #6b9ac4;
+    font-weight: bold;
+    letter-spacing: 2px;
+    color: white;
+    transition: .15s ease-in-out;
+    font-size: 16px;
+    vertical-align: middle;
+    padding: 10px;
+}
+
+    .newInput input[type="file"] {
+        display: none; /* Скрываем сам input */
+    }
 /* Кнопка для закрытия модального окна */
 .close {
     color: #aaa;
@@ -34,3 +57,7 @@
         text-decoration: none;
         cursor: pointer;
     }
+
+.inputFile{
+
+}

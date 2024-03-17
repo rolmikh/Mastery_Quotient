@@ -7,29 +7,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/mainStyle.css">
     <link rel="stylesheet" href="../css/navigationStyle.css">
+    <link rel="stylesheet" href="../css/materialStyle.css">
+
     <link href="https://fonts.googleapis.com/css?family=Mulish:200,300,regular,500,600,700,800,900,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic"
           rel="stylesheet" />
 
     <title>Материалы</title>
     <div class="container">
-        <a asp-action="MainTeacher" asp-controller="teacher">
+        <a asp-action="main" asp-controller="admin">
             <img class="navigation_img" src="../images/3QpbYI-LogoMakr.png">
         </a>
 
         <ul class="navigation_ul">
             <li class="navigation_li"><a class="navigation_a" asp-action="News">Новости</a></li>
-            <li class="navigation_li"><a class="navigation_a" asp-action="MaterialsTeacher">Материалы</a></li>
-            <li class="navigation_li"><a class="navigation_a" asp-action="Course">Тесты</a></li>
+            <li class="navigation_li"><a class="navigation_a" asp-action="MaterialsAdmin">Материалы</a></li>
+            <li class="navigation_li"><a class="navigation_a" asp-action="Course">Курсы</a></li>
             <li class="navigation_li"><a class="navigation_a" asp-action="Rating">Рейтинг</a></li>
         </ul>
         <ul class="navigation_ul_right">
             <li class="navigation_li_right" style="float: right">
-                <a class="navigation_a_right" asp-action="TeacherWindowMaterial" asp-controller="teacher">Создать материал</a>
+                <a class="navigation_a_right" asp-action="AdminWindowTeacher" asp-controller="admin">Преподаватели</a>
             </li>
-            <li class="navigation_li_right" style="float: right"><a class="navigation_a_right" asp-action="TeacherWindowTest" asp-controller="teacher">Создать тест</a></li>
+            <li class="navigation_li_right" style="float: right"><a class="navigation_a_right" asp-action="AdminWindowStudent" asp-controller="admin">Студенты</a></li>
         </ul>
         <button class="glow_button">
-            <a asp-action="PersonalAccountTeacher" asp-controller="teacher">
+            <a asp-action="PersonalAccountAdmin" asp-controller="admin">
                 Личный кабинет
             </a>
         </button>
@@ -38,15 +40,22 @@
 
 <body>
     <main>
-        @foreach (var item in Model.Materials)
-        {
-            <form asp-action="FileMaterial" asp-antiforgery="true" asp-controller="admin">
-                <input value="Подробнее" type="submit" />
+        <div class="formsContainer">
+            @foreach (var item in Model.Materials)
+            {
+                <div class="formMaterial">
+                    <form asp-action="FileMaterial" asp-antiforgery="true" asp-controller="admin">
 
-                <input hidden value="@item.FileMaterial" name="nameFile"/>
-            </form>
-            
-        }
+                        <input type="image" class="imageMaterial" width="187" height="177" src="image\docker.png" />
+                        <label class="nameMaterial">@item.NameMaterial</label>
+                        <input value="Подробнее" class="buttonMaterial" type="submit" />
+
+                        <input hidden value="@item.FileMaterial" name="nameFile" />
+                    </form>
+                </div>
+
+            }
+        </div>
         
 
     </main>

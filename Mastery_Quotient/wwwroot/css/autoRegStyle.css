@@ -1,11 +1,4 @@
 ﻿
-* {
-    cursor: auto;
-}
-
-input[type="submit"], a, button, select {
-    cursor: pointer;
-}
 
 .h1Auto {
     letter-spacing: 2px;

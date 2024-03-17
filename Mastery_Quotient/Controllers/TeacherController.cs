@@ -122,7 +122,7 @@ namespace Mastery_Quotient.Controllers
 
                     if (responseStudent.IsSuccessStatusCode)
                     {
-                        return RedirectToAction("MainTeacher", "Teacher");
+                        return RedirectToAction("MaterialsTeacher", "Teacher");
                     }
                     else
                     {

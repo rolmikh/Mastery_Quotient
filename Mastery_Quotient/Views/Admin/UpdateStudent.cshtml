@@ -14,42 +14,45 @@
 
 <body>
     <main>
-        <form asp-antiforgery="true" asp-action="UpdateStudent" asp-controller="Admin">
-            @foreach (var student in Model.Students)
-            {
-                <label hidden>Введите код</label>
-                <input type="text" required name="idUser" hidden value="@student.IdStudent" placeholder="Код" />
-                <br />
-
-                <label hidden>Введите фамилию</label>
-                <input type="text" required name="surnameUser" value="@student.SurnameStudent" placeholder="Фамилия" />
-                <br />
-                <label hidden>Введите имя</label>
-                <input type="text" required name="nameUser" value="@student.NameStudent" placeholder="Имя" />
-                <br />
-                <label hidden>Введите отчество</label>
-                <input type="text" required name="middleNameUser" value="@student.MiddleNameStudent" placeholder="Отчество" />
-                <input type="password" hidden required name="saltUser" value="@student.SaltStudent" placeholder="Соль" />
-                <label hidden>Введите электронную почту</label>
-                <br />
-                <input type="email" required name="emailUser" value="@student.EmailStudent" placeholder="Электронная почта" />
-                <input type="password" hidden required name="passwordUser" value="@student.PasswordStudent" placeholder="Пароль" />
-                <label hidden>Выберите учебную группу</label>
-                <br />
-            }
-
-            <select required id="studyGroupUser" name="studyGroupUser" placeholder="Учебная группа">
-                @foreach (var group in Model.StudyGroups)
+        <div class="form_new">
+            <form asp-antiforgery="true" asp-action="UpdateStudent" asp-controller="Admin">
+                @foreach (var student in Model.Students)
                 {
-                    <option value="@group.IdStudyGroup">@group.NameStudyGroup</option>
+                    <label hidden>Введите код</label>
+                    <input type="text" required name="idUser" class="CrudInput" hidden value="@student.IdStudent" placeholder="Код" />
+                    <br />
+
+                    <label hidden>Введите фамилию</label>
+                    <input type="text" required name="surnameUser" class="CrudInput" value="@student.SurnameStudent" placeholder="Фамилия" />
+                    <br />
+                    <label hidden>Введите имя</label>
+                    <input type="text" required name="nameUser" class="CrudInput"  value="@student.NameStudent" placeholder="Имя" />
+                    <br />
+                    <label hidden>Введите отчество</label>
+                    <input type="text" required name="middleNameUser" class="CrudInput" value="@student.MiddleNameStudent" placeholder="Отчество" />
+                    <input type="password" hidden required name="saltUser" value="@student.SaltStudent" placeholder="Соль" />
+                    <label hidden>Введите электронную почту</label>
+                    <br />
+                    <input type="email" required name="emailUser" class="CrudInput"  value="@student.EmailStudent" placeholder="Электронная почта" />
+                    <input type="password" hidden required name="passwordUser" value="@student.PasswordStudent" placeholder="Пароль" />
+                    <label hidden>Выберите учебную группу</label>
+                    <br />
                 }
-            </select>
-            <br />
-            <input class="glow_button" type="submit" value="Изменить студента" />
+
+                <select required id="studyGroupUser" name="studyGroupUser" class="CrudSelect" placeholder="Учебная группа">
+                    @foreach (var group in Model.StudyGroups)
+                    {
+                        <option value="@group.IdStudyGroup">@group.NameStudyGroup</option>
+                    }
+                </select>
+                <br />
+                <input class="newInput" type="submit" value="Изменить студента" />
 
 
 
-        </form>
+            </form>
+        </div>
+        
 
     </main>
 

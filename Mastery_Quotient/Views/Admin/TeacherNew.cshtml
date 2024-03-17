@@ -14,34 +14,38 @@
 
 <body>
     <main>
-        <form asp-antiforgery="true" asp-action="TeacherNew" asp-controller="Admin">
-            <label class="autorizationLabel" hidden>Введите ФИО</label>
-            <br />
-            <input class="autorizationInput" type="text" required name="nameUser" placeholder="ФИО" />
-            <br />
-            <label class="autorizationLabel" hidden>Введите электронную почту</label>
-            <br />
-            <input class="autorizationInput" type="email" required name="emailUser"
-                   placeholder="Электронная почта" />
-            <br />
-            <label class="autorizationLabel" hidden>Введите пароль</label>
-            <br />
-            <input class="autorizationInput" type="password" required name="passwordUser" placeholder="Пароль" />
-            <br />
-            <label class="autorizationLabel" hidden>Выберите роль</label>
-            <br />
-            <select class="authorizationSelect" required id="roleUser" name="roleUser" placeholder="Роль">
-                @foreach (var role in Model.Roles)
-                {
-                    <option value="@role.IdRole">@role.NameRole</option>
-                }
-            </select>
-            <br />
-            <input class="glow_button" type="submit" value="Добавить сотрудника" />
-                
+        <div class="form_new">
+            <form asp-antiforgery="true" asp-action="TeacherNew" asp-controller="Admin">
+                <label  hidden>Введите ФИО</label>
+                <br />
+                <input class="CrudInput" type="text" required name="nameUser" placeholder="ФИО" />
+                <br />
+                <label hidden>Введите электронную почту</label>
+                <br />
+                <input class="CrudInput" type="email" required name="emailUser"
+                       placeholder="Электронная почта" />
+                <br />
+                <label  hidden>Введите пароль</label>
+                <br />
+                <input class="CrudInput" type="password" required name="passwordUser" placeholder="Пароль" />
+                <br />
+                <label  hidden>Выберите роль</label>
+                <br />
+                <select class="CrudSelect" required id="roleUser" name="roleUser" placeholder="Роль">
+                    <option selected disabled>Роль</option>
+                    @foreach (var role in Model.Roles)
+                    {
+                        <option value="@role.IdRole">@role.NameRole</option>
+                    }
+                </select>
+                <br />
+                <input class="newInput" type="submit" value="Добавить сотрудника" />
 
-            
-        </form>
+
+
+            </form>
+        </div>
+       
 
     </main>
 

@@ -21,3 +21,14 @@ footer {
     background-color: #6b9ac4;
     font-family: Mulish;
 }
+
+* {
+    cursor: auto;
+}
+
+input[type="submit"],
+a,
+button,
+select, img, input[type="image"], input[type="file"] {
+    cursor: pointer;
+}
