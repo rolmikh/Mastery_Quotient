@@ -18,26 +18,22 @@
             @foreach (var student in Model.Students)
             {
                 <label hidden>Введите код</label>
-                <input type="text" required name="IdUser" value="@student.IdStudent" placeholder="ФИО" />
+                <input type="text" required name="idUser" hidden value="@student.IdStudent" placeholder="Код" />
                 <br />
 
                 <label hidden>Введите фамилию</label>
-                <input type="text" required name="surnameUser" value="@student.SurnameStudent" placeholder="ФИО" />
+                <input type="text" required name="surnameUser" value="@student.SurnameStudent" placeholder="Фамилия" />
                 <br />
                 <label hidden>Введите имя</label>
-                <input type="text" required name="nameUser" value="@student.NameStudent" placeholder="ФИО" />
+                <input type="text" required name="nameUser" value="@student.NameStudent" placeholder="Имя" />
                 <br />
                 <label hidden>Введите отчество</label>
-                <input type="text" required name="middleNameUser" value="@student.MiddleNameStudent" placeholder="ФИО" />
-                <br />
+                <input type="text" required name="middleNameUser" value="@student.MiddleNameStudent" placeholder="Отчество" />
+                <input type="password" hidden required name="saltUser" value="@student.SaltStudent" placeholder="Соль" />
                 <label hidden>Введите электронную почту</label>
                 <br />
                 <input type="email" required name="emailUser" value="@student.EmailStudent" placeholder="Электронная почта" />
-                <br />
-                <label hidden>Введите пароль</label>
-                <br />
-                <input type="password" required name="passwordUser" value="@student.PasswordStudent" placeholder="Пароль" />
-                <br />
+                <input type="password" hidden required name="passwordUser" value="@student.PasswordStudent" placeholder="Пароль" />
                 <label hidden>Выберите учебную группу</label>
                 <br />
             }

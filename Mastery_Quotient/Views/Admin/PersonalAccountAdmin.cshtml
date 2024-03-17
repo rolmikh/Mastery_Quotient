@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="../css/navigationStyle.css">
     <link rel="stylesheet" href="../css/mainStyle.css">
     <link rel="stylesheet" href="../css/personalAccountStyle.css">
+    <link rel="stylesheet" href="../css/ModalWindowStyle.css">
     <link href="https://fonts.googleapis.com/css?family=Mulish:200,300,regular,500,600,700,800,900,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic"
           rel="stylesheet" />
     <title>Личный кабинет</title>
@@ -43,9 +44,9 @@
         <div></div>
         <div class="container">
             <div class="form_photo">
-                <img src="../images/capybara1.jpg" class="photo" width="50" height="50" />
+                <img class="photo" src="@Model.Employee.PhotoEmployee"  width="50" height="50" />
                 <div class="div_photo">
-                    <a href="">Изменить фото</a>
+                    <a href="#" id="openModalLink">Изменить фото</a>
                 </div>
                 <div class="div_info">@Model.Employee.SurnameEmployee</div>
                 <div class="div_info">@Model.Employee.NameEmployee</div>
@@ -58,8 +59,7 @@
                 
 
                 <h1 class="h1Auto">Личные данные</h1>
-                <form>
-                    <label hidden>Фамилия</label>
+                <form asp-antiforgery="true" asp-action="PersonalAccountAdmin" asp-controller="Admin">
                     <br />
                     <input class="personalAccountInput" type="text" required name="surnameUser" value="@Model.Employee.SurnameEmployee" placeholder="Фамилия" />
                     <br />
@@ -79,10 +79,10 @@
                     <br />
                     <input class="personalAccountInput" type="email" value="@Model.Employee.EmailEmployee" required name="emailUser" placeholder="Электронная почта" />
                     <br />
+                    <input hidden value="@Model.Employee.PasswordEmployee" name="passwordUser" />
                     <label hidden>Выберите роль</label>
-                    <br />
-                    <input class="personalAccountInput" type="text" value="@Model.Role.NameRole"  readonly required name="roleUser" placeholder="Роль" />
-                    <br />
+                    <input class="personalAccountInput" type="text" value="@Model.Role.NameRole" readonly required name="roleUser" placeholder="Роль" />
+                    <input hidden value="@Model.Employee.SaltEmployee" name="saltUser" />
                     <input class="personalAccount_glow_button" type="submit" value="Изменить" />
 
                 </form>
@@ -92,7 +92,44 @@
             </div>
 
         </div>
+
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <p>Выберите файл</p>
+                <form id="uploadForm" asp-antiforgery="true" asp-controller="admin" asp-action="UpdatePhoto" method="post" enctype="multipart/form-data">
+                    <input type="file" id="fileInput" name="photo" />
+                    <button type="submit">Сохранить</button>
+                </form>
+            </div>
+        </div>
+
+        
     </main>
+    <script>
+        // Получаем ссылки на элементы DOM
+        var modal = document.getElementById('myModal');
+        var openModalLink = document.getElementById('openModalLink');
+        var closeButton = document.querySelector('.modal-content .close');
+
+        // Обработчик события для клика по ссылке
+        openModalLink.onclick = function () {
+            modal.style.display = "block";
+        };
+
+        // Закрываем модальное окно при клике на кнопку закрытия
+        closeButton.onclick = function () {
+            modal.style.display = "none";
+        };
+
+        // Закрываем модальное окно при клике вне его области
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        };
+    </script>
+
 
 </body>
 

@@ -14,5 +14,7 @@ namespace Mastery_Quotient.Models
         public string? SaltStudent { get; set; }
         public int? IsDeleted { get; set; }
         public int? StudyGroupId { get; set; }
+
+        public string? PhotoStudent { get; set; } = null;
     }
 }

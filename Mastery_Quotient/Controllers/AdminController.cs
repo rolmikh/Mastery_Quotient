@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Text;
 using Mastery_Quotient.Class;
+using Firebase.Storage;
+using System.Net.Sockets;
 
 namespace Mastery_Quotient.Controllers
 {
@@ -14,13 +16,15 @@ namespace Mastery_Quotient.Controllers
     {
         private readonly IConfiguration configuration;
 
-        private GoogleDriveService googleDriveService;
+        //private GoogleDriveService googleDriveService;
+
+        private static string Bucket = "mastquo.appspot.com";
 
         public AdminController(IConfiguration configuration, ILogger<AdminController> logger)
         {
             this.configuration = configuration;
             _logger = logger;
-            //googleDriveService = new GoogleDriveService("Configs\\client_secret_376246642795-vhl3460vbdu9crnar0rk92oe4e3ebtkd.apps.googleusercontent.com.json");
+            //googleDriveService = new GoogleDriveService();
         }
 
         private readonly ILogger<AdminController> _logger;
@@ -190,9 +194,9 @@ namespace Mastery_Quotient.Controllers
 
                 using (var httpClient = new HttpClient())
                 {
-                    var responseStudent = await httpClient.PostAsync(apiUrl + "Employees", content);
+                    var response = await httpClient.PostAsync(apiUrl + "Employees", content);
 
-                    if (responseStudent.IsSuccessStatusCode)
+                    if (response.IsSuccessStatusCode)
                     {
                         return RedirectToAction("AdminWindowTeacher", "Admin");
                     }
@@ -208,36 +212,32 @@ namespace Mastery_Quotient.Controllers
             }
         }
 
-        //???
         [HttpPost]
-        public async Task<IActionResult> UpdateTeacher(string surnameUser, string nameUser, string middleNameUser, string emailUser, string passwordUser, int roleUser)
+        public async Task<IActionResult> UpdateTeacher(int idUser,string surnameUser, string nameUser, string middleNameUser, string emailUser, string passwordUser, string saltUser,int roleUser)
         {
             try
             {
-                int ID = Convert.ToInt32(Request.Query["ID"]);
+
 
                 var apiUrl = configuration["AppSettings:ApiUrl"];
 
-                string[] subs = nameUser.Split();
-
-
                 Employee employee = new Employee();
-                employee.IdEmployee = ID;
+                employee.IdEmployee = idUser;
                 employee.SurnameEmployee = surnameUser;
                 employee.NameEmployee = nameUser;
                 employee.MiddleNameEmployee = middleNameUser;
-
                 employee.EmailEmployee = emailUser;
                 employee.PasswordEmployee = passwordUser;
-                employee.IsDeleted = 0;
+                employee.SaltEmployee = saltUser;
                 employee.RoleId = roleUser;
+                employee.IsDeleted = 0;
 
-
-                StringContent content = new StringContent(JsonConvert.SerializeObject(employee), Encoding.UTF8, "application/json");
 
                 using (var httpClient = new HttpClient())
                 {
-                    var response = await httpClient.PutAsync(apiUrl + "Employees/" + ID, content);
+                    StringContent content = new StringContent(JsonConvert.SerializeObject(employee), Encoding.UTF8, "application/json");
+
+                    var response = await httpClient.PutAsync(apiUrl + "Employees/" + idUser, content);
 
                     if (response.IsSuccessStatusCode)
                     {
@@ -245,7 +245,7 @@ namespace Mastery_Quotient.Controllers
                     }
                     else
                     {
-                        return BadRequest("Ошибка изменения данных");
+                        return BadRequest();
                     }
                 }
             }
@@ -402,6 +402,118 @@ namespace Mastery_Quotient.Controllers
             }
         }
 
+        [HttpPost]
+        public async Task<IActionResult> PersonalAccountAdmin(string surnameUser, string nameUser, string middleNameUser, string emailUser, string passwordUser, string saltUser)
+        {
+            try
+            {
+
+                int id = int.Parse(TempData["AuthUser"].ToString());
+
+                TempData.Keep("AuthUser");
+
+                var apiUrl = configuration["AppSettings:ApiUrl"];
+
+                Employee employee = new Employee();
+                employee.IdEmployee = id;
+                employee.SurnameEmployee = surnameUser;
+                employee.NameEmployee = nameUser;
+                employee.MiddleNameEmployee = middleNameUser;
+                employee.EmailEmployee = emailUser;
+                employee.PasswordEmployee = passwordUser;
+                employee.SaltEmployee = saltUser;
+                employee.RoleId = 2;
+                employee.IsDeleted = 0;
+
+
+                using (var httpClient = new HttpClient())
+                {
+                    StringContent content = new StringContent(JsonConvert.SerializeObject(employee), Encoding.UTF8, "application/json");
+
+                    var response = await httpClient.PutAsync(apiUrl + "Employees/" + id, content);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return RedirectToAction("PersonalAccountAdmin", "Admin");
+                    }
+                    else
+                    {
+                        return BadRequest();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdatePhoto(IFormFile photo)
+        {
+            try
+            {
+                if (photo == null || photo.Length == 0)
+                {
+                    return BadRequest("Файл не был загружен");
+                }
+
+                string fileName = Guid.NewGuid().ToString() + Path.GetExtension(photo.FileName);
+
+
+                int id = int.Parse(TempData["AuthUser"].ToString());
+
+                TempData.Keep("AuthUser");
+
+                var apiUrl = configuration["AppSettings:ApiUrl"];
+
+                
+
+
+                using (var httpClient = new HttpClient())
+                {
+                    var response = await httpClient.GetAsync(apiUrl + "Employees/" + id);
+                    response.EnsureSuccessStatusCode();
+                    var employeeData = await response.Content.ReadAsStringAsync();
+
+                    var employee = JsonConvert.DeserializeObject<Employee>(employeeData);
+
+                    employee.PhotoEmployee = await Upload(photo.OpenReadStream(), fileName);
+
+                    string json = JsonConvert.SerializeObject(employee);
+
+                    var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                    response = await httpClient.PutAsync(apiUrl + "Employees/" + id, content);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return RedirectToAction("PersonalAccountAdmin", "Admin");
+                    }
+                    else
+                    {
+                        return BadRequest();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest();
+            }
+        }
+
+        public async Task<string> Upload(Stream stream, string fileName)
+        {
+            var cancellation = new CancellationTokenSource();
+
+            var firebaseStorage = new FirebaseStorage(Bucket);
+            string path = "photoProfile / " + fileName;
+            var uploadTask = firebaseStorage.Child(path).PutAsync(stream, cancellation.Token);
+            var fileUrl = await uploadTask;
+
+            return fileUrl;
+        }
+
+
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
@@ -494,26 +606,24 @@ namespace Mastery_Quotient.Controllers
         }
 
 
-
-        //???
         [HttpPost]
-        public async Task<IActionResult> UpdateStudent(string surnameUser, string nameUser, string middleNameUser, string emailUser, string passwordUser, int studyGroupUser)
+        public async Task<IActionResult> UpdateStudent(int idUser,string surnameUser, string nameUser, string middleNameUser, string emailUser, string passwordUser, string saltUser , int studyGroupUser)
         {
             try
             {
-                int ID = Convert.ToInt32(Request.Query["ID"]);
 
                 var apiUrl = configuration["AppSettings:ApiUrl"];
 
                 string[] subs = nameUser.Split();
 
                 Student student = new Student();
-                student.IdStudent = ID;
+                student.IdStudent = idUser;
                 student.SurnameStudent = surnameUser;
                 student.NameStudent = nameUser;
                 student.MiddleNameStudent = middleNameUser;
                 student.EmailStudent = emailUser;
                 student.PasswordStudent = passwordUser;
+                student.SaltStudent = saltUser;
                 student.IsDeleted = 0;
                 student.StudyGroupId = studyGroupUser;
 
@@ -522,7 +632,7 @@ namespace Mastery_Quotient.Controllers
 
                 using (var httpClient = new HttpClient())
                 {
-                    var response = await httpClient.PutAsync(apiUrl + "Students/" + ID, content);
+                    var response = await httpClient.PutAsync(apiUrl + "Students/" + idUser, content);
 
                     if (response.IsSuccessStatusCode)
                     {
@@ -681,8 +791,9 @@ namespace Mastery_Quotient.Controllers
 
         public IActionResult FileMaterial(string nameFile)
         {
-           var fileUrl = googleDriveService.GetFileUrl(nameFile);
-            return View(fileUrl);
+            
+           ViewBag.NameFile = nameFile;
+            return View();
 
         }
     }

@@ -39,16 +39,20 @@
 </head>
 
 <body>
-    <form asp-antiforgery="true" asp-action="AdminWindowTeacher" asp-controller="Admin">
-       
+    <div>
+        <form asp-antiforgery="true" asp-action="AdminWindowTeacher" asp-controller="Admin">
 
-        <input class="searchInput" type="text" name="Search" />
-        <button class="searchImage" type="submit">
-            <img width="40" height="40" src="../images/icons8-лупа-64.png" />
-        </button>
+
+            <input class="searchInput" type="text" name="Search" />
+            <button class="searchImage" type="submit">
+                <img width="40" height="40" src="../images/icons8-лупа-64.png" />
+            </button>
+
+
+        </form>
         <button class="newInput"><a asp-action="TeacherNew" asp-controller="admin">Добавить</a></button>
-
-    </form>
+    </div>
+    
 
     
     <main>

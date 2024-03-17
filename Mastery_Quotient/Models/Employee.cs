@@ -16,6 +16,7 @@ namespace Mastery_Quotient.Models
         public string? SaltEmployee { get; set; }
         public int? IsDeleted { get; set; }
         public int? RoleId { get; set; }
+        public string? PhotoEmployee { get; set; } = null;
 
     }
 }

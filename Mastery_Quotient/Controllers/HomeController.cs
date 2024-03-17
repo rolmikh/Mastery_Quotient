@@ -7,6 +7,11 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Security.Claims;
 using System.Text;
+using Google.Apis.Auth.OAuth2.Responses;
+using Google.Apis.Drive.v3;
+using Google.Apis.Services;
+using Newtonsoft.Json.Linq;
+using Mastery_Quotient.Class;
 
 namespace Mastery_Quotient.Controllers
 {
@@ -15,10 +20,13 @@ namespace Mastery_Quotient.Controllers
 
         private readonly IConfiguration configuration;
 
+        GoogleDriveService GoogleDriveService;
+
         public HomeController(IConfiguration configuration, ILogger<HomeController> logger)
         {
             this.configuration = configuration;
             _logger = logger;
+            GoogleDriveService = new GoogleDriveService();
         }
 
         //public ContentResult OnGet()
@@ -50,7 +58,7 @@ namespace Mastery_Quotient.Controllers
             try
             {
                 var apiUrl = configuration["AppSettings:ApiUrl"];
-
+                
                 Employee employee = new Employee()
                 {
                     EmailEmployee = emailUser,
@@ -78,6 +86,7 @@ namespace Mastery_Quotient.Controllers
 
                         await Authenticate(students.EmailStudent);
                         TempData["AuthUser"] = students.IdStudent;
+                        //await GoogleDriveService.InitializeDriveServiceAsync(emailUser, passwordUser);
 
                         return RedirectToAction("MainStudent", "Student");
                     }
@@ -88,6 +97,8 @@ namespace Mastery_Quotient.Controllers
 
                         await Authenticate(employees.EmailEmployee);
                         TempData["AuthUser"] = employees.IdEmployee;
+                        //await GoogleDriveService.InitializeDriveServiceAsync(emailUser, passwordUser);
+
 
                         if (employees.RoleId == 1)
                         {
@@ -226,6 +237,12 @@ namespace Mastery_Quotient.Controllers
             }
             
         }
+
+
+        
+
+       
+
 
         public IActionResult Privacy()
         {

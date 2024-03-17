@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@model Mastery_Quotient.Models.MaterialTeacher
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -7,7 +8,7 @@
     <link rel="stylesheet" href="../css/navigationStyle.css">
     <link href="https://fonts.googleapis.com/css?family=Mulish:200,300,regular,500,600,700,800,900,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic"
           rel="stylesheet" />
-    <title>Страница преподавателя</title>
+    <title>Добавление материала</title>
     <div class="container">
         <a asp-action="MainTeacher" asp-controller="teacher">
             <img class="navigation_img" src="../images/3QpbYI-LogoMakr.png">
@@ -35,6 +36,34 @@
 </head>
 <body>
     <main>
+
+        <form asp-antiforgery="true" asp-action="TeacherWindowMaterial" asp-controller="teacher" enctype="multipart/form-data">
+            <input name="nameMaterial" />
+            <input name="file" type="file" />
+            
+            <select required id="typeMaterial" name="typeMaterial" placeholder="Тип материала">
+                <option selected disabled>Тип материала</option>
+                @foreach (var typeMaterial in Model.TypeMaterials)
+                {
+                    <option value="@typeMaterial.IdTypeMaterial">@typeMaterial.NameTypeMaterial</option>
+                }
+            </select>
+            <select required id="disciplineMaterial" name="disciplineMaterial" placeholder="Дисциплина">
+                <option selected disabled>Дисциплина</option>
+                 @foreach (var discipline in Model.DisciplineEmployees)
+                {
+                    var disciplinesID = Model.Disciplines.Find(n => n.IdDiscipline == discipline.DisciplineId).IdDiscipline;
+                    var disciplinesName = Model.Disciplines.Find(n => n.IdDiscipline == discipline.DisciplineId).NameDiscipline;
+
+                    <option value="@disciplinesID">@disciplinesName</option>
+                }
+            </select>
+
+            <input type="submit"/>
+        </form>
+
+
+        
 
     </main>
 
