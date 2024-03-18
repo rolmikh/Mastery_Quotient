@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="../css/mainStyle.css">
     <link rel="stylesheet" href="../css/navigationStyle.css">
     <link rel="stylesheet" href="../css/personalAccountStyle.css">
+    <link rel="stylesheet" href="../css/ModalWindowStyle.css">
 
     <link href="https://fonts.googleapis.com/css?family=Mulish:200,300,regular,500,600,700,800,900,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic"
           rel="stylesheet" />
@@ -28,10 +29,8 @@
             </li>
             <li class="navigation_li_right" style="float: right"><a class="navigation_a_right" asp-action="TeacherWindowTest" asp-controller="teacher">Создать тест</a></li>
         </ul>
-        <button class="glow_button">
-            <a asp-action="PersonalAccountTeacher" asp-controller="teacher">
-                Личный кабинет
-            </a>
+        <button class="glow_button" onclick="window.location.href='@Url.Action("PersonalAccountTeacher", "teacher")'">
+            Личный кабинет
         </button>
     </div>
 
@@ -78,6 +77,7 @@
                         <br />
                         <input hidden value="@Model.Employee.PasswordEmployee" name="passwordUser" />
                         <label hidden>Выберите роль</label>
+                        <br />
                         <input class="personalAccountInput" type="text" value="@Model.Role.NameRole" readonly required name="roleUser" placeholder="Роль" />
                         <input hidden value="@Model.Employee.SaltEmployee" name="saltUser" />
                         <input class="personalAccount_glow_button" type="submit" value="Изменить" />

@@ -796,6 +796,34 @@ namespace Mastery_Quotient.Controllers
             return View();
 
         }
+
+
+        //[HttpGet]
+        //public async Task<List<Student>> FiltrationStudent(int groupUser)
+        //{
+
+        //    var apiUrl = configuration["AppSettings:ApiUrl"];
+
+        //    List<Student> studentsList = new List<Student>();
+
+        //    using (var httpClient = new HttpClient())
+        //    {
+        //        using (var response = await httpClient.GetAsync(apiUrl + "Students/Filtration?idStudyGroup=" + groupUser))
+        //        {
+        //            string apiResponse = await response.Content.ReadAsStringAsync();
+        //            studentsList = JsonConvert.DeserializeObject<List<Student>>(apiResponse);
+        //            if (response.IsSuccessStatusCode)
+        //            {
+        //                TempData["StudentList"] = studentsList;
+
+
+        //                return studentsList;
+        //            }
+        //        }
+
+        //    }
+
+        //}
     }
 
 

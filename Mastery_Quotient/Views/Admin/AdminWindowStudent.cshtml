@@ -29,24 +29,35 @@
             </li>
             <li class="navigation_li_right" style="float: right"><a class="navigation_a_right" asp-action="AdminWindowStudent" asp-controller="admin">Студенты</a></li>
         </ul>
-        <button class="glow_button">
-            <a asp-action="PersonalAccountAdmin" asp-controller="admin">
-                Личный кабинет
-            </a>
+        <button class="glow_button" onclick="window.location.href='@Url.Action("PersonalAccountAdmin", "admin")'">
+            Личный кабинет
         </button>
+        
     </div>
 
 </head>
 
 <body>
-    <form asp-antiforgery="true" asp-action="AdminWindowStudent" asp-controller="Admin">
-
-
-        <input class="searchInput" type="text" name="Search" />
-        <button class="searchImage" type="submit">
-            <img width="40" height="40" src="../images/icons8-лупа-64.png" />
-        </button>
-    </form>
+    <div class="containerForm">
+        <form asp-antiforgery="true" asp-action="AdminWindowStudent" asp-controller="Admin">
+            <input class="searchInput" type="text" name="Search" />
+            <button class="searchImage" type="submit">
+                <img width="40" height="40" src="../images/icons8-лупа-64.png" />
+            </button>
+        </form>
+        <form asp-antiforgery="true" asp-action="FiltrationStudent" asp-controller="Admin">
+            <select class="CrudSelect" required id="groupUser" name="groupUser" placeholder="Учебная группа">
+                <option selected disabled>Учебная группа</option>
+                @foreach (var group in Model.StudyGroups)
+                {
+                    <option value="@group.IdStudyGroup">@group.NameStudyGroup</option>
+                }
+            </select>
+            <button class="InputFiltr" type="submit">Фильтрация</button>
+           
+        </form>
+    </div>
+    
 
 
     <main>

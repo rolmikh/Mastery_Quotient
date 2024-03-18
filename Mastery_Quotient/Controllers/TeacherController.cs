@@ -85,7 +85,7 @@ namespace Mastery_Quotient.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> TeacherWindowMaterial(string nameMaterial, int typeMaterial, int disciplineMaterial, IFormFile file )
+        public async Task<IActionResult> TeacherWindowMaterial(string nameMaterial, int typeMaterial, int disciplineMaterial, IFormFile file, IFormFile filePhoto)
         {
             try
             {
@@ -93,9 +93,18 @@ namespace Mastery_Quotient.Controllers
                 {
                     return BadRequest("Файл не был загружен");
                 }
+                if(filePhoto == null || filePhoto.Length == 0)
+                {
+                    return BadRequest("Файл не был загружен");
+                }
+
 
                 string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
                 string fileUrl = await Upload(file.OpenReadStream(), fileName);
+
+                string fileNamePhoto = Guid.NewGuid().ToString() + Path.GetExtension(filePhoto.FileName);
+                string fileUrlPhoto = await Upload(filePhoto.OpenReadStream(), fileNamePhoto);
+
 
 
                 var apiUrl = configuration["AppSettings:ApiUrl"];
@@ -112,6 +121,7 @@ namespace Mastery_Quotient.Controllers
                 material.DisciplineId = disciplineMaterial;
                 material.TypeMaterialId = typeMaterial;
                 material.EmployeeId = id;
+                material.PhotoMaterial = fileUrlPhoto;
 
 
                 StringContent content = new StringContent(JsonConvert.SerializeObject(material), Encoding.UTF8, "application/json");
@@ -145,6 +155,18 @@ namespace Mastery_Quotient.Controllers
 
             var firebaseStorage = new FirebaseStorage(Bucket);
             string path = "material/" + fileName;
+            var uploadTask = firebaseStorage.Child(path).PutAsync(stream, cancellation.Token);
+            var fileUrl = await uploadTask;
+
+            return fileUrl;
+        }
+
+        public async Task<string> UploadPhotoMaterial(Stream stream, string fileName)
+        {
+            var cancellation = new CancellationTokenSource();
+
+            var firebaseStorage = new FirebaseStorage(Bucket);
+            string path = "photoMaterial/" + fileName;
             var uploadTask = firebaseStorage.Child(path).PutAsync(stream, cancellation.Token);
             var fileUrl = await uploadTask;
 

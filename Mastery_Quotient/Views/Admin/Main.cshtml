@@ -26,10 +26,8 @@
             </li>
             <li class="navigation_li_right" style="float: right"><a class="navigation_a_right" asp-action="AdminWindowStudent" asp-controller="admin">Студенты</a></li>
         </ul>
-        <button class="glow_button">
-            <a asp-action="PersonalAccountAdmin" asp-controller="admin">
-                Личный кабинет
-            </a>
+        <button class="glow_button" onclick="window.location.href='@Url.Action("PersonalAccountAdmin", "admin")'">
+            Личный кабинет
         </button>
     </div>
      

@@ -28,10 +28,8 @@
             </li>
             <li class="navigation_li_right" style="float: right"><a class="navigation_a_right" asp-action="TeacherWindowTest" asp-controller="teacher">Создать тест</a></li>
         </ul>
-        <button class="glow_button">
-            <a asp-action="PersonalAccountTeacher" asp-controller="teacher">
-                Личный кабинет
-            </a>
+        <button class="glow_button" onclick="window.location.href='@Url.Action("PersonalAccountTeacher", "teacher")'">
+            Личный кабинет
         </button>
     </div>
 
@@ -41,7 +39,12 @@
         <div class="form_new">
             <form asp-antiforgery="true" asp-action="TeacherWindowMaterial" asp-controller="teacher" enctype="multipart/form-data">
                 <input name="nameMaterial" class="CrudInput" placeholder="Название материала" />
-                <input name="file" type="file" class="CrudInput" />
+                <label class="CrudLabel">Выберите файл материала</label>
+
+                <input name="file" type="file" class="CrudInput" placeholder="Выберите файл материала" />
+                <label class="CrudLabel">Выберите фото материала</label>
+
+                <input name="filePhoto" type="file" class="CrudInput" placeholder="Выберите фото материала" />
 
                 <select required id="typeMaterial" name="typeMaterial" class="CrudSelect" placeholder="Тип материала">
                     <option selected disabled>Тип материала</option>

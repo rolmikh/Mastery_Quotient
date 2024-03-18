@@ -12,6 +12,8 @@ namespace Mastery_Quotient.Models
         public int? DisciplineId { get; set; }
         public int? TypeMaterialId { get; set; }
         public int? EmployeeId { get; set; }
+        public string? PhotoMaterial { get; set; }
+
 
     }
 }

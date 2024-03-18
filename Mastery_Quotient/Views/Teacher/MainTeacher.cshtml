@@ -25,10 +25,8 @@
             </li>
             <li class="navigation_li_right" style="float: right"><a class="navigation_a_right" asp-action="TeacherWindowTest" asp-controller="teacher">Создать тест</a></li>
         </ul>
-        <button class="glow_button">
-            <a asp-action="PersonalAccountTeacher" asp-controller="teacher">
-                Личный кабинет
-            </a>
+        <button class="glow_button" onclick="window.location.href='@Url.Action("PersonalAccountTeacher", "teacher")'">
+            Личный кабинет
         </button>
     </div>
 

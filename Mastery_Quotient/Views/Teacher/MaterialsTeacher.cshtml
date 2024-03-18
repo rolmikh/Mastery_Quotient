@@ -29,10 +29,8 @@
             </li>
             <li class="navigation_li_right" style="float: right"><a class="navigation_a_right" asp-action="TeacherWindowTest" asp-controller="teacher">Создать тест</a></li>
         </ul>
-        <button class="glow_button">
-            <a asp-action="PersonalAccountTeacher" asp-controller="teacher">
-                Личный кабинет
-            </a>
+        <button class="glow_button" onclick="window.location.href='@Url.Action("PersonalAccountTeacher", "teacher")'">
+            Личный кабинет
         </button>
     </div>
 </head>
@@ -45,8 +43,8 @@
                 <div class="formMaterial">
                     <form asp-action="FileMaterial" asp-antiforgery="true" asp-controller="admin">
 
-                        <input type="image" class="imageMaterial" width="187" height="177" src="image\docker.png" />
-                        <label class="nameMaterial">Название</label>
+                        <input type="image" class="imageMaterial" width="187" height="177" src="@item.PhotoMaterial" />
+                        <label class="nameMaterial">@item.NameMaterial</label>
                         <input value="Подробнее" class="buttonMaterial" type="submit" />
 
                         <input hidden value="@item.FileMaterial" name="nameFile" />
