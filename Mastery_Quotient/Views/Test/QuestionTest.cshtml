@@ -1,0 +1,204 @@
+﻿@* @model Mastery_Quotient.Models.TestTeacher *@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/mainStyle.css">
+    <link rel="stylesheet" href="../css/navigationStyle.css">
+    <link rel="stylesheet" href="../css/crudStyle.css">
+    <link rel="stylesheet" href="../css/TestStyle.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css">
+
+
+    <script src="~/js/site.js"></script>
+
+
+    <link href="https://fonts.googleapis.com/css?family=Mulish:200,300,regular,500,600,700,800,900,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic"
+          rel="stylesheet" />
+    <title>Добавление вопросов</title>
+    <div class="container">
+        <a asp-action="MainTeacher" asp-controller="teacher">
+            <img class="navigation_img" src="../images/3QpbYI-LogoMakr.png">
+        </a>
+
+        <ul class="navigation_ul">
+            <li class="navigation_li"><a class="navigation_a" asp-action="News">Новости</a></li>
+            <li class="navigation_li"><a class="navigation_a" asp-action="MaterialsTeacher">Материалы</a></li>
+            <li class="navigation_li"><a class="navigation_a" asp-action="TestTeacher" asp-controller="Test">Тесты</a></li>
+            <li class="navigation_li"><a class="navigation_a" asp-action="Rating">Рейтинг</a></li>
+        </ul>
+        <ul class="navigation_ul_right">
+            <li class="navigation_li_right" style="float: right">
+                <a class="navigation_a_right" asp-action="TeacherWindowMaterial" asp-controller="teacher">Создать материал</a>
+            </li>
+            <li class="navigation_li_right" style="float: right"><a class="navigation_a_right" asp-action="TeacherWindowTest" asp-controller="Test">Создать тест</a></li>
+        </ul>
+        <button class="glow_button" onclick="window.location.href='@Url.Action("PersonalAccountTeacher", "teacher")'">
+            Личный кабинет
+        </button>
+    </div>
+
+</head>
+<body>
+    <main>
+        <div >
+            <h2>Название теста</h2>
+            <h2>Дата создания</h2>
+            <h2>Дисциплина</h2>
+            <h2>Преподаватель</h2>
+            <h2>Параметр тестирования</h2>
+            <h2>Срок сдачи</h2>
+
+        </div>
+        <div class ="slider">
+            <div>
+                <h2>Добавление вопроса</h2>
+                <form asp-antiforgery="true" asp-action="TeacherWindowTest" asp-controller="Test" method="post">
+                    <h3>Вопрос с письменным вариантом ответа</h3>
+                    <input name="numberQuestion" class="CrudInput" type="number" placeholder="Номер вопроса" />
+                    <input name="nameQuestion" class="CrudInput" placeholder="Название вопроса" />
+
+                    <input name="typeQuestion" class="CrudInput" readonly value="Письменный вопрос" placeholder="Тип вопроса" />
+
+
+
+                    <input type="submit" class="newInput" value="Добавить вопрос" />
+                </form>
+            </div>
+            <div>
+                <h2>Добавление вопроса</h2>
+                <form asp-antiforgery="true" asp-action="TeacherWindowTest" asp-controller="Test" method="post">
+                    <h3>Вопрос с одним вариантом ответа</h3>
+                    <input name="numberQuestion" class="CrudInput" type="number" placeholder="Номер вопроса" />
+                    <input name="nameQuestion" class="CrudInput" placeholder="Название вопроса" />
+
+                    <input name="typeQuestion" class="CrudInput" readonly value="Вопрос с одним вариантом ответа" placeholder="Тип вопроса" />
+                    <label>Правильность</label>
+                    <div id="answerOptionsRadio">
+                        <div class="answer-option">
+                            <input type="text" name="answerOptionRadio[]" />
+                            <input type="radio" name="correctAnswerRadio" />
+                        </div>
+                    </div>
+                    <button type="button" id="addAnswerOptionRadio">+</button>
+
+
+                    <input type="submit" class="newInput" value="Добавить вопрос" />
+
+                </form>
+            </div>
+
+            <div>
+                <h2>Добавление вопроса</h2>
+                <form asp-antiforgery="true" asp-action="TeacherWindowTest" asp-controller="Test" method="post">
+                    <h3>Вопрос с несколькими вариантами ответа</h3>
+                    <input name="numberQuestion" class="CrudInput" type="number" placeholder="Номер вопроса" />
+                    <input name="nameQuestion" class="CrudInput" placeholder="Название вопроса" />
+
+                    <input name="typeQuestion" class="CrudInput" readonly value="Вопрос с несколькими вариантами ответа" placeholder="Тип вопроса" />
+                    <label>Правильность</label>
+                    <div id="answerOptionsCheck">
+                        <div class="answer-option">
+                            <input type="text" name="answerOptionCheck[]" />
+                            <input type="checkbox" name="correctAnswerCheck" />
+                        </div>
+                    </div>
+                    <button type="button" id="addAnswerOptionCheck">+</button>
+
+                    <input type="submit" class="newInput" value="Добавить вопрос" />
+                </form>
+            </div>
+        </div>
+       
+
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                // Инициализация слайдера
+                $('.slider').slick({
+                    infinite: true, // Бесконечный слайдер
+                    slidesToShow: 1, // Отображение одного слайда за раз
+                    slidesToScroll: 1, // Прокрутка одного слайда за раз
+                    dots: true // Включение точек для навигации
+                });
+            });
+        </script>
+        
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const addAnswerOptionButton = document.getElementById('addAnswerOptionRadio');
+                const answerOptionsContainer = document.getElementById('answerOptionsRadio');
+
+                addAnswerOptionButton.addEventListener('click', function () {
+                    const answerOptionDiv = document.createElement('div');
+                    answerOptionDiv.classList.add('answer-option');
+
+                    const answerOptionInput = document.createElement('input');
+                    answerOptionInput.type = 'text';
+                    answerOptionInput.name = 'answerOptionRadio[]';
+
+                    const correctAnswerInput = document.createElement('input');
+                    correctAnswerInput.type = 'radio';
+                    correctAnswerInput.name = 'correctAnswerRadio';
+
+                    const removeButton = document.createElement('button');
+                    removeButton.type = 'button';
+                    removeButton.classList.add('remove-answer-option');
+                    removeButton.textContent = '-';
+                    removeButton.addEventListener('click', function () {
+                        answerOptionsContainer.removeChild(answerOptionDiv);
+                    });
+
+                    answerOptionDiv.appendChild(answerOptionInput);
+                    answerOptionDiv.appendChild(correctAnswerInput);
+                    answerOptionDiv.appendChild(removeButton);
+
+                    answerOptionsContainer.appendChild(answerOptionDiv);
+                });
+            });
+        </script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const addAnswerOptionButton = document.getElementById('addAnswerOptionCheck');
+                const answerOptionsContainer = document.getElementById('answerOptionsCheck');
+
+                addAnswerOptionButton.addEventListener('click', function () {
+                    const answerOptionDiv = document.createElement('div');
+                    answerOptionDiv.classList.add('answer-option');
+
+                    const answerOptionInput = document.createElement('input');
+                    answerOptionInput.type = 'text';
+                    answerOptionInput.name = 'answerOptionCheck[]';
+
+                    const correctAnswerInput = document.createElement('input');
+                    correctAnswerInput.type = 'checkbox';
+                    correctAnswerInput.name = 'correctAnswerCheck';
+
+                    const removeButton = document.createElement('button');
+                    removeButton.type = 'button';
+                    removeButton.classList.add('remove-answer-option');
+                    removeButton.textContent = '-';
+                    removeButton.addEventListener('click', function () {
+                        answerOptionsContainer.removeChild(answerOptionDiv);
+                    });
+
+                    answerOptionDiv.appendChild(answerOptionInput);
+                    answerOptionDiv.appendChild(correctAnswerInput);
+                    answerOptionDiv.appendChild(removeButton);
+
+                    answerOptionsContainer.appendChild(answerOptionDiv);
+                });
+            });
+        </script>
+
+
+    </main>
+
+</body>
+</html>

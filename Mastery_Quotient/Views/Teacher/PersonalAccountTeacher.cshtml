@@ -20,14 +20,14 @@
         <ul class="navigation_ul">
             <li class="navigation_li"><a class="navigation_a" asp-action="News">Новости</a></li>
             <li class="navigation_li"><a class="navigation_a" asp-action="MaterialsTeacher">Материалы</a></li>
-            <li class="navigation_li"><a class="navigation_a" asp-action="Course">Тесты</a></li>
+            <li class="navigation_li"><a class="navigation_a" asp-action="TestTeacher" asp-controller="Test">Тесты</a></li>
             <li class="navigation_li"><a class="navigation_a" asp-action="Rating">Рейтинг</a></li>
         </ul>
         <ul class="navigation_ul_right">
             <li class="navigation_li_right" style="float: right">
                 <a class="navigation_a_right" asp-action="TeacherWindowMaterial" asp-controller="teacher">Создать материал</a>
             </li>
-            <li class="navigation_li_right" style="float: right"><a class="navigation_a_right" asp-action="TeacherWindowTest" asp-controller="teacher">Создать тест</a></li>
+            <li class="navigation_li_right" style="float: right"><a class="navigation_a_right" asp-action="TeacherWindowTest" asp-controller="Test">Создать тест</a></li>
         </ul>
         <button class="glow_button" onclick="window.location.href='@Url.Action("PersonalAccountTeacher", "teacher")'">
             Личный кабинет

@@ -368,35 +368,35 @@ namespace Mastery_Quotient.Controllers
 
         }
 
-        [HttpPost]
-        public async Task<IActionResult> MaterialsTeacher(string Search)
-        {
+        //[HttpPost]
+        //public async Task<IActionResult> MaterialsTeacher(string Search)
+        //{
 
-            if (Search != null)
-            {
-                var apiUrl = configuration["AppSettings:ApiUrl"];
-                List<Material> materials = new List<Material>();
+        //    if (Search != null)
+        //    {
+        //        var apiUrl = configuration["AppSettings:ApiUrl"];
+        //        List<Material> materials = new List<Material>();
 
-                StringContent content = new StringContent(JsonConvert.SerializeObject(Search), Encoding.UTF8, "application/json");
+        //        StringContent content = new StringContent(JsonConvert.SerializeObject(Search), Encoding.UTF8, "application/json");
 
-                using (var httpClient = new HttpClient())
-                {
-                    var response = await httpClient.GetAsync(apiUrl + "Employees/Search?search=" + Search);
+        //        using (var httpClient = new HttpClient())
+        //        {
+        //            var response = await httpClient.GetAsync(apiUrl + "Employees/Search?search=" + Search);
 
-                    string apiResponse = await response.Content.ReadAsStringAsync();
-                    employees = JsonConvert.DeserializeObject<List<Employee>>(apiResponse);
+        //            string apiResponse = await response.Content.ReadAsStringAsync();
+        //            employees = JsonConvert.DeserializeObject<List<Employee>>(apiResponse);
 
-                    TempData["Search"] = JsonConvert.SerializeObject(employees);
+        //            TempData["Search"] = JsonConvert.SerializeObject(employees);
 
-                    return RedirectToAction("AdminWindowTeacher", "Admin");
-                }
-            }
-            else
-            {
-                return RedirectToAction("AdminWindowTeacher", "Admin");
-            }
+        //            return RedirectToAction("AdminWindowTeacher", "Admin");
+        //        }
+        //    }
+        //    else
+        //    {
+        //        return RedirectToAction("AdminWindowTeacher", "Admin");
+        //    }
 
-        }
+        //}
 
 
         public IActionResult FileMaterial(string nameFile)

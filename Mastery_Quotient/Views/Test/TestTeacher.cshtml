@@ -1,4 +1,4 @@
-﻿@model Mastery_Quotient.Models.MaterialsViewTeacher
+﻿@model Mastery_Quotient.Models.TestViewTeacher
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,14 +7,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/mainStyle.css">
     <link rel="stylesheet" href="../css/navigationStyle.css">
-    <link rel="stylesheet" href="../css/materialStyle.css">
+    <link rel="stylesheet" href="../css/TestStyle.css">
     <link rel="stylesheet" href="../css/ModalWindowStyle.css">
     <link rel="stylesheet" href="../css/crudStyle.css">
 
     <link href="https://fonts.googleapis.com/css?family=Mulish:200,300,regular,500,600,700,800,900,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic"
           rel="stylesheet" />
 
-    <title>Материалы</title>
+    <title>Тесты</title>
     <div class="container">
         <a asp-action="MainTeacher" asp-controller="teacher">
             <img class="navigation_img" src="../images/3QpbYI-LogoMakr.png">
@@ -41,52 +41,38 @@
 <body>
     <main>
 
-        <div class="containerForm">
-            <form asp-antiforgery="true" asp-action="MaterialsTeacher" asp-controller="Teacher">
-                <input class="searchInput" type="text" name="Search" />
-                <button class="searchImage" type="submit">
-                    <img width="40" height="40" src="../images/icons8-лупа-64.png" />
-                </button>
-            </form>
-            @* <form asp-antiforgery="true" asp-action="FiltrationStudent" asp-controller="Admin">
-                <select class="CrudSelect" required id="groupUser" name="groupUser" placeholder="Учебная группа">
-                    <option selected disabled>Учебная группа</option>
-                    @foreach (var group in Model.StudyGroups)
-                    {
-                        <option value="@group.IdStudyGroup">@group.NameStudyGroup</option>
-                    }
-                </select>
-                <button class="InputFiltr" type="submit">Фильтрация</button>
 
-            </form> *@
-        </div>
-        <div class="formsContainer">
-            @foreach (var item in Model.Materials)
+        @foreach(var item in Model.Test)
+        {
+            @if(item.Active == 0)
             {
-                <form id="deleteForm" asp-controller="Teacher" asp-action="DeleteMaterial" method="post">
-                    <input type="hidden" value="@item.IdMaterial" name="IdMaterial" />
-                    <button class="image_button" width="50" height="50" type="button">
-                        <img>
-                    </button>
-                </form>
-                <div class="formMaterial">
-                    <div class="formButton">
-                        <a asp-action="UpdateMaterial" asp-controller="teacher" asp-route-id="@item.IdMaterial"><input type="image" width="50" height="50" src="../images/edit.png" /></a>
+                <h1>Активные тестирования</h1>
+                <div class="formTest">
+                    <label>@item.NameTest</label>
+                    <input value="Просмотреть тестирование" class="buttonTest" type="submit" />
 
-                        
-                    </div>
-                    <form asp-action="FileMaterial" asp-antiforgery="true" asp-controller="admin">
-
-                        <input type="image" class="imageMaterial" width="187" height="177" src="@item.PhotoMaterial" />
-                        <label class="nameMaterial">@item.NameMaterial</label>
-                        <input value="Подробнее" class="buttonMaterial" type="submit" />
-
-                        <input hidden value="@item.FileMaterial" name="nameFile" />
-                    </form>
                 </div>
-
             }
-        </div>
+            else
+            {
+                <h1>Неактивные тестирования</h1>
+                <form asp-action="QuestionTest" asp-antiforgery="true" asp-controller="Test">
+                    <div class="formTest">
+                        <label>@item.NameTest</label>
+                        <input value="Добавить вопрос" class="buttonTest" type="submit" />
+
+                    </div>
+                </form>
+                
+                
+            }
+        }
+
+
+
+
+
+
 
         <div id="myModal" class="modal">
             <div class="modal-content">
@@ -105,7 +91,7 @@
             var modal = document.getElementById('myModal'); // Получаем модальное окно по его id
             var confirmDeleteBtn = document.getElementById('confirmDeleteBtnModal'); // Получаем кнопку подтверждения удаления
             var confirmBackBtn = document.getElementById('confirmBack'); // Получаем кнопку отмены
-            var idMaterialInput = document.getElementById('IdMaterial'); // Получаем скрытое поле для id 
+            var idMaterialInput = document.getElementById('IdMaterial'); // Получаем скрытое поле для id
             var closeButton = document.querySelector('.modal-content .close');
 
 

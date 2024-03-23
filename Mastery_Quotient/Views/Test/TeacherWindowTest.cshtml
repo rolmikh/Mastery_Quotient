@@ -1,4 +1,4 @@
-﻿@model Mastery_Quotient.Models.MaterialTeacher
+﻿@model Mastery_Quotient.Models.TestTeacher
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,10 +7,13 @@
     <link rel="stylesheet" href="../css/mainStyle.css">
     <link rel="stylesheet" href="../css/navigationStyle.css">
     <link rel="stylesheet" href="../css/crudStyle.css">
+    <link rel="stylesheet" href="../css/TestStyle.css">
+
+
 
     <link href="https://fonts.googleapis.com/css?family=Mulish:200,300,regular,500,600,700,800,900,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic"
           rel="stylesheet" />
-    <title>Добавление материала</title>
+    <title>Добавление теста</title>
     <div class="container">
         <a asp-action="MainTeacher" asp-controller="teacher">
             <img class="navigation_img" src="../images/3QpbYI-LogoMakr.png">
@@ -37,23 +40,17 @@
 <body>
     <main>
         <div class="form_new">
-            <form asp-antiforgery="true" asp-action="TeacherWindowMaterial" asp-controller="teacher" enctype="multipart/form-data">
-                <input name="nameMaterial" class="CrudInput" placeholder="Название материала" />
-                <label class="CrudLabel">Выберите файл материала</label>
+            <form asp-antiforgery="true" asp-action="TeacherWindowTest" asp-controller="Test" method="post">
+                <input name="nameTest" class="CrudInput" placeholder="Название теста" />
 
-                <input name="file" type="file" class="CrudInput" placeholder="Выберите файл материала" />
-                <label class="CrudLabel">Выберите фото материала</label>
-
-                <input name="filePhoto" type="file" class="CrudInput" placeholder="Выберите фото материала" />
-
-                <select required id="typeMaterial" name="typeMaterial" class="CrudSelect" placeholder="Тип материала">
-                    <option selected disabled>Тип материала</option>
-                    @foreach (var typeMaterial in Model.TypeMaterials)
+                <select required id="parameterTest" name="parameterTest" class="CrudSelect" placeholder="Параметр тестирования">
+                    <option selected disabled>Параметр тестирования</option>
+                    @foreach (var test in Model.TestParameters)
                     {
-                        <option value="@typeMaterial.IdTypeMaterial">@typeMaterial.NameTypeMaterial</option>
+                        <option value="@test.IdTestParameter">@test.NameParameter - @test.ValueParameter</option>
                     }
                 </select>
-                <select required id="disciplineMaterial" name="disciplineMaterial" class="CrudSelect" placeholder="Дисциплина">
+                <select required id="disciplineTest" name="disciplineTest" class="CrudSelect" placeholder="Дисциплина">
                     <option selected disabled>Дисциплина</option>
                     @foreach (var discipline in Model.DisciplineEmployees)
                     {
@@ -63,14 +60,23 @@
                         <option value="@disciplinesID">@disciplinesName</option>
                     }
                 </select>
+                <div class="divForm">
+                    <input name="deadlineCheck" type="checkbox" id="deadlineCheck" value="true"  class="CrudInput" placeholder="Без срока сдачи" />
+                    <label for="deadlineCheck">Без срока сдачи</label>
 
-                <input type="submit" class="newInput" value="Создать материал"/>
+                </div>
+
+
+                <input name="deadlineDate" type="date" id="deadlineDate" class="CrudInput" placeholder="Срок сдачи" />
+
+
+                <input type="submit" class="newInput" value="Создать тест" />
             </form>
         </div>
+
         
 
 
-        
 
     </main>
 

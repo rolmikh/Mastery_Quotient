@@ -10,5 +10,7 @@ namespace Mastery_Quotient.Models
         public string? NameQuestion { get; set; } 
         public int? TypeQuestionId { get; set; }
 
+        public int? NumberQuestion { get; set; }
+
     }
 }
