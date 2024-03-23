@@ -14,5 +14,8 @@ namespace Mastery_Quotient.Models
         public int? EmployeeId { get; set; }
         public int? TestParameterId { get; set; }
 
+        public int? IsDeleted { get; set; }
+        public int? Active { get; set; }
+
     }
 }

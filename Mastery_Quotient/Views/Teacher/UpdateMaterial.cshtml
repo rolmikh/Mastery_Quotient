@@ -1,0 +1,60 @@
+﻿@model Mastery_Quotient.Models.MaterialsViewTeacher
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/mainStyle.css">
+    <link rel="stylesheet" href="@Url.Content("~/css/crudStyle.css")">
+    <link href="https://fonts.googleapis.com/css?family=Mulish:200,300,regular,500,600,700,800,900,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic"
+          rel="stylesheet" />
+    <title>Изменение материала</title>
+</head>
+
+<body>
+    <main>
+        <div class="form_new">
+            <form asp-antiforgery="true" asp-action="UpdateMaterial" asp-controller="teacher" enctype="multipart/form-data">
+                 @foreach (var material in Model.Materials)
+                {
+                    <input name="IdMaterial" class="CrudInput" hidden readonly placeholder="Код материала" value="@material.IdMaterial" />
+                    <input name="nameMaterial" class="CrudInput" placeholder="Название материала" value="@material.NameMaterial" />
+                    <label class="CrudLabel">Выберите файл материала</label>
+
+                    <input name="file" type="file" class="CrudInput" placeholder="Выберите файл материала" value="@material.FileMaterial" />
+                    <label class="CrudLabel">Выберите фото материала</label>
+
+                    <input name="filePhoto" type="file" class="CrudInput" placeholder="Выберите фото материала" value="@material.PhotoMaterial" />
+
+                    <select required id="typeMaterial" name="typeMaterial" class="CrudSelect" placeholder="Тип материала">
+                        <option selected disabled>Тип материала</option>
+                        @foreach (var typeMaterial in Model.TypeMaterials)
+                        {
+                            <option value="@typeMaterial.IdTypeMaterial">@typeMaterial.NameTypeMaterial</option>
+                        }
+                    </select>
+                    <select required id="disciplineMaterial" name="disciplineMaterial" class="CrudSelect" placeholder="Дисциплина">
+                        <option selected disabled>Дисциплина</option>
+                        @foreach (var discipline in Model.DisciplineEmployees)
+                        {
+                            var disciplinesID = Model.Disciplines.Find(n => n.IdDiscipline == discipline.DisciplineId).IdDiscipline;
+                            var disciplinesName = Model.Disciplines.Find(n => n.IdDiscipline == discipline.DisciplineId).NameDiscipline;
+
+                            <option value="@disciplinesID">@disciplinesName</option>
+                        }
+                    </select>
+
+                    <input type="submit" class="newInput" value="Изменить материал" />
+                }
+
+            </form>
+        </div>
+
+    </main>
+
+
+
+</body>
+
+</html>

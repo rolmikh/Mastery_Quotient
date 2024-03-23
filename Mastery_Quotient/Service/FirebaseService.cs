@@ -1,30 +1,61 @@
 ﻿using Firebase.Storage;
+using System.Net.Sockets;
 
 namespace Mastery_Quotient.Service
 {
     public class FirebaseService
     {
+        private static string Bucket = "mastquo.appspot.com";
 
-        private readonly FirebaseStorage _storage;
 
-        public FirebaseService(string firebaseApiKey)
+        public async Task<string> Upload(Stream stream, string fileName)
         {
-            _storage = new FirebaseStorage("", new FirebaseStorageOptions
-            {
-                AuthTokenAsyncFactory = () => Task.FromResult(firebaseApiKey)
-            });
+            var cancellation = new CancellationTokenSource();
+
+            var firebaseStorage = new FirebaseStorage(Bucket);
+            string path = "photoProfile / " + fileName;
+            var uploadTask = firebaseStorage.Child(path).PutAsync(stream, cancellation.Token);
+            var fileUrl = await uploadTask;
+
+            return fileUrl;
         }
 
-        //public async Task<byte[]> DownloadFileAsync(string fileUrl)
-        //{
-        //    using (var stream = await _storage.Child(fileUrl).GetDownloadUrlAsync())
-        //    {
-        //        using (var memoryStream = new MemoryStream())
-        //        {
-        //            await stream.CopyToAsync(memoryStream);
-        //            return memoryStream.ToArray();
-        //        }
-        //    }
-        //}
+
+        public async Task<string> UploadPhoto(Stream stream, string fileName)
+        {
+            var cancellation = new CancellationTokenSource();
+
+            var firebaseStorage = new FirebaseStorage(Bucket);
+            string path = "photoProfile / " + fileName;
+            var uploadTask = firebaseStorage.Child(path).PutAsync(stream, cancellation.Token);
+            var fileUrl = await uploadTask;
+
+            return fileUrl;
+        }
+
+
+        public async Task<string> UploadMaterial(Stream stream, string fileName)
+        {
+            var cancellation = new CancellationTokenSource();
+
+            var firebaseStorage = new FirebaseStorage(Bucket);
+            string path = "material/" + fileName;
+            var uploadTask = firebaseStorage.Child(path).PutAsync(stream, cancellation.Token);
+            var fileUrl = await uploadTask;
+
+            return fileUrl;
+        }
+
+        public async Task<string> UploadPhotoMaterial(Stream stream, string fileName)
+        {
+            var cancellation = new CancellationTokenSource();
+
+            var firebaseStorage = new FirebaseStorage(Bucket);
+            string path = "photoMaterial/" + fileName;
+            var uploadTask = firebaseStorage.Child(path).PutAsync(stream, cancellation.Token);
+            var fileUrl = await uploadTask;
+
+            return fileUrl;
+        }
     }
 }

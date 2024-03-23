@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Text;
+using Mastery_Quotient.Service;
 
 namespace Mastery_Quotient.Controllers
 {
@@ -13,7 +14,7 @@ namespace Mastery_Quotient.Controllers
 
         private readonly IConfiguration configuration;
 
-        private static string Bucket = "mastquo.appspot.com";
+        FirebaseService firebaseService = new FirebaseService();
 
         public TeacherController(IConfiguration configuration, ILogger<AdminController> logger)
         {
@@ -100,10 +101,10 @@ namespace Mastery_Quotient.Controllers
 
 
                 string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-                string fileUrl = await Upload(file.OpenReadStream(), fileName);
+                string fileUrl = await firebaseService.UploadMaterial(file.OpenReadStream(), fileName);
 
                 string fileNamePhoto = Guid.NewGuid().ToString() + Path.GetExtension(filePhoto.FileName);
-                string fileUrlPhoto = await Upload(filePhoto.OpenReadStream(), fileNamePhoto);
+                string fileUrlPhoto = await firebaseService.UploadPhotoMaterial(filePhoto.OpenReadStream(), fileNamePhoto);
 
 
 
@@ -128,9 +129,9 @@ namespace Mastery_Quotient.Controllers
 
                 using (var httpClient = new HttpClient())
                 {
-                    var responseStudent = await httpClient.PostAsync(apiUrl + "Materials", content);
+                    var response = await httpClient.PostAsync(apiUrl + "Materials", content);
 
-                    if (responseStudent.IsSuccessStatusCode)
+                    if (response.IsSuccessStatusCode)
                     {
                         return RedirectToAction("MaterialsTeacher", "Teacher");
                     }
@@ -149,36 +150,16 @@ namespace Mastery_Quotient.Controllers
 
         
 
-        public async Task<string> Upload(Stream stream, string fileName)
-        {
-            var cancellation = new CancellationTokenSource();
-
-            var firebaseStorage = new FirebaseStorage(Bucket);
-            string path = "material/" + fileName;
-            var uploadTask = firebaseStorage.Child(path).PutAsync(stream, cancellation.Token);
-            var fileUrl = await uploadTask;
-
-            return fileUrl;
-        }
-
-        public async Task<string> UploadPhotoMaterial(Stream stream, string fileName)
-        {
-            var cancellation = new CancellationTokenSource();
-
-            var firebaseStorage = new FirebaseStorage(Bucket);
-            string path = "photoMaterial/" + fileName;
-            var uploadTask = firebaseStorage.Child(path).PutAsync(stream, cancellation.Token);
-            var fileUrl = await uploadTask;
-
-            return fileUrl;
-        }
+        
 
         [HttpGet]
         public async Task<IActionResult> PersonalAccountTeacher()
         {
             try
             {
+                
                 int id = int.Parse(TempData["AuthUser"].ToString());
+                
 
                 TempData.Keep("AuthUser");
 
@@ -207,7 +188,7 @@ namespace Mastery_Quotient.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest("Ошибка авторизации!");
             }
         }
 
@@ -287,7 +268,7 @@ namespace Mastery_Quotient.Controllers
 
                     var employee = JsonConvert.DeserializeObject<Employee>(employeeData);
 
-                    employee.PhotoEmployee = await UploadPhoto(photo.OpenReadStream(), fileName);
+                    employee.PhotoEmployee = await firebaseService.UploadPhoto(photo.OpenReadStream(), fileName);
 
                     string json = JsonConvert.SerializeObject(employee);
 
@@ -310,17 +291,7 @@ namespace Mastery_Quotient.Controllers
             }
         }
 
-        public async Task<string> UploadPhoto(Stream stream, string fileName)
-        {
-            var cancellation = new CancellationTokenSource();
-
-            var firebaseStorage = new FirebaseStorage(Bucket);
-            string path = "photoProfile / " + fileName;
-            var uploadTask = firebaseStorage.Child(path).PutAsync(stream, cancellation.Token);
-            var fileUrl = await uploadTask;
-
-            return fileUrl;
-        }
+        
 
         public async Task<IActionResult> Logout()
         {
@@ -397,12 +368,132 @@ namespace Mastery_Quotient.Controllers
 
         }
 
+        [HttpPost]
+        public async Task<IActionResult> MaterialsTeacher(string Search)
+        {
+
+            if (Search != null)
+            {
+                var apiUrl = configuration["AppSettings:ApiUrl"];
+                List<Material> materials = new List<Material>();
+
+                StringContent content = new StringContent(JsonConvert.SerializeObject(Search), Encoding.UTF8, "application/json");
+
+                using (var httpClient = new HttpClient())
+                {
+                    var response = await httpClient.GetAsync(apiUrl + "Employees/Search?search=" + Search);
+
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    employees = JsonConvert.DeserializeObject<List<Employee>>(apiResponse);
+
+                    TempData["Search"] = JsonConvert.SerializeObject(employees);
+
+                    return RedirectToAction("AdminWindowTeacher", "Admin");
+                }
+            }
+            else
+            {
+                return RedirectToAction("AdminWindowTeacher", "Admin");
+            }
+
+        }
+
+
         public IActionResult FileMaterial(string nameFile)
         {
 
             ViewBag.NameFile = nameFile;
             return View();
 
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> UpdateMaterial(int id)
+        {
+            try
+            {
+
+                int idUser = int.Parse(TempData["AuthUser"].ToString());
+
+                TempData.Keep("AuthUser");
+
+                var apiUrl = configuration["AppSettings:ApiUrl"];
+
+                Employee employee = new Employee();
+                List<Discipline> disciplines = new List<Discipline>();
+                List<DisciplineEmployee> disciplineEmployees = new List<DisciplineEmployee>();
+                List<TypeMaterial> typeMaterials = new List<TypeMaterial>();
+                Material materials = null;
+
+                using (var httpClient = new HttpClient())
+                {
+                    using (var response = await httpClient.GetAsync(apiUrl + "Employees/" + idUser))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        employee = JsonConvert.DeserializeObject<Employee>(apiResponse);
+                    }
+
+                    using (var response = await httpClient.GetAsync(apiUrl + "Disciplines"))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        disciplines = JsonConvert.DeserializeObject<List<Discipline>>(apiResponse);
+                    }
+
+                    using (var response = await httpClient.GetAsync(apiUrl + "DisciplineEmployee"))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        disciplineEmployees = JsonConvert.DeserializeObject<List<DisciplineEmployee>>(apiResponse);
+                    }
+
+                    using (var response = await httpClient.GetAsync(apiUrl + "TypeMaterials"))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        typeMaterials = JsonConvert.DeserializeObject<List<TypeMaterial>>(apiResponse);
+                    }
+
+                    using (var response = await httpClient.GetAsync(apiUrl + "Materials/" + id))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        materials = JsonConvert.DeserializeObject<Material>(apiResponse);
+                    }
+                }
+
+                List<DisciplineEmployee> discipline = disciplineEmployees.Where(n => n.EmployeeId == employee.IdEmployee).ToList();
+                MaterialsViewTeacher material = new MaterialsViewTeacher(employee, disciplines, discipline, typeMaterials,new List<Material> { materials });
+                return View(material);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateMaterial()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteMaterial(int IdMaterial)
+        {
+            try
+            {
+                var apiUrl = configuration["AppSettings:ApiUrl"];
+                using (var httpClient = new HttpClient())
+                {
+                    using (var response = await httpClient.DeleteAsync(apiUrl + "Materials/" + IdMaterial))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                    }
+                }
+
+                return RedirectToAction("MaterialsTeacher", "Teacher");
+            }
+            catch
+            {
+                return BadRequest("Ошибка удаления данных!");
+            }
         }
     }
 }

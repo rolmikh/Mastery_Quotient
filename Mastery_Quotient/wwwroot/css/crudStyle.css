@@ -153,6 +153,7 @@
 
     .containerForm form {
         display: flex;
+        flex:1;
         width: 100%;
     }
 
@@ -188,10 +189,11 @@
         text-decoration: none;
         color: white
     }
+
+
 .containerFormButton {
     height: 100px;
     display: flex;
-    align-items: center;
     width: 100%;
 }
 

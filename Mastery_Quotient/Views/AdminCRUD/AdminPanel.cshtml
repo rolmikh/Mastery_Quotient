@@ -1,27 +1,26 @@
-﻿@model Mastery_Quotient.Models.MaterialModelView
+﻿@model Mastery_Quotient.Models.StudentModelView
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/mainStyle.css">
     <link rel="stylesheet" href="../css/navigationStyle.css">
-    <link rel="stylesheet" href="../css/materialStyle.css">
-
+    <link rel="stylesheet" href="../css/mainStyle.css">
+    <link rel="stylesheet" href="../css/crudStyle.css">
+    <link rel="stylesheet" href="../css/ModalWindowStyle.css">
     <link href="https://fonts.googleapis.com/css?family=Mulish:200,300,regular,500,600,700,800,900,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic"
           rel="stylesheet" />
-
-    <title>Материалы</title>
+    <title>Студенты</title>
     <div class="container">
         <a asp-action="main" asp-controller="admin">
             <img class="navigation_img" src="../images/3QpbYI-LogoMakr.png">
         </a>
 
         <ul class="navigation_ul">
-            <li class="navigation_li"><a class="navigation_a" asp-action="News">Новости</a></li>
-            <li class="navigation_li"><a class="navigation_a" asp-action="MaterialsAdmin">Материалы</a></li>
-            <li class="navigation_li"><a class="navigation_a" asp-action="Course">Тесты</a></li>
+            <li class="navigation_li"><a class="navigation_a" asp-action="News" asp-controller="admin">Новости</a></li>
+            <li class="navigation_li"><a class="navigation_a" asp-action="MaterialsAdmin" asp-controller="admin">Материалы</a></li>
+            <li class="navigation_li"><a class="navigation_a" asp-action="Course" asp-controller="admin">Тесты</a></li>
             <li class="navigation_li"><a class="navigation_a" asp-action="PanelAdmin" asp-controller="AdminCRUD">Панель администратора</a></li>
         </ul>
         <ul class="navigation_ul_right">
@@ -34,30 +33,29 @@
             Личный кабинет
         </button>
     </div>
+
 </head>
 
 <body>
-    <main>
-        <div class="formsContainer">
-            @foreach (var item in Model.Materials)
-            {
-                <div class="formMaterial">
-                    <form asp-action="FileMaterial" asp-antiforgery="true" asp-controller="admin">
+   <main>
 
-                        <input type="image" class="imageMaterial" width="187" height="177" src="@item.PhotoMaterial" />
-                        <label class="nameMaterial">@item.NameMaterial</label>
-                        <input value="Подробнее" class="buttonMaterial" type="submit" />
-
-                        <input hidden value="@item.FileMaterial" name="nameFile" />
-                    </form>
-                </div>
-
-            }
+        <div class="containerForm">
+            <button class="newInput" onclick="window.location.href='@Url.Action("StudyGroupAdminPanel", "AdminCRUD")'">
+                Учебная группа
+            </button>
+            <button class="newInput" onclick="window.location.href='@Url.Action("DisciplineAdminPanel", "AdminCRUD")'">
+                Дисциплина
+            </button>
+            <button class="newInput" onclick="window.location.href='@Url.Action("TypeMaterialAdminPanel", "AdminCRUD")'">
+                Тип материала
+            </button>
+            <button class="newInput" onclick="window.location.href='@Url.Action("RoleAdminPanel", "AdminCRUD")'">
+                Роль
+            </button>
         </div>
-        
 
     </main>
-
 </body>
 
 </html>
+

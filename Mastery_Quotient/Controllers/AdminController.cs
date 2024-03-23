@@ -9,6 +9,7 @@ using System.Text;
 using Mastery_Quotient.Class;
 using Firebase.Storage;
 using System.Net.Sockets;
+using Mastery_Quotient.Service;
 
 namespace Mastery_Quotient.Controllers
 {
@@ -18,7 +19,9 @@ namespace Mastery_Quotient.Controllers
 
         //private GoogleDriveService googleDriveService;
 
-        private static string Bucket = "mastquo.appspot.com";
+        FirebaseService firebaseService = new FirebaseService();
+
+        FileService fileService = new FileService();
 
         public AdminController(IConfiguration configuration, ILogger<AdminController> logger)
         {
@@ -478,7 +481,7 @@ namespace Mastery_Quotient.Controllers
 
                     var employee = JsonConvert.DeserializeObject<Employee>(employeeData);
 
-                    employee.PhotoEmployee = await Upload(photo.OpenReadStream(), fileName);
+                    employee.PhotoEmployee = await firebaseService.Upload(photo.OpenReadStream(), fileName);
 
                     string json = JsonConvert.SerializeObject(employee);
 
@@ -501,17 +504,7 @@ namespace Mastery_Quotient.Controllers
             }
         }
 
-        public async Task<string> Upload(Stream stream, string fileName)
-        {
-            var cancellation = new CancellationTokenSource();
-
-            var firebaseStorage = new FirebaseStorage(Bucket);
-            string path = "photoProfile / " + fileName;
-            var uploadTask = firebaseStorage.Child(path).PutAsync(stream, cancellation.Token);
-            var fileUrl = await uploadTask;
-
-            return fileUrl;
-        }
+        
 
 
         public async Task<IActionResult> Logout()
@@ -792,7 +785,10 @@ namespace Mastery_Quotient.Controllers
         public IActionResult FileMaterial(string nameFile)
         {
             
+
            ViewBag.NameFile = nameFile;
+
+
             return View();
 
         }
