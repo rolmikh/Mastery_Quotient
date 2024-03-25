@@ -1,4 +1,5 @@
 ﻿using Mastery_Quotient.Models;
+using Mastery_Quotient.Service;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Text;
@@ -100,7 +101,7 @@ namespace Mastery_Quotient.Controllers
                 test.EmployeeId = id;
                 test.TestParameterId = parameterTest;
                 test.IsDeleted = 0;
-                test.Active = 0;
+                test.Active = 1;
                
 
 
@@ -187,7 +188,6 @@ namespace Mastery_Quotient.Controllers
             }
         }
 
-        
         public async Task<IActionResult> QuestionTest(int testId)
         {
 
@@ -294,6 +294,69 @@ namespace Mastery_Quotient.Controllers
                 return BadRequest();
             }
            
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> TestPublication()
+        {
+            try
+            {
+                int testID = int.Parse(TempData["testID"].ToString());
+                TempData.Keep("testID");
+                var apiUrl = configuration["AppSettings:ApiUrl"];
+
+                using (var httpClient = new HttpClient())
+                {
+                    var response = await httpClient.GetAsync(apiUrl + "Tests/" + testID);
+                    response.EnsureSuccessStatusCode();
+                    var TestData = await response.Content.ReadAsStringAsync();
+
+                    var test = JsonConvert.DeserializeObject<Test>(TestData);
+
+                    test.Active = 0;
+                    test.IsDeleted = 0;
+
+                    string json = JsonConvert.SerializeObject(test);
+
+                    var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                    response = await httpClient.PutAsync(apiUrl + "Tests/" + testID, content);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return RedirectToAction("TestTeacher", "Test");
+                    }
+                    else
+                    {
+                        return BadRequest();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteTest(int IdTest)
+        {
+            try
+            {
+                var apiUrl = configuration["AppSettings:ApiUrl"];
+                using (var httpClient = new HttpClient())
+                {
+                    using (var response = await httpClient.DeleteAsync(apiUrl + "Tests/" + IdTest))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                    }
+                }
+
+                return RedirectToAction("TestTeacher", "Test");
+            }
+            catch
+            {
+                return BadRequest("Ошибка удаления данных!");
+            }
         }
 
         [HttpPost]

@@ -820,6 +820,67 @@ namespace Mastery_Quotient.Controllers
         //    }
 
         //}
+
+
+        [HttpGet]
+        public async Task<IActionResult> AdminTestView()
+        {
+            try
+            {
+                int id = int.Parse(TempData["AuthUser"].ToString());
+
+                TempData.Keep("AuthUser");
+
+                var apiUrl = configuration["AppSettings:ApiUrl"];
+
+                Employee employee = new Employee();
+                List<Discipline> disciplines = new List<Discipline>();
+                List<DisciplineEmployee> disciplineEmployees = new List<DisciplineEmployee>();
+                List<TestParameter> testParameters = new List<TestParameter>();
+                List<Test> tests = new List<Test>();
+
+                using (var httpClient = new HttpClient())
+                {
+                    using (var response = await httpClient.GetAsync(apiUrl + "Employees/" + id))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        employee = JsonConvert.DeserializeObject<Employee>(apiResponse);
+                    }
+
+                    using (var response = await httpClient.GetAsync(apiUrl + "Disciplines"))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        disciplines = JsonConvert.DeserializeObject<List<Discipline>>(apiResponse);
+                    }
+
+                    using (var response = await httpClient.GetAsync(apiUrl + "DisciplineEmployee"))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        disciplineEmployees = JsonConvert.DeserializeObject<List<DisciplineEmployee>>(apiResponse);
+                    }
+
+                    using (var response = await httpClient.GetAsync(apiUrl + "TestParameters"))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        testParameters = JsonConvert.DeserializeObject<List<TestParameter>>(apiResponse);
+                    }
+
+                    using (var response = await httpClient.GetAsync(apiUrl + "Tests/Active"))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        tests = JsonConvert.DeserializeObject<List<Test>>(apiResponse);
+                    }
+                }
+                List<Test> testList = tests.Where(n => n.EmployeeId == employee.IdEmployee).ToList();
+                List<DisciplineEmployee> discipline = disciplineEmployees.Where(n => n.EmployeeId == employee.IdEmployee).ToList();
+                TestViewTeacher testViewTeacher = new TestViewTeacher(employee, disciplines, discipline, testParameters, testList);
+                return View(testViewTeacher);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest();
+            }
+        }
     }
 
 

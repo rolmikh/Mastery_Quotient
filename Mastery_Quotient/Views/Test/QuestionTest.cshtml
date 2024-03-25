@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css">
 
 
-    <script src="~/js/site.js"></script>
+    <script src="~/js/QuestionScript.js"></script>
 
 
     <link href="https://fonts.googleapis.com/css?family=Mulish:200,300,regular,500,600,700,800,900,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic"
@@ -45,6 +45,16 @@
 <body>
     <main>
         <div class="h2form">
+
+            <h3>Название теста</h3>
+            <h3>Дата создания теста</h3>
+            @* <h3>@Model.Discipline.Find(n => n.IdDiscipline == @Model.disciplineEmployees).NameDiscipline</h3> *@
+            <h3>Преподаватель</h3>
+            <h3>Параметры теста</h3>
+            <h3>Срок сдачи</h3>
+
+        </div>
+        <div class="h2form">
             
             <h3>@Model.Test.NameTest</h3>
             <h3>@Model.Test.DateCreatedTest</h3>
@@ -64,7 +74,7 @@
                         <input name="numberQuestion" class="CrudInput" type="number" placeholder="Номер вопроса" />
                         <input name="nameQuestion" class="CrudInput" placeholder="Название вопроса" />
 
-                        <input name="typeQuestion" class="CrudInput" readonly value="Письменный вопрос" placeholder="Тип вопроса" />
+                        <input name="typeQuestion" class="CrudInput" hidden readonly value="Письменный вопрос" placeholder="Тип вопроса" />
 
 
 
@@ -78,7 +88,7 @@
                         <input name="numberQuestion" class="CrudInput" type="number" placeholder="Номер вопроса" />
                         <input name="nameQuestion" class="CrudInput" placeholder="Название вопроса" />
 
-                        <input name="typeQuestion" class="CrudInput" readonly value="Вопрос с одним вариантом ответа" placeholder="Тип вопроса" />
+                        <input name="typeQuestion" class="CrudInput" hidden readonly value="Вопрос с одним вариантом ответа" placeholder="Тип вопроса" />
 
                         <div id="answerOptionsRadio" class="formInput">
                         </div>
@@ -97,7 +107,7 @@
                         <input name="numberQuestion" class="CrudInput" type="number" placeholder="Номер вопроса" />
                         <input name="nameQuestion" class="CrudInput" placeholder="Название вопроса" />
 
-                        <input name="typeQuestion" class="CrudInput" readonly value="Вопрос с несколькими вариантами ответа" placeholder="Тип вопроса" />
+                        <input name="typeQuestion" class="CrudInput" hidden readonly value="Вопрос с несколькими вариантами ответа" placeholder="Тип вопроса" />
 
                         <div id="answerOptionsCheck" class="formInput">
                         </div>
@@ -119,39 +129,60 @@
 
             var questionID = Model.Question.Find(n => n.IdQuestion == question.QuestionId).IdQuestion;
 
-            <div>
-                <div>
-                    @questionNumber - @questionName
+            <div class="formAnswer">
+                <div class="flexDiv">
+                    <div class="number">
+                        @questionNumber
+                    </div>
+                    <div class="name">
+                        @questionName
+                    </div>
+
                 </div>
+                
+                
                 @if (questionTypeID == 1)
                 {
-                    <textarea name="AnswerOptionViewModels[@questionID].AnswerOption"></textarea>
+                    <textarea class="textareaForm" name="AnswerOptionViewModels[@questionID].AnswerOption" placeholder="Введите ответ"></textarea>
                 }
                 @if (questionTypeID == 2)
                 {
-                    foreach (var answer in Model.QuestionAnswerOption.Where(n => n.QuestionId == questionID))
-                    {
-                        var answerContent = Model.AnswerOption.Find(n => n.IdAnswerOptions == answer.AnswerOptionsId).ContentAnswer;
+                    <div class="AnswerForm">
+                        @foreach (var answer in Model.QuestionAnswerOption.Where(n => n.QuestionId == questionID))
+                        {
+                            var answerContent = Model.AnswerOption.Find(n => n.IdAnswerOptions == answer.AnswerOptionsId).ContentAnswer;
 
-                        <div>
-                            @answerContent
-                            <input type="radio" name="AnswerOptionViewModels[@questionID].SelectedAnswer" value="@answer.AnswerOptionsId" />
-                        </div>
-                    }
+                            <div class="Answer">
+                                <input type="radio" name="AnswerOptionViewModels[@questionID].SelectedAnswer" value="@answer.AnswerOptionsId" />
+                                @answerContent
+                            </div>
+                        }
+                    </div>
+                    
                 }
                 @if (questionTypeID == 3)
                 {
-                    foreach (var answer in Model.QuestionAnswerOption.Where(n => n.QuestionId == questionID))
-                    {
-                        var answerContent = Model.AnswerOption.Find(n => n.IdAnswerOptions == answer.AnswerOptionsId).ContentAnswer;
+                    <div class="AnswerForm">
+                        @foreach (var answer in Model.QuestionAnswerOption.Where(n => n.QuestionId == questionID))
+                        {
+                            var answerContent = Model.AnswerOption.Find(n => n.IdAnswerOptions == answer.AnswerOptionsId).ContentAnswer;
 
-                        <div>
-                            @answerContent
-                            <input type="checkbox" name="AnswerOptionViewModels[@questionID].SelectedAnswer" value="@answer.AnswerOptionsId" />
-                        </div>
-                    }
+                            <div class="Answer">
+                                <input type="checkbox" name="AnswerOptionViewModels[@questionID].SelectedAnswer" value="@answer.AnswerOptionsId" />
+                                @answerContent
+                            </div>
+                        }
+                    </div>
+                    
                 }
             </div>
+        }
+        @if (@Model.Test.Active == 1)
+        {
+            <form asp-antiforgery="true" asp-action="TestPublication" asp-controller="Test" method="post">
+                <input type="submit" class="newInput" value="Опубликовать тестирование" />
+
+            </form>
         }
 
 

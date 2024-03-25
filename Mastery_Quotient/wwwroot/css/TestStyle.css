@@ -16,8 +16,7 @@
     }
 
 
-.formTest {
-    display: flex;
+/*.formTest {
     text-align: center;
     width: 390px;
     height: 360px;
@@ -26,23 +25,43 @@
     border-radius: 10px;
     box-shadow: 0 0 0 3px #737373;
     margin: 30px;
+}*/
+
+.divTestForm {
+    flex:1;
+    text-align: center;
+    width: 390px;
+    height: 300px;
+    max-height: 300px;
+    max-width: 390px;
+    border-radius: 10px;
+    box-shadow: 0 0 0 3px #737373;
+    margin: 30px;
+    padding-top:50px;
 }
 
-    .formTest form {
-        flex: 1;
+    .divTestForm form {
+        display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
         width: 100%;
     }
 
+   
+
+.formsContainer {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
 
 .buttonTest {
     text-decoration: none;
     display: inline-block;
-    width: 177px;
+    width: 80%;
     height: 40px;
-    margin-top: 15px;
+    margin-top: 80px;
     margin-bottom: 15px;
     border-radius: 5px;
     text-align: center;
@@ -52,13 +71,18 @@
     letter-spacing: 0.2px;
     color: white;
     transition: .15s ease-in-out;
-    font-size: 16px;
-    vertical-align: middle;
+    font-size: 18px;
+    vertical-align: bottom;
 }
 
     .buttonTest:hover {
         background-color: #3b71d3;
     }
+
+.labelTest {
+    font-size: 30px;
+    margin-top: 20px;
+}
 
 .slider {
     width: 80%;
@@ -128,6 +152,81 @@
         text-decoration: none;
         color: white
     }
+
+
+.formAnswer {
+    text-align: left;
+    margin-left:20px;
+
+    
+}
+.number {
+    font-size: 20px;
+    font-weight: bold;
+    width: 40px;
+    height: 40px;
+    max-height: 40px;
+    max-width: 40px;
+    border-radius: 10px;
+    box-shadow: 0 0 0 0.7px #737373;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.name {
+    font-size: 20px;
+    font-weight: bold;
+    width: 100%;
+    height: 40px;
+    max-height: 40px;
+    border-radius: 10px;
+    box-shadow: 0 0 0 0.7px #737373;
+    margin-left: 20px;
+    margin-bottom: 20px;
+    margin-right:40px;
+    padding: 0 15px;
+    
+}
+
+.AnswerForm {
+    border-radius: 10px;
+    box-shadow: 0 0 0 0.3px #737373;
+    margin-bottom: 20px;
+    padding: 20px;
+}
+.Answer {
+    font-size: 18px;
+    margin: 20px;
+    margin-right: 40px;
+    text-align: justify;
+    line-height: 1.5;
+}
+
+    .Answer input {
+        margin-right: 15px;
+    }
+
+.flexDiv {
+    display: flex;
+}
+
+.flexDiv div{
+    flex:1;
+}
+
+.textareaForm {
+    font-size: 20px;
+    height: 140px;
+    width: 95%;
+    resize: none;
+    margin: 20px;
+}
+
+
+.slick-dots li button {
+    font-size: 20px; /* Установите размер точек */
+    width: 20px; /* Установите ширину точек */
+    height: 20px; /* Установите высоту точек */
 
 
 
