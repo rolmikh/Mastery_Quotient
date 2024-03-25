@@ -10,6 +10,6 @@ namespace Mastery_Quotient.Models
         public int? IdAnswerOptions { get; set; }
         public int? NumberAnswer { get; set; }
         public string? ContentAnswer { get; set; }
-        public bool? CorrectnessAnswer { get; set; }
+        public int? CorrectnessAnswer { get; set; }
     }
 }

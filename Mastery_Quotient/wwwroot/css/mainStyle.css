@@ -29,7 +29,8 @@ footer {
 input[type="submit"],
 a,
 button,
-select, img, input[type="image"], input[type="file"] {
+select, img, input[type="image"], input[type="file"],
+input[type="radio"], input[type="checkbox"] {
     cursor: pointer;
 }
 

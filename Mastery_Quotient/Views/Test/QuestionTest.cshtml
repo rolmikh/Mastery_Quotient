@@ -1,4 +1,4 @@
-﻿@* @model Mastery_Quotient.Models.TestTeacher *@
+﻿@model Mastery_Quotient.Models.ViewTestModel
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,10 +25,10 @@
         </a>
 
         <ul class="navigation_ul">
-            <li class="navigation_li"><a class="navigation_a" asp-action="News">Новости</a></li>
-            <li class="navigation_li"><a class="navigation_a" asp-action="MaterialsTeacher">Материалы</a></li>
+            <li class="navigation_li"><a class="navigation_a" asp-action="News" asp-controller="Teacher">Новости</a></li>
+            <li class="navigation_li"><a class="navigation_a" asp-action="MaterialsTeacher" asp-controller="Teacher">Материалы</a></li>
             <li class="navigation_li"><a class="navigation_a" asp-action="TestTeacher" asp-controller="Test">Тесты</a></li>
-            <li class="navigation_li"><a class="navigation_a" asp-action="Rating">Рейтинг</a></li>
+            <li class="navigation_li"><a class="navigation_a" asp-action="Rating" asp-controller="Teacher">Рейтинг</a></li>
         </ul>
         <ul class="navigation_ul_right">
             <li class="navigation_li_right" style="float: right">
@@ -44,75 +44,117 @@
 </head>
 <body>
     <main>
-        <div >
-            <h2>Название теста</h2>
-            <h2>Дата создания</h2>
-            <h2>Дисциплина</h2>
-            <h2>Преподаватель</h2>
-            <h2>Параметр тестирования</h2>
-            <h2>Срок сдачи</h2>
+        <div class="h2form">
+            
+            <h3>@Model.Test.NameTest</h3>
+            <h3>@Model.Test.DateCreatedTest</h3>
+            @* <h3>@Model.Discipline.Find(n => n.IdDiscipline == @Model.disciplineEmployees).NameDiscipline</h3> *@
+            <h3>@Model.Employee.SurnameEmployee @Model.Employee.NameEmployee @Model.Employee.MiddleNameEmployee</h3>
+            <h3>@Model.Parameters.Find(n => n.IdTestParameter == @Model.Test.TestParameterId).NameParameter: @Model.Parameters.Find(n => n.IdTestParameter == @Model.Test.TestParameterId).ValueParameter</h3>
+            <h3>@Model.Test.Deadline</h3>
 
         </div>
-        <div class ="slider">
-            <div>
-                <h2>Добавление вопроса</h2>
-                <form asp-antiforgery="true" asp-action="TeacherWindowTest" asp-controller="Test" method="post">
-                    <h3>Вопрос с письменным вариантом ответа</h3>
-                    <input name="numberQuestion" class="CrudInput" type="number" placeholder="Номер вопроса" />
-                    <input name="nameQuestion" class="CrudInput" placeholder="Название вопроса" />
+        @if (@Model.Test.Active == 1)
+        {
+            <div class="slider">
+                <div class="formSlider">
+                    <h2>Добавление вопроса</h2>
+                    <form asp-antiforgery="true" asp-action="QuestionInput" asp-controller="Test" method="post">
+                        <h3>Вопрос с письменным вариантом ответа</h3>
+                        <input name="numberQuestion" class="CrudInput" type="number" placeholder="Номер вопроса" />
+                        <input name="nameQuestion" class="CrudInput" placeholder="Название вопроса" />
 
-                    <input name="typeQuestion" class="CrudInput" readonly value="Письменный вопрос" placeholder="Тип вопроса" />
+                        <input name="typeQuestion" class="CrudInput" readonly value="Письменный вопрос" placeholder="Тип вопроса" />
 
 
 
-                    <input type="submit" class="newInput" value="Добавить вопрос" />
-                </form>
-            </div>
-            <div>
-                <h2>Добавление вопроса</h2>
-                <form asp-antiforgery="true" asp-action="TeacherWindowTest" asp-controller="Test" method="post">
-                    <h3>Вопрос с одним вариантом ответа</h3>
-                    <input name="numberQuestion" class="CrudInput" type="number" placeholder="Номер вопроса" />
-                    <input name="nameQuestion" class="CrudInput" placeholder="Название вопроса" />
+                        <input type="submit" class="newInput" value="Добавить вопрос" />
+                    </form>
+                </div>
+                <div class="formSlider">
+                    <h2>Добавление вопроса</h2>
+                    <form asp-antiforgery="true" asp-action="QuestionOne" asp-controller="Test" method="post">
+                        <h3>Вопрос с одним вариантом ответа</h3>
+                        <input name="numberQuestion" class="CrudInput" type="number" placeholder="Номер вопроса" />
+                        <input name="nameQuestion" class="CrudInput" placeholder="Название вопроса" />
 
-                    <input name="typeQuestion" class="CrudInput" readonly value="Вопрос с одним вариантом ответа" placeholder="Тип вопроса" />
-                    <label>Правильность</label>
-                    <div id="answerOptionsRadio">
-                        <div class="answer-option">
-                            <input type="text" name="answerOptionRadio[]" />
-                            <input type="radio" name="correctAnswerRadio" />
+                        <input name="typeQuestion" class="CrudInput" readonly value="Вопрос с одним вариантом ответа" placeholder="Тип вопроса" />
+
+                        <div id="answerOptionsRadio" class="formInput">
                         </div>
-                    </div>
-                    <button type="button" id="addAnswerOptionRadio">+</button>
+                        <button type="button" id="addAnswerOptionRadio" class="buttonPlus">+</button>
 
 
-                    <input type="submit" class="newInput" value="Добавить вопрос" />
+                        <input type="submit" class="newInput" value="Добавить вопрос" />
 
-                </form>
+                    </form>
+                </div>
+
+                <div class="formSlider">
+                    <h2>Добавление вопроса</h2>
+                    <form asp-antiforgery="true" asp-action="QuestionTwo" asp-controller="Test" method="post">
+                        <h3>Вопрос с несколькими вариантами ответа</h3>
+                        <input name="numberQuestion" class="CrudInput" type="number" placeholder="Номер вопроса" />
+                        <input name="nameQuestion" class="CrudInput" placeholder="Название вопроса" />
+
+                        <input name="typeQuestion" class="CrudInput" readonly value="Вопрос с несколькими вариантами ответа" placeholder="Тип вопроса" />
+
+                        <div id="answerOptionsCheck" class="formInput">
+                        </div>
+                        <button type="button" id="addAnswerOptionCheck" class="buttonPlus">+</button>
+
+                        <input type="submit" class="newInput" value="Добавить вопрос" />
+                    </form>
+                </div>
             </div>
+        }
+        
+
+
+        @foreach (var question in Model.TestQuestion)
+        {
+            var questionNumber = Model.Question.Find(n => n.IdQuestion == question.QuestionId).NumberQuestion;
+            var questionName = Model.Question.Find(n => n.IdQuestion == question.QuestionId).NameQuestion;
+            var questionTypeID = Model.Question.Find(n => n.IdQuestion == question.QuestionId).TypeQuestionId;
+
+            var questionID = Model.Question.Find(n => n.IdQuestion == question.QuestionId).IdQuestion;
 
             <div>
-                <h2>Добавление вопроса</h2>
-                <form asp-antiforgery="true" asp-action="TeacherWindowTest" asp-controller="Test" method="post">
-                    <h3>Вопрос с несколькими вариантами ответа</h3>
-                    <input name="numberQuestion" class="CrudInput" type="number" placeholder="Номер вопроса" />
-                    <input name="nameQuestion" class="CrudInput" placeholder="Название вопроса" />
+                <div>
+                    @questionNumber - @questionName
+                </div>
+                @if (questionTypeID == 1)
+                {
+                    <textarea name="AnswerOptionViewModels[@questionID].AnswerOption"></textarea>
+                }
+                @if (questionTypeID == 2)
+                {
+                    foreach (var answer in Model.QuestionAnswerOption.Where(n => n.QuestionId == questionID))
+                    {
+                        var answerContent = Model.AnswerOption.Find(n => n.IdAnswerOptions == answer.AnswerOptionsId).ContentAnswer;
 
-                    <input name="typeQuestion" class="CrudInput" readonly value="Вопрос с несколькими вариантами ответа" placeholder="Тип вопроса" />
-                    <label>Правильность</label>
-                    <div id="answerOptionsCheck">
-                        <div class="answer-option">
-                            <input type="text" name="answerOptionCheck[]" />
-                            <input type="checkbox" name="correctAnswerCheck" />
+                        <div>
+                            @answerContent
+                            <input type="radio" name="AnswerOptionViewModels[@questionID].SelectedAnswer" value="@answer.AnswerOptionsId" />
                         </div>
-                    </div>
-                    <button type="button" id="addAnswerOptionCheck">+</button>
+                    }
+                }
+                @if (questionTypeID == 3)
+                {
+                    foreach (var answer in Model.QuestionAnswerOption.Where(n => n.QuestionId == questionID))
+                    {
+                        var answerContent = Model.AnswerOption.Find(n => n.IdAnswerOptions == answer.AnswerOptionsId).ContentAnswer;
 
-                    <input type="submit" class="newInput" value="Добавить вопрос" />
-                </form>
+                        <div>
+                            @answerContent
+                            <input type="checkbox" name="AnswerOptionViewModels[@questionID].SelectedAnswer" value="@answer.AnswerOptionsId" />
+                        </div>
+                    }
+                }
             </div>
-        </div>
-       
+        }
+
+
 
 
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -124,15 +166,16 @@
                     infinite: true, // Бесконечный слайдер
                     slidesToShow: 1, // Отображение одного слайда за раз
                     slidesToScroll: 1, // Прокрутка одного слайда за раз
-                    dots: true // Включение точек для навигации
+                    dots: true, // Включение точек для навигации
+                    pauseOnFocus: true // Пауза при фокусе
                 });
             });
         </script>
-        
         <script>
             document.addEventListener('DOMContentLoaded', function () {
                 const addAnswerOptionButton = document.getElementById('addAnswerOptionRadio');
                 const answerOptionsContainer = document.getElementById('answerOptionsRadio');
+                let answerOptionIndex = 0;  // Начальное значение индекса
 
                 addAnswerOptionButton.addEventListener('click', function () {
                     const answerOptionDiv = document.createElement('div');
@@ -140,25 +183,43 @@
 
                     const answerOptionInput = document.createElement('input');
                     answerOptionInput.type = 'text';
-                    answerOptionInput.name = 'answerOptionRadio[]';
+                    answerOptionInput.name = 'AnswerOptionViewModels[' + answerOptionIndex + '].AnswerOption';
 
                     const correctAnswerInput = document.createElement('input');
-                    correctAnswerInput.type = 'radio';
-                    correctAnswerInput.name = 'correctAnswerRadio';
+                    correctAnswerInput.type = 'hidden';
+                    correctAnswerInput.name = 'AnswerOptionViewModels[' + answerOptionIndex + '].IsCorrectAnswer';
+                    correctAnswerInput.value = 'false';  // Устанавливаем значение false по умолчанию
+
+                    const radioInput = document.createElement('input');
+                    radioInput.type = 'radio';
+                    radioInput.name = 'correctAnswerRadio';  // Устанавливаем одинаковое имя для всех радиокнопок
+                    radioInput.value = answerOptionIndex.toString(); // Устанавливаем значение радиокнопки равным индексу
+                    radioInput.addEventListener('click', function () {
+                        const isChecked = this.checked;
+                        const allCorrectAnswerInputs = document.querySelectorAll('input[name^="AnswerOptionViewModels"][name$="IsCorrectAnswer"]');
+                        allCorrectAnswerInputs.forEach(function (input) {
+                            input.value = 'false';
+                        });
+                        correctAnswerInput.value = isChecked ? 'true' : 'false';
+                    });
 
                     const removeButton = document.createElement('button');
                     removeButton.type = 'button';
-                    removeButton.classList.add('remove-answer-option');
+                    removeButton.classList.add('remove-answer-option', "buttonPlus");
                     removeButton.textContent = '-';
                     removeButton.addEventListener('click', function () {
                         answerOptionsContainer.removeChild(answerOptionDiv);
+                        answerOptionIndex--;  // Уменьшаем индекс при удалении поля
                     });
 
                     answerOptionDiv.appendChild(answerOptionInput);
                     answerOptionDiv.appendChild(correctAnswerInput);
+                    answerOptionDiv.appendChild(radioInput);
                     answerOptionDiv.appendChild(removeButton);
 
                     answerOptionsContainer.appendChild(answerOptionDiv);
+
+                    answerOptionIndex++; // Увеличиваем индекс для нового варианта ответа
                 });
             });
         </script>
@@ -167,36 +228,51 @@
             document.addEventListener('DOMContentLoaded', function () {
                 const addAnswerOptionButton = document.getElementById('addAnswerOptionCheck');
                 const answerOptionsContainer = document.getElementById('answerOptionsCheck');
+                let answerOptionIndex = 0;  // Начальное значение индекса
 
                 addAnswerOptionButton.addEventListener('click', function () {
-                    const answerOptionDiv = document.createElement('div');
-                    answerOptionDiv.classList.add('answer-option');
+                    const answerOptionDivCheck = document.createElement('div');
+                    answerOptionDivCheck.classList.add('answer-option');
 
-                    const answerOptionInput = document.createElement('input');
-                    answerOptionInput.type = 'text';
-                    answerOptionInput.name = 'answerOptionCheck[]';
+                    const answerOptionInputCheck = document.createElement('input');
+                    answerOptionInputCheck.type = 'text';
+                    answerOptionInputCheck.name = 'AnswerOptionViewModels[' + answerOptionIndex + '].AnswerOption';
 
-                    const correctAnswerInput = document.createElement('input');
-                    correctAnswerInput.type = 'checkbox';
-                    correctAnswerInput.name = 'correctAnswerCheck';
+
+                    const correctAnswerInputCheck = document.createElement('input');
+                    correctAnswerInputCheck.type = 'hidden';
+                    correctAnswerInputCheck.name = 'AnswerOptionViewModels[' + answerOptionIndex + '].IsCorrectAnswer';
+                    correctAnswerInputCheck.value = 'false';  // Устанавливаем значение false по умолчанию
+
+                    const checkboxInputCheck = document.createElement('input');
+                    checkboxInputCheck.type = 'checkbox';
+                    checkboxInputCheck.name = 'correctAnswerCheck';  // Устанавливаем одинаковое имя для всех чекбоксов
+                    checkboxInputCheck.value = answerOptionIndex.toString(); // Устанавливаем значение чекбокса равным индексу
+                    checkboxInputCheck.addEventListener('change', function () {
+                        const isChecked = this.checked;
+                        correctAnswerInputCheck.value = isChecked ? 'true' : 'false';
+                    });
 
                     const removeButton = document.createElement('button');
                     removeButton.type = 'button';
-                    removeButton.classList.add('remove-answer-option');
+                    removeButton.classList.add('remove-answer-option', "buttonPlus");
                     removeButton.textContent = '-';
                     removeButton.addEventListener('click', function () {
-                        answerOptionsContainer.removeChild(answerOptionDiv);
+                        answerOptionsContainer.removeChild(answerOptionDivCheck);
+                        answerOptionIndex--;  // Уменьшаем индекс при удалении поля
                     });
 
-                    answerOptionDiv.appendChild(answerOptionInput);
-                    answerOptionDiv.appendChild(correctAnswerInput);
-                    answerOptionDiv.appendChild(removeButton);
+                    answerOptionDivCheck.appendChild(answerOptionInputCheck);
+                    answerOptionDivCheck.appendChild(correctAnswerInputCheck);
+                    answerOptionDivCheck.appendChild(checkboxInputCheck);
+                    answerOptionDivCheck.appendChild(removeButton);
 
-                    answerOptionsContainer.appendChild(answerOptionDiv);
+                    answerOptionsContainer.appendChild(answerOptionDivCheck);
+
+                    answerOptionIndex++; // Увеличиваем индекс для нового варианта ответа
                 });
             });
         </script>
-
 
     </main>
 

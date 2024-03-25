@@ -3,12 +3,10 @@
     width: 100%;
 }
 
-.divForm input{
-   
-    width: 30px;
-    height:30px;
-
-}
+    .divForm input[type="checkbox"] {
+        transform: scale(2);
+        opacity: 0.9;
+    }
 
     .divForm label {
         font-size: 18px;
@@ -19,7 +17,7 @@
 
 
 .formTest {
-    flex: 1;
+    display: flex;
     text-align: center;
     width: 390px;
     height: 360px;
@@ -31,7 +29,7 @@
 }
 
     .formTest form {
-        display: flex;
+        flex: 1;
         flex-direction: column;
         align-items: center;
         justify-content: center;
@@ -66,3 +64,74 @@
     width: 80%;
     margin: 0 auto;
 }
+
+.formSlider{
+    width:80%;
+    margin:20px;
+}
+
+.h2form {
+    width: 100%;
+    display: flex;
+    text-align:center;
+}
+
+    .h2form h3 {
+        flex: 1;
+        margin: 20px;
+    }
+
+.formInput input[type="text"] {
+    display: inline-block;
+    width: 50%;
+    height: 45px;
+    font-size: 20px;
+    margin: 15px;
+    border-radius: 10px;
+    border: 2px solid #add9f4;
+    transition: .15s ease-in-out;
+}
+
+.formInput input[type="radio"], input[type="checkbox"] {
+    transform: scale(2);
+    opacity: 0.9;
+}
+
+
+
+
+
+.buttonPlus {
+    text-decoration: none;
+    flex: 2;
+    width: 45px;
+    height: 45px;
+    text-align: center;
+    border-radius: 5px;
+    border: none;
+    background-color: #6b9ac4;
+    font-weight: bold;
+    letter-spacing: 2px;
+    color: white;
+    transition: .15s ease-in-out;
+    font-size: 16px;
+    margin-bottom: 20px;
+    margin-right: 5px;
+    margin-left: 20px;
+
+}
+    .buttonPlus:hover {
+        background-color: #3b71d3;
+    }
+
+    .buttonPlus a {
+        text-decoration: none;
+        color: white
+    }
+
+
+
+
+
+
+    
