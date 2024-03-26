@@ -1,8 +1,8 @@
 ﻿name: Mastery Quotient Check
 on: 
-    push:
-        branches:
-            - master
+   push:
+       branches:
+           - master
 jobs:
     check-style-MastQuo:
         runs-on: ubuntu-latest
@@ -16,8 +16,7 @@ jobs:
                 dotnet-version: '6.0.x'
                 
             - name: Install project dependencies
-              run: |
-                dotnet tool install --global StyleCop.Analyzers
+              run: dotnet tool install --global StyleCop.Analyzers
              
             - name: Check Style
               run: dotnet build /p:ValidateStyleCopSettings=true /p:StyleCopCachePath=./.stylecop-cache
