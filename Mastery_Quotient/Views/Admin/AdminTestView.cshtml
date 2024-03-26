@@ -46,14 +46,14 @@
             {
 
                     <div class="divTestForm">
-                        <form asp-action="AdminTestView" asp-antiforgery="true" asp-controller="Admin">
+                        <form asp-action="AdminOneTestView" asp-antiforgery="true" asp-controller="Admin">
                             <div>
-                                <form id="deleteForm" asp-controller="Test" asp-action="DeleteTest" method="post">
+                               @*  <form id="deleteForm" asp-controller="Test" asp-action="DeleteTest" method="post">
                                     <input type="hidden" value="@item.IdTest" name="IdTest" />
                                     <button class="image_button" width="50" height="50" type="button">
                                         <img>
                                     </button>
-                                </form>
+                                </form> *@
                                 <input name="testId" hidden value="@item.IdTest" />
                                 <label class="labelTest">@item.NameTest</label>
                                 <label class="labelTest">Дата создания: @string.Format("{0:dd.MM.yyyy}", @item.DateCreatedTest)</label>

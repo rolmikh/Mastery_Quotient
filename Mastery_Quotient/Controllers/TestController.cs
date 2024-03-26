@@ -193,8 +193,10 @@ namespace Mastery_Quotient.Controllers
 
             try
             {
-                TempData["testID"] = testId;
-                TempData.Keep("testID");
+                if(testId != 0)
+                {
+                    TempData["testID"] = testId;
+                }
 
 
                 int testID = int.Parse(TempData["testID"].ToString());
