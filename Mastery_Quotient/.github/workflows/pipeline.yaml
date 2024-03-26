@@ -1,23 +1,22 @@
 ﻿name: Mastery Quotient Check
-on: 
-   push:
-       branches:
-           - master
+on:
+  push:
+    branches:
+      - master
 jobs:
-    check-style-MastQuo:
-        runs-on: ubuntu-latest
-        steps:
-            - name: Git clone project
-              uses: actions/checkout@v2
+  check-style-MastQuo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git clone project
+        uses: actions/checkout@v2
 
-            - name: Set version asp
-              uses: actions/setup-dotnet@v1
-              with:
-                dotnet-version: '6.0.x'
-                
-            - name: Install project dependencies
-              run: dotnet tool install --global StyleCop.Analyzers
-             
-            - name: Check Style
-              run: dotnet build /p:ValidateStyleCopSettings=true /p:StyleCopCachePath=./.stylecop-cache
-              
+      - name: Set version asp
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '6.0.x'
+          
+      - name: Install project dependencies
+        run: dotnet tool install --global StyleCop.Analyzers
+       
+      - name: Check Style
+        run: dotnet build /p:ValidateStyleCopSettings=true /p:StyleCopCachePath=./.stylecop-cache
