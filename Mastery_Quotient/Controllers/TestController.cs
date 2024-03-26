@@ -6,6 +6,7 @@ using System.Text;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace Mastery_Quotient.Controllers
+    //попробуй
 {
     public class TestController : Controller
     {
