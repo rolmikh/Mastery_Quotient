@@ -45,6 +45,17 @@
                 <img width="40" height="40" src="../images/icons8-лупа-64.png" />
             </button>
         </form>
+        <form asp-antiforgery="true" asp-action="FiltrationTeacher" asp-controller="Admin">
+            <select class="CrudSelect" required id="roleTeacher" name="roleTeacher" placeholder="Роль">
+                <option selected disabled>Роль</option>
+                @foreach (var role in Model.Roles)
+                {
+                    <option value="@role.IdRole">@role.NameRole</option>
+                }
+            </select>
+            <button class="InputFiltr" type="submit">Фильтрация</button>
+
+        </form>
         <button class="newInput" onclick="window.location.href='@Url.Action("TeacherNew", "admin")'">
             Добавить
         </button>

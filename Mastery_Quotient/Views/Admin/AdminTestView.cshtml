@@ -48,12 +48,6 @@
                     <div class="divTestForm">
                         <form asp-action="AdminOneTestView" asp-antiforgery="true" asp-controller="Admin">
                             <div>
-                               @*  <form id="deleteForm" asp-controller="Test" asp-action="DeleteTest" method="post">
-                                    <input type="hidden" value="@item.IdTest" name="IdTest" />
-                                    <button class="image_button" width="50" height="50" type="button">
-                                        <img>
-                                    </button>
-                                </form> *@
                                 <input name="testId" hidden value="@item.IdTest" />
                                 <label class="labelTest">@item.NameTest</label>
                                 <label class="labelTest">Дата создания: @string.Format("{0:dd.MM.yyyy}", @item.DateCreatedTest)</label>
@@ -67,66 +61,7 @@
             }
         </div>
 
-        
 
-
-
-
-
-
-
-       @*  <div id="myModal" class="modal">
-            <div class="modal-content">
-                <span class="close">&times;</span>
-                <p>Вы уверены, что хотите архивировать эту запись?</p>
-                <form id="deleteForm" asp-controller="Test" asp-action="DeleteTest" method="post">
-                    <input type="hidden" id="IdTest" name="IdTest" />
-                    <button id="confirmDeleteBtnModal" class="newInput">Да</button>
-                    <button id="confirmBack" class="newInput">Отмена</button>
-                </form>
-            </div>
-        </div>
-
-        <script>
-            // Получаем ссылки на элементы DOM
-            var modal = document.getElementById('myModal'); // Получаем модальное окно по его id
-            var confirmDeleteBtn = document.getElementById('confirmDeleteBtnModal'); // Получаем кнопку подтверждения удаления
-            var confirmBackBtn = document.getElementById('confirmBack'); // Получаем кнопку отмены
-            var IdTestInput = document.getElementById('IdTest'); // Получаем скрытое поле для id
-            var closeButton = document.querySelector('.modal-content .close');
-
-
-            // Добавляем обработчик события к кнопкам удаления
-            document.querySelectorAll('.image_button').forEach(function (btn) {
-                btn.addEventListener('click', function () {
-                    // При нажатии кнопки удаления открываем модальное окно
-                    modal.style.display = 'block';
-                    // Устанавливаем значение скрытого поля IdTestInput равным id  из соответствующей строки таблицы
-                    IdTestInput.value = btn.closest('div').querySelector('[name="IdTest"]').value;
-                });
-            });
-
-            // Обработчик события для кнопки "Отмена"
-            confirmBackBtn.onclick = function () {
-                // Предотвращаем отправку формы при нажатии кнопки "Отмена"
-                event.preventDefault();
-                // При нажатии кнопки "Отмена" закрываем модальное окно
-                modal.style.display = "none";
-            };
-
-            closeButton.onclick = function () {
-                modal.style.display = "none";
-            };
-
-            // Обработчик события для клика по области за пределами модального окна
-            window.onclick = function (event) {
-                // Если пользователь кликнул вне модального окна, закрываем его
-                if (event.target == modal) {
-                    modal.style.display = "none";
-                }
-            };
-
-        </script> *@
     </main>
 
 </body>

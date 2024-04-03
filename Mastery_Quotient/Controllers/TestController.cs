@@ -6,7 +6,7 @@ using System.Text;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace Mastery_Quotient.Controllers
-    //попробуй
+    //попробуй ХОРОШО
 {
     public class TestController : Controller
     {
@@ -451,8 +451,6 @@ namespace Mastery_Quotient.Controllers
 
                     if (response.IsSuccessStatusCode)
                     {
-
-                        
                         var responseContent = await response.Content.ReadAsStringAsync();
 
                         var createdQuestion = JsonConvert.DeserializeObject<Question>(responseContent);

@@ -10,6 +10,7 @@ using Mastery_Quotient.Class;
 using Firebase.Storage;
 using System.Net.Sockets;
 using Mastery_Quotient.Service;
+using Ganss.Xss;
 
 namespace Mastery_Quotient.Controllers
 {
@@ -55,6 +56,10 @@ namespace Mastery_Quotient.Controllers
                     {
                         employees = JsonConvert.DeserializeObject<List<Employee>>(TempData["Search"].ToString());
                     }
+                    if (TempData.ContainsKey("Filtration"))
+                    {
+                        employees = JsonConvert.DeserializeObject<List<Employee>>(TempData["Filtration"].ToString());
+                    }
                     else
                     {
                         using (var response = await httpClient.GetAsync(apiUrl + "Employees"))
@@ -95,7 +100,6 @@ namespace Mastery_Quotient.Controllers
                 var apiUrl = configuration["AppSettings:ApiUrl"];
                 List<Employee> employees = new List<Employee>();
 
-                StringContent content = new StringContent(JsonConvert.SerializeObject(Search), Encoding.UTF8, "application/json");
 
                 using (var httpClient = new HttpClient())
                 {
@@ -114,6 +118,44 @@ namespace Mastery_Quotient.Controllers
                 return RedirectToAction("AdminWindowTeacher", "Admin");
             }
 
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> FiltrationTeacher(int roleTeacher)
+        {
+            try
+            {
+                if (roleTeacher != 0)
+                {
+                    var apiUrl = configuration["AppSettings:ApiUrl"];
+
+                    List<Employee> employees = new List<Employee>();
+
+                    using (var httpClient = new HttpClient())
+                    {
+                        using (var response = await httpClient.GetAsync(apiUrl + "Employees/Filtration?idRole=" + roleTeacher))
+                        {
+                            var apiResponse = await response.Content.ReadAsStringAsync();
+                            employees = JsonConvert.DeserializeObject<List<Employee>>(apiResponse);
+                            TempData["Filtration"] = JsonConvert.SerializeObject(employees);
+
+
+                            return RedirectToAction("AdminWindowTeacher", "Admin");
+
+
+                        }
+
+                    }
+                }
+                else
+                {
+                    return RedirectToAction("AdminWindowTeacher", "Admin");
+                }
+            }
+            catch
+            {
+                return BadRequest("Ошибка");
+            }
         }
 
         [HttpGet]
@@ -537,6 +579,10 @@ namespace Mastery_Quotient.Controllers
                     {
                         students = JsonConvert.DeserializeObject<List<Student>>(TempData["Search"].ToString());
                     }
+                    else if(TempData.ContainsKey("Filtration"))
+                    {
+                        students = JsonConvert.DeserializeObject<List<Student>>(TempData["Filtration"].ToString());
+                    }
                     else
                     {
                         using (var response = await httpClient.GetAsync(apiUrl + "Students"))
@@ -571,33 +617,80 @@ namespace Mastery_Quotient.Controllers
         [HttpPost]
         public async Task<IActionResult> AdminWindowStudent(string Search)
         {
-
-            if (Search != null)
+            try
             {
-                var apiUrl = configuration["AppSettings:ApiUrl"];
-                List<Student> students = new List<Student>();
-
-                StringContent content = new StringContent(JsonConvert.SerializeObject(Search), Encoding.UTF8, "application/json");
-
-                using (var httpClient = new HttpClient())
+                if (Search != null)
                 {
-                    var response = await httpClient.GetAsync(apiUrl + "Students/Search?search=" + Search);
+                    var apiUrl = configuration["AppSettings:ApiUrl"];
+                    List<Student> students = new List<Student>();
 
-                    string apiResponse = await response.Content.ReadAsStringAsync();
-                    students = JsonConvert.DeserializeObject<List<Student>>(apiResponse);
+                    StringContent content = new StringContent(JsonConvert.SerializeObject(Search), Encoding.UTF8, "application/json");
 
-                    TempData["Search"] = JsonConvert.SerializeObject(students);
+                    using (var httpClient = new HttpClient())
+                    {
+                        var response = await httpClient.GetAsync(apiUrl + "Students/Search?search=" + Search);
 
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        students = JsonConvert.DeserializeObject<List<Student>>(apiResponse);
+
+                        TempData["Search"] = JsonConvert.SerializeObject(students);
+
+                        return RedirectToAction("AdminWindowStudent", "Admin");
+                    }
+                }
+                else
+                {
                     return RedirectToAction("AdminWindowStudent", "Admin");
                 }
             }
-            else
-            {
-                return RedirectToAction("AdminWindowStudent", "Admin");
+            catch
+            { 
+                return BadRequest("Ошибка");
+            
             }
+
+           
 
         }
 
+
+        [HttpPost]
+        public async Task<IActionResult> FiltrationStudent(int groupUser)
+        {
+            try
+            {
+                if (groupUser != 0)
+                {
+                    var apiUrl = configuration["AppSettings:ApiUrl"];
+
+                    List<Student> studentsList = new List<Student>();
+
+                    using (var httpClient = new HttpClient())
+                    {
+                        using (var response = await httpClient.GetAsync(apiUrl + "Students/Filtration?idStudyGroup=" + groupUser))
+                        {
+                            var apiResponse = await response.Content.ReadAsStringAsync();
+                            studentsList = JsonConvert.DeserializeObject<List<Student>>(apiResponse);
+                            TempData["Filtration"] = JsonConvert.SerializeObject(studentsList);
+
+
+                            return RedirectToAction("AdminWindowStudent", "Admin");
+
+
+                        }
+
+                    }
+                }
+                else
+                {
+                    return RedirectToAction("AdminWindowStudent", "Admin");
+                }
+            }
+            catch
+            {
+                return BadRequest("Ошибка");
+            }
+        }
 
         [HttpPost]
         public async Task<IActionResult> UpdateStudent(int idUser,string surnameUser, string nameUser, string middleNameUser, string emailUser, string passwordUser, string saltUser , int studyGroupUser)
@@ -719,26 +812,20 @@ namespace Mastery_Quotient.Controllers
                         string apiResponse = await response.Content.ReadAsStringAsync();
                         student = JsonConvert.DeserializeObject<Student>(apiResponse);
                     }
-
                     using (var response = await httpClient.GetAsync(apiUrl + "StudyGroups"))
                     {
                         string apiResponse = await response.Content.ReadAsStringAsync();
                         studyGroups = JsonConvert.DeserializeObject<List<StudyGroup>>(apiResponse);
                     }
-
-
                     using (var response = await httpClient.GetAsync(apiUrl + "Courses"))
                     {
                         string apiResponse = await response.Content.ReadAsStringAsync();
                         courses = JsonConvert.DeserializeObject<List<Course>>(apiResponse);
                     }
                 }
-
-
                 StudyGroup group = studyGroups.Find(n => n.IdStudyGroup == student.StudyGroupId);
                 Course course = courses.Find(n => n.IdCourse == group.CourseId);
                 StudentModelDetails studentModelDetails = new StudentModelDetails(student, group, course);
-
                 
                 return View(studentModelDetails);
             }
@@ -792,34 +879,6 @@ namespace Mastery_Quotient.Controllers
             return View();
 
         }
-
-
-        //[HttpGet]
-        //public async Task<List<Student>> FiltrationStudent(int groupUser)
-        //{
-
-        //    var apiUrl = configuration["AppSettings:ApiUrl"];
-
-        //    List<Student> studentsList = new List<Student>();
-
-        //    using (var httpClient = new HttpClient())
-        //    {
-        //        using (var response = await httpClient.GetAsync(apiUrl + "Students/Filtration?idStudyGroup=" + groupUser))
-        //        {
-        //            string apiResponse = await response.Content.ReadAsStringAsync();
-        //            studentsList = JsonConvert.DeserializeObject<List<Student>>(apiResponse);
-        //            if (response.IsSuccessStatusCode)
-        //            {
-        //                TempData["StudentList"] = studentsList;
-
-
-        //                return studentsList;
-        //            }
-        //        }
-
-        //    }
-
-        //}
 
 
         public async Task<IActionResult> AdminTestView()
