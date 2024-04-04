@@ -843,21 +843,43 @@ namespace Mastery_Quotient.Controllers
                 var apiUrl = configuration["AppSettings:ApiUrl"];
 
                 List<Material> materials = new List<Material>();
+                List<Discipline> disciplines = new List<Discipline>();
+                List<TypeMaterial> typeMaterials = new List<TypeMaterial>();
 
                 using (var httpClient = new HttpClient())
                 {
-                    using (var response = await httpClient.GetAsync(apiUrl + "Materials"))
+
+                    using (var response = await httpClient.GetAsync(apiUrl + "TypeMaterials"))
                     {
                         string apiResponse = await response.Content.ReadAsStringAsync();
-                        materials = JsonConvert.DeserializeObject<List<Material>>(apiResponse);
+                        typeMaterials = JsonConvert.DeserializeObject<List<TypeMaterial>>(apiResponse);
                     }
 
-                    
+                    using (var response = await httpClient.GetAsync(apiUrl + "Disciplines"))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        disciplines = JsonConvert.DeserializeObject<List<Discipline>>(apiResponse);
+                    }
+                    if (TempData.ContainsKey("Search"))
+                    {
+                        materials = JsonConvert.DeserializeObject<List<Material>>(TempData["Search"].ToString());
+                    }
+                    else if(TempData.ContainsKey("Filtration"))
+                    {
+                        materials = JsonConvert.DeserializeObject<List<Material>>(TempData["Filtration"].ToString());
+
+                    }
+                    else
+                    {
+                        using (var response = await httpClient.GetAsync(apiUrl + "Materials"))
+                        {
+                            string apiResponse = await response.Content.ReadAsStringAsync();
+                            materials = JsonConvert.DeserializeObject<List<Material>>(apiResponse);
+                        }
+                    }
                 }
-
-
                 
-                MaterialModelView materialModelView = new MaterialModelView(materials);
+                MaterialModelView materialModelView = new MaterialModelView(materials,disciplines, typeMaterials);
 
                 return View(materialModelView);
             }
@@ -922,12 +944,19 @@ namespace Mastery_Quotient.Controllers
                         string apiResponse = await response.Content.ReadAsStringAsync();
                         testParameters = JsonConvert.DeserializeObject<List<TestParameter>>(apiResponse);
                     }
-
-                    using (var response = await httpClient.GetAsync(apiUrl + "Tests/Active"))
+                    if (TempData.ContainsKey("Search"))
                     {
-                        string apiResponse = await response.Content.ReadAsStringAsync();
-                        tests = JsonConvert.DeserializeObject<List<Test>>(apiResponse);
+                        tests = JsonConvert.DeserializeObject<List<Test>>(TempData["Search"].ToString());
                     }
+                    else
+                    {
+                        using (var response = await httpClient.GetAsync(apiUrl + "Tests/Active"))
+                        {
+                            string apiResponse = await response.Content.ReadAsStringAsync();
+                            tests = JsonConvert.DeserializeObject<List<Test>>(apiResponse);
+                        }
+                    }
+                    
                 }
                 List<DisciplineEmployee> discipline = disciplineEmployees.Where(n => n.EmployeeId == employee.IdEmployee).ToList();
                 TestViewTeacher testViewTeacher = new TestViewTeacher(employee, disciplines, discipline, testParameters, tests);
@@ -939,6 +968,45 @@ namespace Mastery_Quotient.Controllers
             }
         }
 
+
+        [HttpPost]
+        public async Task<IActionResult> AdminTestView(string Search)
+        {
+            try
+            {
+                if (Search != null)
+                {
+                    var apiUrl = configuration["AppSettings:ApiUrl"];
+                    List<Test> tests = new List<Test>();
+
+                    StringContent content = new StringContent(JsonConvert.SerializeObject(Search), Encoding.UTF8, "application/json");
+
+                    using (var httpClient = new HttpClient())
+                    {
+                        var response = await httpClient.GetAsync(apiUrl + "Tests/Search?search=" + Search);
+
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        tests = JsonConvert.DeserializeObject<List<Test>>(apiResponse);
+
+                        TempData["Search"] = JsonConvert.SerializeObject(tests);
+
+                        return RedirectToAction("AdminTestView", "Admin");
+                    }
+                }
+                else
+                {
+                    return RedirectToAction("AdminTestView", "Admin");
+                }
+            }
+            catch
+            {
+                return BadRequest("Ошибка");
+
+            }
+
+
+
+        }
 
         public async Task<IActionResult> AdminOneTestView(int testId)
         {
@@ -1048,6 +1116,102 @@ namespace Mastery_Quotient.Controllers
             }
 
         }
+
+        [HttpPost]
+        public async Task<IActionResult> MaterialsAdmin(string Search)
+        {
+            try
+            {
+                if (Search != null)
+                {
+                    var apiUrl = configuration["AppSettings:ApiUrl"];
+                    List<Material> materials = new List<Material>();
+
+                    StringContent content = new StringContent(JsonConvert.SerializeObject(Search), Encoding.UTF8, "application/json");
+
+                    using (var httpClient = new HttpClient())
+                    {
+                        var response = await httpClient.GetAsync(apiUrl + "Materials/Search?search=" + Search);
+
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        materials = JsonConvert.DeserializeObject<List<Material>>(apiResponse);
+
+                        TempData["Search"] = JsonConvert.SerializeObject(materials);
+
+                        return RedirectToAction("MaterialsAdmin", "Admin");
+                    }
+                }
+                else
+                {
+                    return RedirectToAction("MaterialsAdmin", "Admin");
+                }
+            }
+            catch
+            {
+                return BadRequest("Ошибка");
+
+            }
+
+
+
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> FiltrationMaterial(int typeId, int disciplineID)
+        {
+            try
+            {
+                if (typeId != 0 || disciplineID !=0)
+                {
+                    var apiUrl = configuration["AppSettings:ApiUrl"];
+
+                    List<Material> materials = new List<Material>();
+
+                    using (var httpClient = new HttpClient())
+                    {
+                        if(typeId != 0 && disciplineID == 0)
+                        {
+                            using (var response = await httpClient.GetAsync(apiUrl + "Materials/Filtration?idType=" + typeId))
+                            {
+                                var apiResponse = await response.Content.ReadAsStringAsync();
+                                materials = JsonConvert.DeserializeObject<List<Material>>(apiResponse);                               
+                            }
+                        }
+                        else if(typeId == 0 && disciplineID != 0)
+                        {
+                            using (var response = await httpClient.GetAsync(apiUrl + "Materials/Filtration?idDiscipline=" + disciplineID))
+                            {
+                                var apiResponse = await response.Content.ReadAsStringAsync();
+                                materials = JsonConvert.DeserializeObject<List<Material>>(apiResponse);
+                            }
+                        }
+                        else
+                        {
+                            using (var response = await httpClient.GetAsync(apiUrl + $"Materials/Filtration?idDiscipline={disciplineID}&idType={typeId}"))
+                            {
+                                var apiResponse = await response.Content.ReadAsStringAsync();
+                                materials = JsonConvert.DeserializeObject<List<Material>>(apiResponse);
+                            }
+
+                        }
+                        TempData["Filtration"] = JsonConvert.SerializeObject(materials);
+
+                        return RedirectToAction("MaterialsAdmin", "Admin");
+
+                    }
+                }
+                else
+                {
+                    return RedirectToAction("MaterialsAdmin", "Admin");
+                }
+            }
+            catch
+            {
+                return BadRequest("Ошибка");
+            }
+        }
+
     }
 
 

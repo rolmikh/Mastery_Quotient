@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="../css/mainStyle.css">
     <link rel="stylesheet" href="../css/navigationStyle.css">
     <link rel="stylesheet" href="../css/materialStyle.css">
+    <link rel="stylesheet" href="../css/crudStyle.css">
+
 
     <link href="https://fonts.googleapis.com/css?family=Mulish:200,300,regular,500,600,700,800,900,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic"
           rel="stylesheet" />
@@ -38,6 +40,33 @@
 
 <body>
     <main>
+        <div class="containerForm">
+            <form asp-antiforgery="true" asp-action="MaterialsAdmin" asp-controller="Admin">
+                <input class="searchInput" type="text" name="Search" />
+                <button class="searchImage" type="submit">
+                    <img width="40" height="40" src="../images/icons8-лупа-64.png" />
+                </button>
+            </form>
+            <form asp-antiforgery="true" asp-action="FiltrationMaterial" asp-controller="Admin">
+                <select class="CrudSelect" required id="disciplineID" name="disciplineID" placeholder="Дисциплина">
+                    <option selected disabled>Дисциплина</option>
+                    @foreach (var discipline in Model.Disciplines)
+                    {
+                        <option value="@discipline.IdDiscipline">@discipline.NameDiscipline</option>
+                    }
+                </select>
+                <select class="CrudSelect" required id="typeId" name="typeId" placeholder="Тип материала">
+                    <option selected disabled>Тип материала</option>
+                    @foreach (var type in Model.TypeMaterials)
+                    {
+                        <option value="@type.IdTypeMaterial">@type.NameTypeMaterial</option>
+                    }
+                </select>
+                <button class="InputFiltr" type="submit">Фильтрация</button>
+
+            </form>
+        </div>
+
         <div class="formsContainer">
             @foreach (var item in Model.Materials)
             {

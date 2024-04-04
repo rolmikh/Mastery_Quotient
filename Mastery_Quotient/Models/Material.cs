@@ -13,6 +13,7 @@ namespace Mastery_Quotient.Models
         public int? TypeMaterialId { get; set; }
         public int? EmployeeId { get; set; }
         public string? PhotoMaterial { get; set; }
+        public int? IsDeleted { get; set; }
 
 
     }

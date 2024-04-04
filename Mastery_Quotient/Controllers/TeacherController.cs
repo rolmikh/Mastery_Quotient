@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Text;
 using Mastery_Quotient.Service;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Mastery_Quotient.Controllers
 {
@@ -348,12 +349,24 @@ namespace Mastery_Quotient.Controllers
                         string apiResponse = await response.Content.ReadAsStringAsync();
                         typeMaterials = JsonConvert.DeserializeObject<List<TypeMaterial>>(apiResponse);
                     }
-
-                    using (var response = await httpClient.GetAsync(apiUrl + "Materials"))
+                    if (TempData.ContainsKey("Search"))
                     {
-                        string apiResponse = await response.Content.ReadAsStringAsync();
-                        materials = JsonConvert.DeserializeObject<List<Material>>(apiResponse);
+                        materials = JsonConvert.DeserializeObject<List<Material>>(TempData["Search"].ToString());
                     }
+                    else if (TempData.ContainsKey("Filtration"))
+                    {
+                        materials = JsonConvert.DeserializeObject<List<Material>>(TempData["Filtration"].ToString());
+
+                    }
+                    else
+                    {
+                        using (var response = await httpClient.GetAsync(apiUrl + "Materials"))
+                        {
+                            string apiResponse = await response.Content.ReadAsStringAsync();
+                            materials = JsonConvert.DeserializeObject<List<Material>>(apiResponse);
+                        }
+                    }
+                   
                 }
                 List<Material> materialsList = materials.Where(n => n.EmployeeId == employee.IdEmployee).ToList();
                 List<DisciplineEmployee> discipline = disciplineEmployees.Where(n => n.EmployeeId == employee.IdEmployee).ToList();
@@ -368,36 +381,100 @@ namespace Mastery_Quotient.Controllers
 
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> MaterialsTeacher(string Search)
-        //{
+        [HttpPost]
+        public async Task<IActionResult> MaterialsTeacher(string Search)
+        {
+            try
+            {
+                if (Search != null)
+                {
+                    var apiUrl = configuration["AppSettings:ApiUrl"];
+                    List<Material> materials = new List<Material>();
 
-        //    if (Search != null)
-        //    {
-        //        var apiUrl = configuration["AppSettings:ApiUrl"];
-        //        List<Material> materials = new List<Material>();
+                    StringContent content = new StringContent(JsonConvert.SerializeObject(Search), Encoding.UTF8, "application/json");
 
-        //        StringContent content = new StringContent(JsonConvert.SerializeObject(Search), Encoding.UTF8, "application/json");
+                    using (var httpClient = new HttpClient())
+                    {
+                        var response = await httpClient.GetAsync(apiUrl + "Materials/Search?search=" + Search);
 
-        //        using (var httpClient = new HttpClient())
-        //        {
-        //            var response = await httpClient.GetAsync(apiUrl + "Employees/Search?search=" + Search);
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        materials = JsonConvert.DeserializeObject<List<Material>>(apiResponse);
 
-        //            string apiResponse = await response.Content.ReadAsStringAsync();
-        //            employees = JsonConvert.DeserializeObject<List<Employee>>(apiResponse);
+                        TempData["Search"] = JsonConvert.SerializeObject(materials);
 
-        //            TempData["Search"] = JsonConvert.SerializeObject(employees);
+                        return RedirectToAction("MaterialsTeacher", "Teacher");
+                    }
+                }
+                else
+                {
+                    return RedirectToAction("MaterialsTeacher", "Teacher");
+                }
+            }
+            catch
+            {
+                return BadRequest("Ошибка");
 
-        //            return RedirectToAction("AdminWindowTeacher", "Admin");
-        //        }
-        //    }
-        //    else
-        //    {
-        //        return RedirectToAction("AdminWindowTeacher", "Admin");
-        //    }
+            }
 
-        //}
 
+
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> FiltrationMaterial(int typeId, int disciplineID)
+        {
+            try
+            {
+                if (typeId != 0 || disciplineID != 0)
+                {
+                    var apiUrl = configuration["AppSettings:ApiUrl"];
+
+                    List<Material> materials = new List<Material>();
+
+                    using (var httpClient = new HttpClient())
+                    {
+                        if (typeId != 0 && disciplineID == 0)
+                        {
+                            using (var response = await httpClient.GetAsync(apiUrl + "Materials/Filtration?idType=" + typeId))
+                            {
+                                var apiResponse = await response.Content.ReadAsStringAsync();
+                                materials = JsonConvert.DeserializeObject<List<Material>>(apiResponse);
+                            }
+                        }
+                        else if (typeId == 0 && disciplineID != 0)
+                        {
+                            using (var response = await httpClient.GetAsync(apiUrl + "Materials/Filtration?idDiscipline=" + disciplineID))
+                            {
+                                var apiResponse = await response.Content.ReadAsStringAsync();
+                                materials = JsonConvert.DeserializeObject<List<Material>>(apiResponse);
+                            }
+                        }
+                        else
+                        {
+                            using (var response = await httpClient.GetAsync(apiUrl + $"Materials/Filtration?idDiscipline={disciplineID}&idType={typeId}"))
+                            {
+                                var apiResponse = await response.Content.ReadAsStringAsync();
+                                materials = JsonConvert.DeserializeObject<List<Material>>(apiResponse);
+                            }
+
+                        }
+                        TempData["Filtration"] = JsonConvert.SerializeObject(materials);
+
+                        return RedirectToAction("MaterialsTeacher", "Teacher");
+
+                    }
+                }
+                else
+                {
+                    return RedirectToAction("MaterialsTeacher", "Teacher");
+                }
+            }
+            catch
+            {
+                return BadRequest("Ошибка");
+            }
+        }
 
         public IActionResult FileMaterial(string nameFile)
         {

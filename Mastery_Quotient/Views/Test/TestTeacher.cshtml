@@ -40,7 +40,32 @@
 
 <body>
     <main>
+        <div class="containerForm">
+            <form asp-antiforgery="true" asp-action="TestTeacher" asp-controller="Test">
+                <input class="searchInput" type="text" name="Search" />
+                <button class="searchImage" type="submit">
+                    <img width="40" height="40" src="../images/icons8-лупа-64.png" />
+                </button>
+            </form>
+            <form asp-antiforgery="true" asp-action="FiltrationTest" asp-controller="Test">
+                <select class="CrudSelect" required id="disciplineID" name="disciplineID" placeholder="Дисциплина">
+                    <option selected disabled>Дисциплина</option>
+                    @foreach (var discipline in Model.Disciplines)
+                    {
+                        <option value="@discipline.IdDiscipline">@discipline.NameDiscipline</option>
+                    }
+                </select>
+                <select class="CrudSelect" required id="parameterId" name="parameterId" placeholder="Параметр тестирования">
+                    <option selected disabled>Параметр тестирования</option>
+                    @foreach (var parameter in Model.TestParameters)
+                    {
+                        <option value="@parameter.IdTestParameter">@parameter.NameParameter</option>
+                    }
+                </select>
+                <button class="InputFiltr" type="submit">Фильтрация</button>
 
+            </form>
+        </div>
         <h1>Активные тестирования</h1>
         <div class="formsContainer">
             @foreach (var item in Model.Test)

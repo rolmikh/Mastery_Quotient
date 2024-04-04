@@ -6,7 +6,6 @@ using System.Text;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace Mastery_Quotient.Controllers
-    //попробуй ХОРОШО
 {
     public class TestController : Controller
     {
@@ -171,12 +170,19 @@ namespace Mastery_Quotient.Controllers
                         string apiResponse = await response.Content.ReadAsStringAsync();
                         testParameters = JsonConvert.DeserializeObject<List<TestParameter>>(apiResponse);
                     }
-
-                    using (var response = await httpClient.GetAsync(apiUrl + "Tests"))
+                    if (TempData.ContainsKey("Search"))
                     {
-                        string apiResponse = await response.Content.ReadAsStringAsync();
-                        tests = JsonConvert.DeserializeObject<List<Test>>(apiResponse);
+                        tests = JsonConvert.DeserializeObject<List<Test>>(TempData["Search"].ToString());
                     }
+                    else
+                    {
+                        using (var response = await httpClient.GetAsync(apiUrl + "Tests"))
+                        {
+                            string apiResponse = await response.Content.ReadAsStringAsync();
+                            tests = JsonConvert.DeserializeObject<List<Test>>(apiResponse);
+                        }
+                    }
+                   
                 }
                 List<Test> testList = tests.Where(n => n.EmployeeId == employee.IdEmployee).ToList();
                 List<DisciplineEmployee> discipline = disciplineEmployees.Where(n => n.EmployeeId == employee.IdEmployee).ToList();
@@ -187,6 +193,45 @@ namespace Mastery_Quotient.Controllers
             {
                 return BadRequest();
             }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> TestTeacher(string Search)
+        {
+            try
+            {
+                if (Search != null)
+                {
+                    var apiUrl = configuration["AppSettings:ApiUrl"];
+                    List<Test> tests = new List<Test>();
+
+                    StringContent content = new StringContent(JsonConvert.SerializeObject(Search), Encoding.UTF8, "application/json");
+
+                    using (var httpClient = new HttpClient())
+                    {
+                        var response = await httpClient.GetAsync(apiUrl + "Tests/Search?search=" + Search);
+
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        tests = JsonConvert.DeserializeObject<List<Test>>(apiResponse);
+
+                        TempData["Search"] = JsonConvert.SerializeObject(tests);
+
+                        return RedirectToAction("TestTeacher", "Test");
+                    }
+                }
+                else
+                {
+                    return RedirectToAction("TestTeacher", "Test");
+                }
+            }
+            catch
+            {
+                return BadRequest("Ошибка");
+
+            }
+
+
+
         }
 
         public async Task<IActionResult> QuestionTest(int testId)

@@ -48,17 +48,24 @@
                     <img width="40" height="40" src="../images/icons8-лупа-64.png" />
                 </button>
             </form>
-            @* <form asp-antiforgery="true" asp-action="FiltrationStudent" asp-controller="Admin">
-                <select class="CrudSelect" required id="groupUser" name="groupUser" placeholder="Учебная группа">
-                    <option selected disabled>Учебная группа</option>
-                    @foreach (var group in Model.StudyGroups)
+            <form asp-antiforgery="true" asp-action="FiltrationMaterial" asp-controller="Teacher">
+                <select class="CrudSelect" required id="disciplineID" name="disciplineID" placeholder="Дисциплина">
+                    <option selected disabled>Дисциплина</option>
+                    @foreach (var discipline in Model.Disciplines)
                     {
-                        <option value="@group.IdStudyGroup">@group.NameStudyGroup</option>
+                        <option value="@discipline.IdDiscipline">@discipline.NameDiscipline</option>
+                    }
+                </select>
+                <select class="CrudSelect" required id="typeId" name="typeId" placeholder="Тип материала">
+                    <option selected disabled>Тип материала</option>
+                    @foreach (var type in Model.TypeMaterials)
+                    {
+                        <option value="@type.IdTypeMaterial">@type.NameTypeMaterial</option>
                     }
                 </select>
                 <button class="InputFiltr" type="submit">Фильтрация</button>
 
-            </form> *@
+            </form>
         </div>
         <div class="formsContainer">
             @foreach (var item in Model.Materials)
@@ -72,8 +79,6 @@
                 <div class="formMaterial">
                     <div class="formButton">
                         <a asp-action="UpdateMaterial" asp-controller="teacher" asp-route-id="@item.IdMaterial"><input type="image" width="50" height="50" src="../images/edit.png" /></a>
-
-                        
                     </div>
                     <form asp-action="FileMaterial" asp-antiforgery="true" asp-controller="admin">
 
