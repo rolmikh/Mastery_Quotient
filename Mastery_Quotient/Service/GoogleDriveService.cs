@@ -65,7 +65,7 @@ namespace Mastery_Quotient.Class
         //public GoogleDriveService(string clientId, string clientSecret)
         //{
         //    var credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
-        //        new ClientSecrets
+        //        new ClientSecrets7
         //        {
         //            ClientId = clientId,
         //            ClientSecret = clientSecret

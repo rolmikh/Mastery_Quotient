@@ -20,7 +20,12 @@ namespace Mastery_Quotient.Service
             return fileUrl;
         }
 
-
+        /// <summary>
+        /// Загрузка фотографии профиля в Firebase Storage
+        /// </summary>
+        /// <param name="stream"></param>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
         public async Task<string> UploadPhoto(Stream stream, string fileName)
         {
             var cancellation = new CancellationTokenSource();
@@ -33,7 +38,12 @@ namespace Mastery_Quotient.Service
             return fileUrl;
         }
 
-
+        /// <summary>
+        /// Загрузка файла материала в Firebase Storage
+        /// </summary>
+        /// <param name="stream"></param>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
         public async Task<string> UploadMaterial(Stream stream, string fileName)
         {
             var cancellation = new CancellationTokenSource();
@@ -46,6 +56,12 @@ namespace Mastery_Quotient.Service
             return fileUrl;
         }
 
+        /// <summary>
+        /// Загрузка фотографии материала в Firebase Storage
+        /// </summary>
+        /// <param name="stream"></param>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
         public async Task<string> UploadPhotoMaterial(Stream stream, string fileName)
         {
             var cancellation = new CancellationTokenSource();

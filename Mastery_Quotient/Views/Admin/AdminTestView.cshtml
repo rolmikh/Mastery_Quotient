@@ -47,17 +47,24 @@
                     <img width="40" height="40" src="../images/icons8-лупа-64.png" />
                 </button>
             </form>
-            @* <form asp-antiforgery="true" asp-action="FiltrationStudent" asp-controller="Admin">
-            <select class="CrudSelect" required id="groupUser" name="groupUser" placeholder="Учебная группа">
-            <option selected disabled>Учебная группа</option>
-            @foreach (var group in Model.StudyGroups)
-            {
-            <option value="@group.IdStudyGroup">@group.NameStudyGroup</option>
-            }
-            </select>
-            <button class="InputFiltr" type="submit">Фильтрация</button>
+            <form asp-antiforgery="true" asp-action="FiltrationTest" asp-controller="Admin">
+                <select class="CrudSelect" required id="disciplineID" name="disciplineID" placeholder="Дисциплина">
+                    <option selected disabled>Дисциплина</option>
+                    @foreach (var discipline in Model.Disciplines)
+                    {
+                        <option value="@discipline.IdDiscipline">@discipline.NameDiscipline</option>
+                    }
+                </select>
+                <select class="CrudSelect" required id="parameterId" name="parameterId" placeholder="Параметр тестирования">
+                    <option selected disabled>Параметр тестирования</option>
+                    @foreach (var parameter in Model.TestParameters)
+                    {
+                        <option value="@parameter.IdTestParameter">@parameter.NameParameter @parameter.ValueParameter</option>
+                    }
+                </select>
+                <button class="InputFiltr" type="submit">Фильтрация</button>
 
-            </form> *@
+            </form>
         </div>
         <div class="formsContainer">
             @foreach (var item in Model.Test)

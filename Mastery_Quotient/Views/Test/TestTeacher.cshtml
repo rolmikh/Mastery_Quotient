@@ -59,7 +59,7 @@
                     <option selected disabled>Параметр тестирования</option>
                     @foreach (var parameter in Model.TestParameters)
                     {
-                        <option value="@parameter.IdTestParameter">@parameter.NameParameter</option>
+                        <option value="@parameter.IdTestParameter">@parameter.NameParameter @parameter.ValueParameter</option>
                     }
                 </select>
                 <button class="InputFiltr" type="submit">Фильтрация</button>

@@ -34,6 +34,10 @@ namespace Mastery_Quotient.Controllers
             return View();
         }
 
+        /// <summary>
+        /// Загрузка представления страницы просмотра материалов
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> TeacherWindowMaterial()
         {
@@ -85,7 +89,15 @@ namespace Mastery_Quotient.Controllers
                 return BadRequest();
             }
         }
-
+        /// <summary>
+        /// POST запрос добавления материалов
+        /// </summary>
+        /// <param name="nameMaterial"></param>
+        /// <param name="typeMaterial"></param>
+        /// <param name="disciplineMaterial"></param>
+        /// <param name="file"></param>
+        /// <param name="filePhoto"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> TeacherWindowMaterial(string nameMaterial, int typeMaterial, int disciplineMaterial, IFormFile file, IFormFile filePhoto)
         {
@@ -149,10 +161,10 @@ namespace Mastery_Quotient.Controllers
 
         }
 
-        
-
-        
-
+        /// <summary>
+        /// Загрузка представления страницы личного кабинета преподавателя
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> PersonalAccountTeacher()
         {
@@ -193,7 +205,16 @@ namespace Mastery_Quotient.Controllers
             }
         }
 
-
+        /// <summary>
+        /// POST запрос изменения данных в личном кабинете
+        /// </summary>
+        /// <param name="surnameUser"></param>
+        /// <param name="nameUser"></param>
+        /// <param name="middleNameUser"></param>
+        /// <param name="emailUser"></param>
+        /// <param name="passwordUser"></param>
+        /// <param name="saltUser"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> PersonalAccountTeacher(string surnameUser, string nameUser, string middleNameUser, string emailUser, string passwordUser, string saltUser)
         {
@@ -239,6 +260,12 @@ namespace Mastery_Quotient.Controllers
             }
         }
 
+
+        /// <summary>
+        /// POST запрос обновления фотографии в личном кабинете
+        /// </summary>
+        /// <param name="photo"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> UpdatePhoto(IFormFile photo)
         {
@@ -293,7 +320,10 @@ namespace Mastery_Quotient.Controllers
         }
 
         
-
+        /// <summary>
+        /// Метод выхода из аккаунта
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
@@ -307,6 +337,11 @@ namespace Mastery_Quotient.Controllers
             return RedirectToAction("Authorization", "Home");
         }
 
+
+        /// <summary>
+        /// Загрузка представления страницы материалов преподавателя
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> MaterialsTeacher()
         {
@@ -381,6 +416,11 @@ namespace Mastery_Quotient.Controllers
 
         }
 
+        /// <summary>
+        /// POST запрос поиска материалов преподавателя
+        /// </summary>
+        /// <param name="Search"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> MaterialsTeacher(string Search)
         {
@@ -420,7 +460,12 @@ namespace Mastery_Quotient.Controllers
 
         }
 
-
+        /// <summary>
+        /// POST запрос фильтрации материалов преподавателя
+        /// </summary>
+        /// <param name="typeId"></param>
+        /// <param name="disciplineID"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> FiltrationMaterial(int typeId, int disciplineID)
         {
@@ -476,6 +521,11 @@ namespace Mastery_Quotient.Controllers
             }
         }
 
+        /// <summary>
+        /// Загрузка представления страницы с файлом материала
+        /// </summary>
+        /// <param name="nameFile"></param>
+        /// <returns></returns>
         public IActionResult FileMaterial(string nameFile)
         {
 
@@ -484,6 +534,12 @@ namespace Mastery_Quotient.Controllers
 
         }
 
+
+        /// <summary>
+        /// Загрузка представления страницы изменения материала
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> UpdateMaterial(int id)
         {
@@ -545,12 +601,21 @@ namespace Mastery_Quotient.Controllers
             }
         }
 
+        /// <summary>
+        /// POST запрос изменения данных материала
+        /// </summary>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> UpdateMaterial()
         {
             return View();
         }
 
+        /// <summary>
+        /// POST запрос удаления материала
+        /// </summary>
+        /// <param name="IdMaterial"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> DeleteMaterial(int IdMaterial)
         {

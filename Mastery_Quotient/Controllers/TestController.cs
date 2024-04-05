@@ -19,6 +19,10 @@ namespace Mastery_Quotient.Controllers
             this.configuration = configuration;
         }
 
+        /// <summary>
+        /// Загрузка представления страницы добавления тестирований
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> TeacherWindowTest()
         {
@@ -74,6 +78,15 @@ namespace Mastery_Quotient.Controllers
             }
         }
 
+        /// <summary>
+        /// POST запрос добавления тестирования
+        /// </summary>
+        /// <param name="nameTest"></param>
+        /// <param name="parameterTest"></param>
+        /// <param name="disciplineTest"></param>
+        /// <param name="deadlineCheck"></param>
+        /// <param name="deadlineDate"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> TeacherWindowTest(string nameTest, int parameterTest, int disciplineTest, bool deadlineCheck, string deadlineDate)
         {
@@ -128,6 +141,10 @@ namespace Mastery_Quotient.Controllers
            
         }
 
+        /// <summary>
+        /// Загрузка представления страницы просмотра тестирований
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> TestTeacher()
         {
@@ -174,6 +191,10 @@ namespace Mastery_Quotient.Controllers
                     {
                         tests = JsonConvert.DeserializeObject<List<Test>>(TempData["Search"].ToString());
                     }
+                    else if (TempData.ContainsKey("Filtration"))
+                    {
+                        tests = JsonConvert.DeserializeObject<List<Test>>(TempData["Filtration"].ToString());
+                    }
                     else
                     {
                         using (var response = await httpClient.GetAsync(apiUrl + "Tests"))
@@ -195,6 +216,11 @@ namespace Mastery_Quotient.Controllers
             }
         }
 
+        /// <summary>
+        /// POST запрос поиска тестирования
+        /// </summary>
+        /// <param name="Search"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> TestTeacher(string Search)
         {
@@ -234,6 +260,11 @@ namespace Mastery_Quotient.Controllers
 
         }
 
+        /// <summary>
+        /// Загрузка представления страницы добавления вопросов
+        /// </summary>
+        /// <param name="testId"></param>
+        /// <returns></returns>
         public async Task<IActionResult> QuestionTest(int testId)
         {
 
@@ -344,6 +375,10 @@ namespace Mastery_Quotient.Controllers
            
         }
 
+        /// <summary>
+        /// POST запрос обновления данных о тестировании, публикация тестирования
+        /// </summary>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> TestPublication()
         {
@@ -385,6 +420,11 @@ namespace Mastery_Quotient.Controllers
             }
         }
 
+        /// <summary>
+        /// POST запрос удаления данных о тестирований
+        /// </summary>
+        /// <param name="IdTest"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> DeleteTest(int IdTest)
         {
@@ -407,6 +447,14 @@ namespace Mastery_Quotient.Controllers
             }
         }
 
+
+        /// <summary>
+        /// POST запрос добавления вопроса с письменным вариантом ответа
+        /// </summary>
+        /// <param name="numberQuestion"></param>
+        /// <param name="nameQuestion"></param>
+        /// <param name="typeQuestion"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> QuestionInput(int numberQuestion,string nameQuestion, string typeQuestion)
         {
@@ -466,7 +514,15 @@ namespace Mastery_Quotient.Controllers
             }
 
         }
-
+       
+        /// <summary>
+        /// POST запрос добавления вопроса с одним вариантом ответа
+        /// </summary>
+        /// <param name="numberQuestion"></param>
+        /// <param name="nameQuestion"></param>
+        /// <param name="typeQuestion"></param>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> QuestionOne(int numberQuestion, string nameQuestion, string typeQuestion, NewModelQuestionOne model)
         {
@@ -566,6 +622,14 @@ namespace Mastery_Quotient.Controllers
 
         }
 
+        /// <summary>
+        /// POST запрос добавления вопроса с несколькими вариантами ответа
+        /// </summary>
+        /// <param name="numberQuestion"></param>
+        /// <param name="nameQuestion"></param>
+        /// <param name="typeQuestion"></param>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> QuestionTwo(int numberQuestion, string nameQuestion, string typeQuestion, NewModelQuestionOne model)
         {
@@ -678,5 +742,65 @@ namespace Mastery_Quotient.Controllers
         }
 
 
+        /// <summary>
+        /// POST запрос фильтрации тестирований
+        /// </summary>
+        /// <param name="parameterId"></param>
+        /// <param name="disciplineID"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> FiltrationTest(int parameterId, int disciplineID)
+        {
+            try
+            {
+                if (parameterId != 0 || disciplineID != 0)
+                {
+                    var apiUrl = configuration["AppSettings:ApiUrl"];
+
+                    List<Test> tests = new List<Test>();
+
+                    using (var httpClient = new HttpClient())
+                    {
+                        if (parameterId != 0 && disciplineID == 0)
+                        {
+                            using (var response = await httpClient.GetAsync(apiUrl + "Tests/Filtration?idParameter=" + parameterId))
+                            {
+                                var apiResponse = await response.Content.ReadAsStringAsync();
+                                tests = JsonConvert.DeserializeObject<List<Test>>(apiResponse);
+                            }
+                        }
+                        else if (parameterId == 0 && disciplineID != 0)
+                        {
+                            using (var response = await httpClient.GetAsync(apiUrl + "Tests/Filtration?idDiscipline=" + disciplineID))
+                            {
+                                var apiResponse = await response.Content.ReadAsStringAsync();
+                                tests = JsonConvert.DeserializeObject<List<Test>>(apiResponse);
+                            }
+                        }
+                        else
+                        {
+                            using (var response = await httpClient.GetAsync(apiUrl + $"Tests/Filtration?idDiscipline={disciplineID}&idParameter={parameterId}"))
+                            {
+                                var apiResponse = await response.Content.ReadAsStringAsync();
+                                tests = JsonConvert.DeserializeObject<List<Test>>(apiResponse);
+                            }
+
+                        }
+                        TempData["Filtration"] = JsonConvert.SerializeObject(tests);
+
+                        return RedirectToAction("TestTeacher", "Test");
+
+                    }
+                }
+                else
+                {
+                    return RedirectToAction("TestTeacher", "Test");
+                }
+            }
+            catch
+            {
+                return BadRequest("Ошибка");
+            }
+        }
     }
 }

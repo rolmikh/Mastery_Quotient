@@ -33,13 +33,21 @@ namespace Mastery_Quotient.Controllers
 
         private readonly ILogger<AdminController> _logger;
 
+        /// <summary>
+        /// Загрузка представления главной страницы
+        /// </summary>
+        /// <returns></returns>
+
         public IActionResult Main()
         {
             return View();
         }
 
         //Employees
-
+        /// <summary>
+        /// Загрузка представления страницы с сотрудниками
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> AdminWindowTeacher()
         {
@@ -91,6 +99,12 @@ namespace Mastery_Quotient.Controllers
 
         }
 
+
+        /// <summary>
+        /// POST запрос для поиска преподавателей
+        /// </summary>
+        /// <param name="Search"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> AdminWindowTeacher(string Search)
         {
@@ -120,6 +134,11 @@ namespace Mastery_Quotient.Controllers
 
         }
 
+        /// <summary>
+        /// POST запрос фильтрации преподавателей
+        /// </summary>
+        /// <param name="roleTeacher"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> FiltrationTeacher(int roleTeacher)
         {
@@ -158,6 +177,10 @@ namespace Mastery_Quotient.Controllers
             }
         }
 
+        /// <summary>
+        /// Загрузка представления страницы добавления преподавателей
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> TeacherNew()
         {
@@ -201,6 +224,14 @@ namespace Mastery_Quotient.Controllers
             }
         }
 
+        /// <summary>
+        /// POST запрос добавления преподавателей
+        /// </summary>
+        /// <param name="nameUser"></param>
+        /// <param name="emailUser"></param>
+        /// <param name="passwordUser"></param>
+        /// <param name="roleUser"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> TeacherNew(string nameUser, string emailUser, string passwordUser, int roleUser)
         {
@@ -257,6 +288,18 @@ namespace Mastery_Quotient.Controllers
             }
         }
 
+        /// <summary>
+        /// POST запрос изменения данных
+        /// </summary>
+        /// <param name="idUser"></param>
+        /// <param name="surnameUser"></param>
+        /// <param name="nameUser"></param>
+        /// <param name="middleNameUser"></param>
+        /// <param name="emailUser"></param>
+        /// <param name="passwordUser"></param>
+        /// <param name="saltUser"></param>
+        /// <param name="roleUser"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> UpdateTeacher(int idUser,string surnameUser, string nameUser, string middleNameUser, string emailUser, string passwordUser, string saltUser,int roleUser)
         {
@@ -300,6 +343,11 @@ namespace Mastery_Quotient.Controllers
             }
         }
 
+        /// <summary>
+        /// Загрузка представления страницы обновления преподавателей
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> UpdateTeacher(int id)
         {
@@ -334,7 +382,11 @@ namespace Mastery_Quotient.Controllers
             }
         }
 
-
+        /// <summary>
+        /// POST запрос удаления данных
+        /// </summary>
+        /// <param name="IdEmployee"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> DeleteTeacher(int IdEmployee)
         {
@@ -357,7 +409,11 @@ namespace Mastery_Quotient.Controllers
             }
         }
 
-
+        /// <summary>
+        /// Загрузка представления страницы подробной информации о преподавателях
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> DetailsTeacher(int id)
         {
@@ -409,6 +465,10 @@ namespace Mastery_Quotient.Controllers
             }
         }
 
+        /// <summary>
+        /// Загрузка представления страницы личного кабинета
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> PersonalAccountAdmin()
         {
@@ -447,6 +507,16 @@ namespace Mastery_Quotient.Controllers
             }
         }
 
+        /// <summary>
+        /// POST запрос обновления данных в личном кабинете
+        /// </summary>
+        /// <param name="surnameUser"></param>
+        /// <param name="nameUser"></param>
+        /// <param name="middleNameUser"></param>
+        /// <param name="emailUser"></param>
+        /// <param name="passwordUser"></param>
+        /// <param name="saltUser"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> PersonalAccountAdmin(string surnameUser, string nameUser, string middleNameUser, string emailUser, string passwordUser, string saltUser)
         {
@@ -493,6 +563,12 @@ namespace Mastery_Quotient.Controllers
             }
         }
 
+
+        /// <summary>
+        /// POST запрос обновления фотографии в личном кабинете
+        /// </summary>
+        /// <param name="photo"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> UpdatePhoto(IFormFile photo)
         {
@@ -548,7 +624,10 @@ namespace Mastery_Quotient.Controllers
 
         
 
-
+        /// <summary>
+        /// Выход из аккаунта
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
@@ -563,6 +642,10 @@ namespace Mastery_Quotient.Controllers
         }
 
         //Students
+        /// <summary>
+        /// Загрузка представления страницы просмотра студентов
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> AdminWindowStudent()
         {
@@ -614,6 +697,12 @@ namespace Mastery_Quotient.Controllers
 
         }
 
+
+        /// <summary>
+        /// POST запрос поиска студентов
+        /// </summary>
+        /// <param name="Search"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> AdminWindowStudent(string Search)
         {
@@ -653,7 +742,11 @@ namespace Mastery_Quotient.Controllers
 
         }
 
-
+        /// <summary>
+        /// POST запрос фильтрации студентов.
+        /// </summary>
+        /// <param name="groupUser"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> FiltrationStudent(int groupUser)
         {
@@ -692,6 +785,18 @@ namespace Mastery_Quotient.Controllers
             }
         }
 
+        /// <summary>
+        /// POST запрос изменения данных студента
+        /// </summary>
+        /// <param name="idUser"></param>
+        /// <param name="surnameUser"></param>
+        /// <param name="nameUser"></param>
+        /// <param name="middleNameUser"></param>
+        /// <param name="emailUser"></param>
+        /// <param name="passwordUser"></param>
+        /// <param name="saltUser"></param>
+        /// <param name="studyGroupUser"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> UpdateStudent(int idUser,string surnameUser, string nameUser, string middleNameUser, string emailUser, string passwordUser, string saltUser , int studyGroupUser)
         {
@@ -736,6 +841,12 @@ namespace Mastery_Quotient.Controllers
             }
         }
 
+
+        /// <summary>
+        /// Загрузка представления страницы изменения данных студента
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> UpdateStudent(int id)
         {
@@ -770,7 +881,11 @@ namespace Mastery_Quotient.Controllers
             }
         }
 
-
+        /// <summary>
+        /// POST запрос удаления студента
+        /// </summary>
+        /// <param name="IdStudent"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> DeleteStudent(int IdStudent)
         {
@@ -793,7 +908,11 @@ namespace Mastery_Quotient.Controllers
             }
         }
 
-
+        /// <summary>
+        /// Загрузка представления страницы подробной информации о студенте
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> DetailsStudent(int id)
         {
@@ -835,6 +954,10 @@ namespace Mastery_Quotient.Controllers
             }
         }
 
+        /// <summary>
+        /// Загрузка представления страницы просмотра материалов
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> MaterialsAdmin()
         {
@@ -890,7 +1013,11 @@ namespace Mastery_Quotient.Controllers
             
         }
 
-
+        /// <summary>
+        /// Загрузка представления страницы с файлом материала
+        /// </summary>
+        /// <param name="nameFile"></param>
+        /// <returns></returns>
         public IActionResult FileMaterial(string nameFile)
         {
             
@@ -902,7 +1029,10 @@ namespace Mastery_Quotient.Controllers
 
         }
 
-
+        /// <summary>
+        /// Загрузка представления страницы просмотра тестирований
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> AdminTestView()
         {
             try
@@ -948,6 +1078,10 @@ namespace Mastery_Quotient.Controllers
                     {
                         tests = JsonConvert.DeserializeObject<List<Test>>(TempData["Search"].ToString());
                     }
+                    else if (TempData.ContainsKey("Filtration"))
+                    {
+                        tests = JsonConvert.DeserializeObject<List<Test>>(TempData["Filtration"].ToString());
+                    }
                     else
                     {
                         using (var response = await httpClient.GetAsync(apiUrl + "Tests/Active"))
@@ -968,7 +1102,11 @@ namespace Mastery_Quotient.Controllers
             }
         }
 
-
+        /// <summary>
+        /// POST запрос поиска тестирований
+        /// </summary>
+        /// <param name="Search"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> AdminTestView(string Search)
         {
@@ -1008,6 +1146,11 @@ namespace Mastery_Quotient.Controllers
 
         }
 
+        /// <summary>
+        /// Загрузка представления страницы просмотра одного тестирования
+        /// </summary>
+        /// <param name="testId"></param>
+        /// <returns></returns>
         public async Task<IActionResult> AdminOneTestView(int testId)
         {
 
@@ -1117,6 +1260,72 @@ namespace Mastery_Quotient.Controllers
 
         }
 
+        /// <summary>
+        /// POST запрос фильтрации тестирований
+        /// </summary>
+        /// <param name="parameterId"></param>
+        /// <param name="disciplineID"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> FiltrationTest(int parameterId, int disciplineID)
+        {
+            try
+            {
+                if (parameterId != 0 || disciplineID != 0)
+                {
+                    var apiUrl = configuration["AppSettings:ApiUrl"];
+
+                    List<Test> tests = new List<Test>();
+
+                    using (var httpClient = new HttpClient())
+                    {
+                        if (parameterId != 0 && disciplineID == 0)
+                        {
+                            using (var response = await httpClient.GetAsync(apiUrl + "Tests/Filtration?idParameter=" + parameterId))
+                            {
+                                var apiResponse = await response.Content.ReadAsStringAsync();
+                                tests = JsonConvert.DeserializeObject<List<Test>>(apiResponse);
+                            }
+                        }
+                        else if (parameterId == 0 && disciplineID != 0)
+                        {
+                            using (var response = await httpClient.GetAsync(apiUrl + "Tests/Filtration?idDiscipline=" + disciplineID))
+                            {
+                                var apiResponse = await response.Content.ReadAsStringAsync();
+                                tests = JsonConvert.DeserializeObject<List<Test>>(apiResponse);
+                            }
+                        }
+                        else
+                        {
+                            using (var response = await httpClient.GetAsync(apiUrl + $"Tests/Filtration?idDiscipline={disciplineID}&idParameter={parameterId}"))
+                            {
+                                var apiResponse = await response.Content.ReadAsStringAsync();
+                                tests = JsonConvert.DeserializeObject<List<Test>>(apiResponse);
+                            }
+
+                        }
+                        TempData["Filtration"] = JsonConvert.SerializeObject(tests);
+
+                        return RedirectToAction("AdminTestView", "Admin");
+
+                    }
+                }
+                else
+                {
+                    return RedirectToAction("AdminTestView", "Admin");
+                }
+            }
+            catch
+            {
+                return BadRequest("Ошибка");
+            }
+        }
+
+        /// <summary>
+        /// POST запрос поиска материалов
+        /// </summary>
+        /// <param name="Search"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> MaterialsAdmin(string Search)
         {
@@ -1156,7 +1365,12 @@ namespace Mastery_Quotient.Controllers
 
         }
 
-
+        /// <summary>
+        /// POST запрос фильтрации материалов
+        /// </summary>
+        /// <param name="typeId"></param>
+        /// <param name="disciplineID"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> FiltrationMaterial(int typeId, int disciplineID)
         {
@@ -1213,10 +1427,5 @@ namespace Mastery_Quotient.Controllers
         }
 
     }
-
-
-
-
-
    
 }

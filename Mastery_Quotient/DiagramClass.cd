@@ -1,0 +1,270 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Mastery_Quotient.Controllers.AdminController">
+    <Position X="19.25" Y="1.25" Width="3" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAgCAAEAAEAQBAABAMIICDAAAIAAQAcBCQiAAA=</HashCode>
+      <FileName>Controllers\AdminController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mastery_Quotient.Controllers.HomeController">
+    <Position X="19.25" Y="7.75" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAgAAQAAIAAAAAIAIACAAQAAAAEAAAAEAAA=</HashCode>
+      <FileName>Controllers\HomeController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mastery_Quotient.Controllers.StudentController">
+    <Position X="22.5" Y="3.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Controllers\StudentController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mastery_Quotient.Controllers.TeacherController">
+    <Position X="15.75" Y="5" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAAAAAAAAAAABAIAIBCQAABgAIAcACAAAAA=</HashCode>
+      <FileName>Controllers\TeacherController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mastery_Quotient.Controllers.TestController">
+    <Position X="15.75" Y="1.25" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAgAAAAACAAAAAAAQIACAAQICAIBAAAAAAAA=</HashCode>
+      <FileName>Controllers\TestController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mastery_Quotient.Models.AnswerOption">
+    <Position X="6" Y="3.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAABAACAAAACAAAAAAAABAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\AnswerOption.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mastery_Quotient.Models.Course">
+    <Position X="8.5" Y="9.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>Models\Course.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mastery_Quotient.Models.Discipline">
+    <Position X="3.5" Y="10.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAIAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Discipline.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mastery_Quotient.Models.DisciplineEmployee">
+    <Position X="10.75" Y="10.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAACAAA=</HashCode>
+      <FileName>Models\DisciplineEmployee.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mastery_Quotient.Models.Employee">
+    <Position X="13.25" Y="1.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAqAAAAAAAAAAAAIAAAAAAAAIAAAAIIACQAAAAA=</HashCode>
+      <FileName>Models\Employee.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mastery_Quotient.Models.EmployeeModelDetails">
+    <Position X="6" Y="1.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAAAAAAAIABAAAAAAAAAAABAAAAAAAAA=</HashCode>
+      <FileName>Models\EmployeeModelDetails.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mastery_Quotient.Models.EmployeeModelView">
+    <Position X="10.75" Y="4.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAACgAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\EmployeeModelView.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mastery_Quotient.Models.EmployeePersonalAccountModel">
+    <Position X="22.5" Y="1.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAEAAAAAAACAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\EmployeePersonalAccountModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mastery_Quotient.Models.EmployeeStudyGroup">
+    <Position X="3.5" Y="6" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAACAAA=</HashCode>
+      <FileName>Models\EmployeeStudyGroup.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mastery_Quotient.Models.ErrorViewModel">
+    <Position X="22.5" Y="4.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\ErrorViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mastery_Quotient.Models.GroupModel">
+    <Position X="10.75" Y="6.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAA=</HashCode>
+      <FileName>Models\GroupModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mastery_Quotient.Models.Material">
+    <Position X="3.5" Y="1.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAEAAAAAAAAAAIAAAAAAAEAAQAQICEAA=</HashCode>
+      <FileName>Models\Material.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mastery_Quotient.Models.MaterialModelView">
+    <Position X="22.5" Y="8.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAgAAAA=</HashCode>
+      <FileName>Models\MaterialModelView.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mastery_Quotient.Models.MaterialsViewTeacher">
+    <Position X="8.5" Y="3.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAAAAAAQAAAAAAACAAAAAIAAAAAAAgAAAA=</HashCode>
+      <FileName>Models\MaterialsViewTeacher.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mastery_Quotient.Models.MaterialTeacher">
+    <Position X="13.25" Y="5.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAQAAAAAAACAAAAAIAAAAAAAgAAAA=</HashCode>
+      <FileName>Models\MaterialTeacher.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mastery_Quotient.Models.NewModelQuestionOne">
+    <Position X="19.25" Y="11.25" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAA=</HashCode>
+      <FileName>Models\NewModelQuestionOne.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mastery_Quotient.Models.AnswerOptionViewModel">
+    <Position X="13.25" Y="4.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAQAAAAAAAA=</HashCode>
+      <FileName>Models\NewModelQuestionOne.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mastery_Quotient.Models.Question">
+    <Position X="10.75" Y="8.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAAAAAAAABAAAgAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Models\Question.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mastery_Quotient.Models.QuestionAnswerOption">
+    <Position X="13.25" Y="10.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAQAAAA=</HashCode>
+      <FileName>Models\QuestionAnswerOption.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mastery_Quotient.Models.Role">
+    <Position X="3.5" Y="7.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAgAAAAAA=</HashCode>
+      <FileName>Models\Role.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mastery_Quotient.Models.Student">
+    <Position X="8.5" Y="6" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AABAAAABAAAAAAAAAQAABBIAAIAAIAAAAAAIAQAAAAA=</HashCode>
+      <FileName>Models\Student.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mastery_Quotient.Models.StudentModelDetails">
+    <Position X="22.5" Y="6.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQAAAAAAAAIAAAAAAAAAAAAAAACAAAAAAAAA=</HashCode>
+      <FileName>Models\StudentModelDetails.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mastery_Quotient.Models.StudentModelView">
+    <Position X="6" Y="7.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAA=</HashCode>
+      <FileName>Models\StudentModelView.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mastery_Quotient.Models.StudyGroup">
+    <Position X="22.5" Y="10.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>ABAEAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\StudyGroup.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mastery_Quotient.Models.Test">
+    <Position X="6" Y="9.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAgEAFAAQCCAAA=</HashCode>
+      <FileName>Models\Test.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mastery_Quotient.Models.TestParameter">
+    <Position X="3.5" Y="4.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAEAAAAAIAAgAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\TestParameter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mastery_Quotient.Models.TestQuestion">
+    <Position X="6" Y="5.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAQAAAA=</HashCode>
+      <FileName>Models\TestQuestion.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mastery_Quotient.Models.TestTeacher">
+    <Position X="8.5" Y="1.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAQAAAAABACAAAAAIAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\TestTeacher.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mastery_Quotient.Models.TestViewTeacher">
+    <Position X="15.75" Y="10" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAQAAAAABACAAAAAIAAAAACAAAAAA=</HashCode>
+      <FileName>Models\TestViewTeacher.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mastery_Quotient.Models.TypeMaterial">
+    <Position X="3.5" Y="9.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\TypeMaterial.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mastery_Quotient.Models.TypeQuestion">
+    <Position X="8.5" Y="10.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAEAAAAAAAAQAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\TypeQuestion.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mastery_Quotient.Models.ViewTestModel">
+    <Position X="10.75" Y="1.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAIAAAAAAIAAAAAACAAAAAAEAIQACAAgQgA=</HashCode>
+      <FileName>Models\ViewTestModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mastery_Quotient.Service.FirebaseService">
+    <Position X="13.25" Y="8.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>QABAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAICAA=</HashCode>
+      <FileName>Service\FirebaseService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

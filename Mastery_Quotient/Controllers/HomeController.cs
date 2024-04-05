@@ -50,7 +50,12 @@ namespace Mastery_Quotient.Controllers
         }
 
 
-
+        /// <summary>
+        /// POST запрос авторизации пользователя
+        /// </summary>
+        /// <param name="emailUser"></param>
+        /// <param name="passwordUser"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Authorization(string emailUser, string passwordUser)
@@ -129,7 +134,11 @@ namespace Mastery_Quotient.Controllers
             
         }
 
-
+        /// <summary>
+        /// Метод, который создает идентификационные данные пользователя на основе предоставленного имени пользователя и аутентифицирует его
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <returns></returns>
         private async Task Authenticate(string userName)
         {
             var claims = new List<Claim>
@@ -142,7 +151,10 @@ namespace Mastery_Quotient.Controllers
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
         }
 
-
+        /// <summary>
+        /// Метод выхода из аккаунта
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
@@ -152,6 +164,14 @@ namespace Mastery_Quotient.Controllers
             return RedirectToAction("Authorization", "Home");
         }
 
+        /// <summary>
+        /// POST запрос регистрации студентов в системе
+        /// </summary>
+        /// <param name="nameUser"></param>
+        /// <param name="emailUser"></param>
+        /// <param name="passwordUser"></param>
+        /// <param name="groupUser"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> Registration(string nameUser, string emailUser, string passwordUser, int groupUser)
         {
