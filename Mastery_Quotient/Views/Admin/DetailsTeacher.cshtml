@@ -14,9 +14,9 @@
 <body>
     <main>
 
-        <h1>@Model.employee.SurnameEmployee @Model.employee.NameEmployee @Model.employee.MiddleNameEmployee</h1>
-        <h2>@Model.employee.EmailEmployee</h2>
-        <h2>@Model.role.NameRole</h2>
+        <h1>ФИО сотрудника: @Model.employee.SurnameEmployee @Model.employee.NameEmployee @Model.employee.MiddleNameEmployee</h1>
+        <h2>Электронная почта сотрудника: @Model.employee.EmailEmployee</h2>
+        <h2>Роль сотрудника: @Model.role.NameRole</h2>
         <h3>Учебные группы</h3>
         @foreach(var studyGroups in Model.employeeStudyGroups)
         {

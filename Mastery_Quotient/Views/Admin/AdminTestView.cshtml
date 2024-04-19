@@ -21,10 +21,10 @@
         </a>
 
         <ul class="navigation_ul">
-            <li class="navigation_li"><a class="navigation_a" asp-action="News">Новости</a></li>
-            <li class="navigation_li"><a class="navigation_a" asp-action="MaterialsAdmin">Материалы</a></li>
-            <li class="navigation_li"><a class="navigation_a" asp-action="AdminTestView">Тесты</a></li>
-            <li class="navigation_li"><a class="navigation_a" asp-action="PanelAdmin">Панель администратора</a></li>
+            <li class="navigation_li"><a class="navigation_a" asp-action="News" asp-controller="Admin">Новости</a></li>
+            <li class="navigation_li"><a class="navigation_a" asp-action="MaterialsAdmin" asp-controller="Admin">Материалы</a></li>
+            <li class="navigation_li"><a class="navigation_a" asp-action="AdminTestView" asp-controller="Admin">Тесты</a></li>
+            <li class="navigation_li"><a class="navigation_a" asp-action="AdminPanel" asp-controller="AdminCRUD">Панель администратора</a></li>
         </ul>
         <ul class="navigation_ul_right">
             <li class="navigation_li_right" style="float: right">
@@ -70,17 +70,19 @@
             @foreach (var item in Model.Test)
             {
 
-                    <div class="divTestForm">
-                        <form asp-action="AdminOneTestView" asp-antiforgery="true" asp-controller="Admin">
-                            <div>
-                                <input name="testId" hidden value="@item.IdTest" />
-                                <label class="labelTest">@item.NameTest</label>
-                                <label class="labelTest">Дата создания: @string.Format("{0:dd.MM.yyyy}", @item.DateCreatedTest)</label>
-                                <input value="Просмотреть тестирование" class="buttonTest" type="submit" />
+                <div class="divTestForm">
+                    <form asp-action="AdminOneTestView" asp-antiforgery="true" asp-controller="Admin">
+                        <div>
+                            <input name="testId" hidden value="@item.IdTest" />
 
-                            </div>
-                        </form>
-                    </div>
+                            <label class="labelTest">@item.NameTest</label>
+                            <br />
+                            <label class="labelTest">Дата создания: @string.Format("{0:dd.MM.yyyy}", @item.DateCreatedTest)</label>
+                            <input value="Просмотреть тестирование" class="buttonTest" type="submit" />
+
+                        </div>
+                    </form>
+                </div>
 
                 
             }

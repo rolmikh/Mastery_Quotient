@@ -76,10 +76,9 @@
                         <img>
                     </button>
                 </form>
+                <a asp-action="UpdateMaterial" asp-controller="teacher" asp-route-id="@item.IdMaterial"><input type="image" width="50" height="50" src="../images/edit.png" /></a>
                 <div class="formMaterial">
-                    <div class="formButton">
-                        <a asp-action="UpdateMaterial" asp-controller="teacher" asp-route-id="@item.IdMaterial"><input type="image" width="50" height="50" src="../images/edit.png" /></a>
-                    </div>
+                    
                     <form asp-action="FileMaterial" asp-antiforgery="true" asp-controller="admin">
 
                         <input type="image" class="imageMaterial" width="187" height="177" src="@item.PhotoMaterial" />

@@ -9,6 +9,7 @@ namespace Mastery_Quotient.Models
         public int? IdDiscipline { get; set; }
         public string? NameDiscipline { get; set; }
         public int? CourseId { get; set; }
+        public int? IsDeleted { get; set; }
 
     }
 }

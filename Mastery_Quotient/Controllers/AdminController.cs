@@ -11,6 +11,7 @@ using Firebase.Storage;
 using System.Net.Sockets;
 using Mastery_Quotient.Service;
 using Ganss.Xss;
+using Microsoft.AspNetCore.Http.Extensions;
 
 namespace Mastery_Quotient.Controllers
 {
@@ -64,7 +65,7 @@ namespace Mastery_Quotient.Controllers
                     {
                         employees = JsonConvert.DeserializeObject<List<Employee>>(TempData["Search"].ToString());
                     }
-                    if (TempData.ContainsKey("Filtration"))
+                    else if (TempData.ContainsKey("Filtration"))
                     {
                         employees = JsonConvert.DeserializeObject<List<Employee>>(TempData["Filtration"].ToString());
                     }
@@ -522,7 +523,7 @@ namespace Mastery_Quotient.Controllers
         {
             try
             {
-
+                
                 int id = int.Parse(TempData["AuthUser"].ToString());
 
                 TempData.Keep("AuthUser");
@@ -570,7 +571,7 @@ namespace Mastery_Quotient.Controllers
         /// <param name="photo"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> UpdatePhoto(IFormFile photo)
+        public async Task<IActionResult> updatePhoto(IFormFile photo)
         {
             try
             {
@@ -913,6 +914,47 @@ namespace Mastery_Quotient.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
+        //[HttpGet]
+        //public async Task<IActionResult> DetailsStudent(int id)
+        //{
+        //    try
+        //    {
+        //        var apiUrl = configuration["AppSettings:ApiUrl"];
+
+        //        Student student = new Student();
+        //        List<StudyGroup> studyGroups = new List<StudyGroup>();
+        //        List<Course> courses = new List<Course>();
+
+        //        using (var httpClient = new HttpClient())
+        //        {
+        //            var studentTask = httpClient.GetAsync(apiUrl + "Students/" + id);
+        //            var studyGroupsTask = httpClient.GetAsync(apiUrl + "StudyGroups");
+        //            var coursesTask = httpClient.GetAsync(apiUrl + "Courses");
+
+        //            await Task.WhenAll(studentTask, studyGroupsTask, coursesTask);
+
+        //            string apiResponse = await studentTask.Result.Content.ReadAsStringAsync();
+        //            student = JsonConvert.DeserializeObject<Student>(apiResponse);
+
+        //            apiResponse = await studyGroupsTask.Result.Content.ReadAsStringAsync();
+        //            studyGroups = JsonConvert.DeserializeObject<List<StudyGroup>>(apiResponse);
+
+        //            apiResponse = await coursesTask.Result.Content.ReadAsStringAsync();
+        //            courses = JsonConvert.DeserializeObject<List<Course>>(apiResponse);
+        //        }
+
+        //        StudyGroup group = studyGroups.Find(n => n.IdStudyGroup == student.StudyGroupId);
+        //        Course course = courses.Find(n => n.IdCourse == group.CourseId);
+        //        StudentModelDetails studentModelDetails = new StudentModelDetails(student, group, course);
+
+        //        return View(studentModelDetails);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(ex.Message);
+        //    }
+        //}
+
         [HttpGet]
         public async Task<IActionResult> DetailsStudent(int id)
         {
@@ -945,7 +987,7 @@ namespace Mastery_Quotient.Controllers
                 StudyGroup group = studyGroups.Find(n => n.IdStudyGroup == student.StudyGroupId);
                 Course course = courses.Find(n => n.IdCourse == group.CourseId);
                 StudentModelDetails studentModelDetails = new StudentModelDetails(student, group, course);
-                
+
                 return View(studentModelDetails);
             }
             catch (Exception ex)
@@ -953,6 +995,7 @@ namespace Mastery_Quotient.Controllers
                 return BadRequest("Ошибка!");
             }
         }
+
 
         /// <summary>
         /// Загрузка представления страницы просмотра материалов
@@ -987,7 +1030,7 @@ namespace Mastery_Quotient.Controllers
                     {
                         materials = JsonConvert.DeserializeObject<List<Material>>(TempData["Search"].ToString());
                     }
-                    else if(TempData.ContainsKey("Filtration"))
+                    else if (TempData.ContainsKey("Filtration"))
                     {
                         materials = JsonConvert.DeserializeObject<List<Material>>(TempData["Filtration"].ToString());
 
@@ -1001,8 +1044,8 @@ namespace Mastery_Quotient.Controllers
                         }
                     }
                 }
-                
-                MaterialModelView materialModelView = new MaterialModelView(materials,disciplines, typeMaterials);
+
+                MaterialModelView materialModelView = new MaterialModelView(materials, disciplines, typeMaterials);
 
                 return View(materialModelView);
             }
@@ -1010,8 +1053,11 @@ namespace Mastery_Quotient.Controllers
             {
                 return BadRequest("Ошибка!");
             }
-            
+
         }
+
+        
+
 
         /// <summary>
         /// Загрузка представления страницы с файлом материала
@@ -1376,7 +1422,7 @@ namespace Mastery_Quotient.Controllers
         {
             try
             {
-                if (typeId != 0 || disciplineID !=0)
+                if (typeId != 0 || disciplineID != 0)
                 {
                     var apiUrl = configuration["AppSettings:ApiUrl"];
 
@@ -1384,15 +1430,15 @@ namespace Mastery_Quotient.Controllers
 
                     using (var httpClient = new HttpClient())
                     {
-                        if(typeId != 0 && disciplineID == 0)
+                        if (typeId != 0 && disciplineID == 0)
                         {
                             using (var response = await httpClient.GetAsync(apiUrl + "Materials/Filtration?idType=" + typeId))
                             {
                                 var apiResponse = await response.Content.ReadAsStringAsync();
-                                materials = JsonConvert.DeserializeObject<List<Material>>(apiResponse);                               
+                                materials = JsonConvert.DeserializeObject<List<Material>>(apiResponse);
                             }
                         }
-                        else if(typeId == 0 && disciplineID != 0)
+                        else if (typeId == 0 && disciplineID != 0)
                         {
                             using (var response = await httpClient.GetAsync(apiUrl + "Materials/Filtration?idDiscipline=" + disciplineID))
                             {
@@ -1426,6 +1472,7 @@ namespace Mastery_Quotient.Controllers
             }
         }
 
+
     }
-   
+
 }

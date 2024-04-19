@@ -1,0 +1,92 @@
+﻿@model Mastery_Quotient.Models.TestViewTeacher
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="@Url.Content("~/css/mainStyle.css")">
+    <link rel="stylesheet" href="@Url.Content("~/css/TestStyle.css")">
+    <link rel="stylesheet" href="@Url.Content("~/css/crudStyle.css")">
+    <link href="https://fonts.googleapis.com/css?family=Mulish:200,300,regular,500,600,700,800,900,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic"
+          rel="stylesheet" />
+
+    <script src="~/js/site.js"></script>
+
+    <title>Изменение тестирования</title>
+</head>
+
+<body>
+    <main>
+        <div class="form_new">
+            <form asp-antiforgery="true" asp-action="UpdateTest" asp-controller="Test">
+                @foreach (var test in Model.Test)
+                {
+                    <input name="IdTest" class="CrudInput" hidden readonly placeholder="Код тестирования" value="@test.IdTest" />
+                    <input name="NameTest" type="text" class="CrudInput" placeholder="Название тестирования" value="@test.NameTest" />
+
+                    <input name="DateCreatedTest" readonly class="CrudInput" value="@test.DateCreatedTest" />
+                    <input name="deadlineDate" type="date" id="deadlineDate" class="CrudInput" placeholder="Срок сдачи" />
+
+                    <div class="divForm">
+                        <input name="deadlineCheck" type="checkbox" id="deadlineCheck" value="true" placeholder="Без срока сдачи" />
+                        <label for="deadlineCheck">Без срока сдачи</label>
+                    </div>
+
+                    <select required id="testParameter" name="testParameter" class="CrudSelect" placeholder="Параметр тестирования">
+                        @foreach (var testParameters in Model.TestParameters)
+                        {
+                            <option value="@testParameters.IdTestParameter">
+                                @testParameters.NameParameter - @testParameters.ValueParameter
+                            </option>
+                        }
+                    </select>
+
+                    <select required id="disciplineTest" name="disciplineTest" class="CrudSelect" placeholder="Дисциплина">
+                        @foreach (var discipline in Model.DisciplineEmployees)
+                        {
+                            var disciplinesID = Model.Disciplines.Find(n => n.IdDiscipline == discipline.DisciplineId).IdDiscipline;
+                            var disciplinesName = Model.Disciplines.Find(n => n.IdDiscipline == discipline.DisciplineId).NameDiscipline;
+
+                            <option value="@disciplinesID">@disciplinesName</option>
+                        }
+                    </select>
+
+                    <input type="submit" class="newInput" value="Изменить тестирование" />
+                }
+            </form>
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                var testParameterSelect = document.getElementById('testParameter');
+                var testParameterHidden = document.getElementsByName('TestParameterId')[0];
+
+                testParameterSelect.value = testParameterHidden.value;
+
+                testParameterSelect.addEventListener('change', function () {
+                    testParameterHidden.value = this.value;
+                });
+
+                var disciplineSelect = document.getElementById('disciplineTest');
+                var disciplineHidden = document.getElementsByName('DisciplineId')[0];
+
+                disciplineSelect.value = disciplineHidden.value;
+
+                disciplineSelect.addEventListener('change', function () {
+                    disciplineHidden.value = this.value;
+                });
+            });
+        </script>
+
+
+
+       
+
+    </main>
+
+
+
+</body>
+
+</html>

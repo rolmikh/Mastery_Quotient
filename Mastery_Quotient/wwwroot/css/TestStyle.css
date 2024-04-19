@@ -208,11 +208,44 @@
 
 .flexDiv {
     display: flex;
+    width:100%;
 }
 
 .flexDiv div{
     flex:1;
 }
+.test_button{
+    width:100%
+}
+
+
+.newInputTest {
+    text-decoration: none;
+    flex: 2;
+    max-height: 45px;
+    width: 100%;
+    max-width: 450px;
+    height: 45px;
+    text-align: center;
+    border-radius: 5px;
+    border: none;
+    background-color: #6b9ac4;
+    font-weight: bold;
+    letter-spacing: 2px;
+    color: white;
+    transition: .15s ease-in-out;
+    font-size: 16px;
+    margin-bottom: 35px;
+}
+
+    .newInputTest:hover {
+        background-color: #3b71d3;
+    }
+
+    .newInputTest a {
+        text-decoration: none;
+        color: white
+    }
 
 .textareaForm {
     font-size: 20px;
@@ -227,8 +260,7 @@
     font-size: 20px; /* Установите размер точек */
     width: 20px; /* Установите ширину точек */
     height: 20px; /* Установите высоту точек */
-
-
+}
 
 
 

@@ -46,14 +46,14 @@
 
                 <input name="filePhoto" type="file" class="CrudInput" placeholder="Выберите фото материала" />
 
-                <select required id="typeMaterial" name="typeMaterial" class="CrudSelect" placeholder="Тип материала">
+                <select required id="typeMaterial" name="typeMaterial" class="CrudSelectMaterial" placeholder="Тип материала">
                     <option selected disabled>Тип материала</option>
                     @foreach (var typeMaterial in Model.TypeMaterials)
                     {
                         <option value="@typeMaterial.IdTypeMaterial">@typeMaterial.NameTypeMaterial</option>
                     }
                 </select>
-                <select required id="disciplineMaterial" name="disciplineMaterial" class="CrudSelect" placeholder="Дисциплина">
+                <select required id="disciplineMaterial" name="disciplineMaterial" class="CrudSelectMaterial" placeholder="Дисциплина">
                     <option selected disabled>Дисциплина</option>
                     @foreach (var discipline in Model.DisciplineEmployees)
                     {

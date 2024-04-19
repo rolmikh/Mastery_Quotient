@@ -39,7 +39,7 @@
                     <br />
                 }
 
-                <select required id="studyGroupUser" name="studyGroupUser" class="CrudSelect" placeholder="Учебная группа">
+                <select required id="studyGroupUser" name="studyGroupUser" class="CrudSelectMaterial" placeholder="Учебная группа">
                     @foreach (var group in Model.StudyGroups)
                     {
                         <option value="@group.IdStudyGroup">@group.NameStudyGroup</option>

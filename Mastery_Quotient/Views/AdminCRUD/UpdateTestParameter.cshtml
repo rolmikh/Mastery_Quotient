@@ -1,0 +1,35 @@
+﻿@model Mastery_Quotient.Models.TestParameterView
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/mainStyle.css">
+    <link rel="stylesheet" href="@Url.Content("~/css/AdminCRUDStyle.css")">
+    <link href="https://fonts.googleapis.com/css?family=Mulish:200,300,regular,500,600,700,800,900,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic"
+          rel="stylesheet" />
+    <title>Изменение параметра тестирования</title>
+</head>
+
+<body>
+    <main>
+        <div class="form_updateCRUD">
+            <form asp-antiforgery="true" asp-action="UpdateTestParameter" asp-controller="AdminCRUD">
+                 @foreach (var item in Model.testParameters)
+                {
+                    <label hidden>Код параметра</label>
+                    <input class="CrudInputAdmin" type="text" readonly required name="idParameter" value="@item.IdTestParameter" placeholder="Код параметра" />
+                    <label hidden>Название параметра</label>
+                    <input class="CrudInputAdmin" type="text" required name="nameParameter" value="@item.NameParameter" placeholder="Название параметра" />
+                    <label hidden>Значение параметра</label>
+                    <input class="CrudInputAdmin" type="text" required name="valueParameter" value="@item.ValueParameter" placeholder="Значение параметра" />
+                    <input class="newCRUD" type="submit" value="Изменить параметр тестирования" />
+                }
+            </form>
+        </div>
+    </main>
+
+</body>
+
+</html>

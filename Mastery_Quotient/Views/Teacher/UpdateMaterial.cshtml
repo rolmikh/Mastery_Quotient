@@ -28,14 +28,14 @@
                     <input name="filePhoto" type="file" class="CrudInput" placeholder="Выберите фото материала" value="@material.PhotoMaterial" />
 
                     <select required id="typeMaterial" name="typeMaterial" class="CrudSelect" placeholder="Тип материала">
-                        <option selected disabled>Тип материала</option>
+
                         @foreach (var typeMaterial in Model.TypeMaterials)
                         {
                             <option value="@typeMaterial.IdTypeMaterial">@typeMaterial.NameTypeMaterial</option>
                         }
                     </select>
                     <select required id="disciplineMaterial" name="disciplineMaterial" class="CrudSelect" placeholder="Дисциплина">
-                        <option selected disabled>Дисциплина</option>
+
                         @foreach (var discipline in Model.DisciplineEmployees)
                         {
                             var disciplinesID = Model.Disciplines.Find(n => n.IdDiscipline == discipline.DisciplineId).IdDiscipline;
@@ -44,8 +44,36 @@
                             <option value="@disciplinesID">@disciplinesName</option>
                         }
                     </select>
-
                     <input type="submit" class="newInput" value="Изменить материал" />
+
+
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                            var typeMaterialSelect = document.getElementById('typeMaterial');
+                            var typeMaterialHidden = document.getElementsByName('TypeMaterialId')[0];
+
+                            typeMaterialSelect.addEventListener('change', function () {
+                                typeMaterialHidden.value = this.value;
+                            });
+
+                            // Установить начальное выбранное значение
+                            typeMaterialHidden.value = typeMaterialSelect.value;
+                        });
+                    </script>
+
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                            var disciplineSelect = document.getElementById('disciplineMaterial');
+                            var disciplineHidden = document.getElementsByName('DisciplineId')[0];
+
+                            disciplineSelect.addEventListener('change', function () {
+                                disciplineHidden.value = this.value;
+                            });
+
+                            // Установить начальное выбранное значение
+                            disciplineHidden.value = disciplineSelect.value;
+                        });
+                    </script>
                 }
 
             </form>

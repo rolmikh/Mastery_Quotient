@@ -1,5 +1,172 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@* @model Mastery_Quotient.Models.StudentModelView *@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/navigationStyle.css">
+    <link rel="stylesheet" href="../css/mainStyle.css">
+    <link rel="stylesheet" href="../css/crudStyle.css">
+    <link rel="stylesheet" href="../css/ModalWindowStyle.css">
+    <link href="https://fonts.googleapis.com/css?family=Mulish:200,300,regular,500,600,700,800,900,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic"
+          rel="stylesheet" />
+    <title>Студенты</title>
+    <div class="container">
+        <a asp-action="main" asp-controller="admin">
+            <img class="navigation_img" src="../images/3QpbYI-LogoMakr.png">
+        </a>
+
+        <ul class="navigation_ul">
+            <li class="navigation_li"><a class="navigation_a" asp-action="News" asp-controller="admin">Новости</a></li>
+            <li class="navigation_li"><a class="navigation_a" asp-action="MaterialsAdmin" asp-controller="admin">Материалы</a></li>
+            <li class="navigation_li"><a class="navigation_a" asp-action="Course" asp-controller="admin">Тесты</a></li>
+            <li class="navigation_li"><a class="navigation_a" asp-action="AdminPanel" asp-controller="AdminCRUD">Панель администратора</a></li>
+        </ul>
+        <ul class="navigation_ul_right">
+            <li class="navigation_li_right" style="float: right">
+                <a class="navigation_a_right" asp-action="AdminWindowTeacher" asp-controller="admin">Преподаватели</a>
+            </li>
+            <li class="navigation_li_right" style="float: right"><a class="navigation_a_right" asp-action="AdminWindowStudent" asp-controller="admin">Студенты</a></li>
+        </ul>
+        <button class="glow_button" onclick="window.location.href='@Url.Action("PersonalAccountAdmin", "admin")'">
+            Личный кабинет
+        </button>
+    </div>
+
+</head>
+
+
+   @*  <body>
+        <div class="containerForm">
+            <form asp-antiforgery="true" asp-action="AdminWindowStudent" asp-controller="Admin">
+
+                <input class="searchInput" type="text" name="Search" />
+                <button class="searchImage" type="submit">
+                    <img width="40" height="40" src="../images/icons8-лупа-64.png" />
+                </button>
+            </form>
+            <form asp-antiforgery="true" asp-action="FiltrationStudent" asp-controller="Admin">
+                <select class="CrudSelect" required id="groupUser" name="groupUser" placeholder="Учебная группа">
+                    <option selected disabled>Учебная группа</option>
+                    @foreach (var group in Model.StudyGroups)
+                    {
+                        <option value="@group.IdStudyGroup">@group.NameStudyGroup</option>
+                    }
+                </select>
+                <button class="InputFiltr" type="submit">Фильтрация</button>
+
+            </form>
+        </div>
+
+
+
+        <main>
+
+
+            <div>
+            </div>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Код</th>
+                        <th>Фамилия</th>
+                        <th>Имя</th>
+                        <th>Отчество</th>
+                        <th>Электронная почта</th>
+                        <th>Учебная группа</th>
+                        <th>Подробная информация</th>
+                        <th>Изменить</th>
+                        <th>Удалить</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var student in Model.Students)
+                    {
+                        var group = Model.StudyGroups.Find(n => n.IdStudyGroup == student.StudyGroupId).NameStudyGroup;
+                        <tr>
+                            <td>@student.IdStudent</td>
+                            <td>@student.SurnameStudent</td>
+                            <td>@student.NameStudent</td>
+                            <td>@student.MiddleNameStudent</td>
+                            <td>@student.EmailStudent</td>
+                            <td>@group</td>
+                            <td>
+                                <a asp-action="DetailsStudent" asp-route-id="@student.IdStudent"><input type="image" width="50" height="50" src="../images/details.png" /></a>
+                            </td>
+                            <td>
+                                <a asp-action="UpdateStudent" asp-controller="admin" asp-route-id="@student.IdStudent"><input type="image" width="50" height="50" src="../images/edit.png" /></a>
+                            </td>
+                            <td>
+                                <form id="deleteForm" asp-controller="admin" asp-action="DeleteStudent" method="post">
+                                    <input type="hidden" value="@student.IdStudent" name="IdStudent" />
+                                    <button class="image_button" width="50" height="50" type="button">
+                                        <img>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <div id="myModal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <p>Вы уверены, что хотите удалить эту запись?</p>
+                    <form id="deleteForm" asp-controller="admin" asp-action="DeleteStudent" method="post">
+                        <input type="hidden" id="IdStudent" name="IdStudent" />
+                        <button id="confirmDeleteBtnModal" class="newInput">Да</button>
+                        <button id="confirmBack" class="newInput">Отмена</button>
+                    </form>
+                </div>
+            </div>
+
+            <script>
+                // Получаем ссылки на элементы DOM
+                var modal = document.getElementById('myModal'); // Получаем модальное окно по его id
+                var confirmDeleteBtn = document.getElementById('confirmDeleteBtnModal'); // Получаем кнопку подтверждения удаления
+                var confirmBackBtn = document.getElementById('confirmBack'); // Получаем кнопку отмены
+                var idStudentInput = document.getElementById('IdStudent'); // Получаем скрытое поле для id студента
+                var closeButton = document.querySelector('.modal-content .close');
+
+
+                // Добавляем обработчик события к кнопкам удаления
+                document.querySelectorAll('.image_button').forEach(function (btn) {
+                    btn.addEventListener('click', function () {
+                        // При нажатии кнопки удаления открываем модальное окно
+                        modal.style.display = 'block';
+                        // Устанавливаем значение скрытого поля idStudentInput равным id студента из соответствующей строки таблицы
+                        idStudentInput.value = btn.closest('tr').querySelector('[name="IdStudent"]').value;
+                    });
+                });
+
+                // Обработчик события для кнопки "Отмена"
+                confirmBackBtn.onclick = function () {
+                    // Предотвращаем отправку формы при нажатии кнопки "Отмена"
+                    event.preventDefault();
+                    // При нажатии кнопки "Отмена" закрываем модальное окно
+                    modal.style.display = "none";
+                };
+
+                closeButton.onclick = function () {
+                    modal.style.display = "none";
+                };
+
+                // Обработчик события для клика по области за пределами модального окна
+                window.onclick = function (event) {
+                    // Если пользователь кликнул вне модального окна, закрываем его
+                    if (event.target == modal) {
+                        modal.style.display = "none";
+                    }
+                };
+
+            </script>
+
+
+        </main>
+</body> *@
+
+</html>
+

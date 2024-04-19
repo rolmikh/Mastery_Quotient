@@ -44,14 +44,14 @@
             <form asp-antiforgery="true" asp-action="TeacherWindowTest" asp-controller="Test" method="post">
                 <input name="nameTest" class="CrudInput" placeholder="Название теста" />
 
-                <select required id="parameterTest" name="parameterTest" class="CrudSelect" placeholder="Параметр тестирования">
+                <select required id="parameterTest" name="parameterTest" class="CrudSelectMaterial" placeholder="Параметр тестирования">
                     <option selected disabled>Параметр тестирования</option>
                     @foreach (var test in Model.TestParameters)
                     {
                         <option value="@test.IdTestParameter">@test.NameParameter - @test.ValueParameter</option>
                     }
                 </select>
-                <select required id="disciplineTest" name="disciplineTest" class="CrudSelect" placeholder="Дисциплина">
+                <select required id="disciplineTest" name="disciplineTest" class="CrudSelectMaterial" placeholder="Дисциплина">
                     <option selected disabled>Дисциплина</option>
                     @foreach (var discipline in Model.DisciplineEmployees)
                     {

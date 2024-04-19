@@ -21,10 +21,10 @@
         </a>
 
         <ul class="navigation_ul">
-            <li class="navigation_li"><a class="navigation_a" asp-action="News">Новости</a></li>
-            <li class="navigation_li"><a class="navigation_a" asp-action="MaterialsAdmin">Материалы</a></li>
-            <li class="navigation_li"><a class="navigation_a" asp-action="AdminTestView">Тесты</a></li>
-            <li class="navigation_li"><a class="navigation_a" asp-action="PanelAdmin" asp-controller="AdminCRUD">Панель администратора</a></li>
+            <li class="navigation_li"><a class="navigation_a" asp-action="News" asp-controller="Admin">Новости</a></li>
+            <li class="navigation_li"><a class="navigation_a" asp-action="MaterialsAdmin" asp-controller="Admin">Материалы</a></li>
+            <li class="navigation_li"><a class="navigation_a" asp-action="AdminTestView" asp-controller="Admin">Тесты</a></li>
+            <li class="navigation_li"><a class="navigation_a" asp-action="AdminPanel" asp-controller="AdminCRUD">Панель администратора</a></li>
         </ul>
         <ul class="navigation_ul_right">
             <li class="navigation_li_right" style="float: right">

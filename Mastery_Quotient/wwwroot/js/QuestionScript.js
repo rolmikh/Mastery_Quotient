@@ -1,14 +1,22 @@
-﻿$(document).ready(function () {
+﻿
+
+$(document).ready(function () {
     // Инициализация слайдера
     $('.slider').slick({
         infinite: true, // Бесконечный слайдер
         slidesToShow: 1, // Отображение одного слайда за раз
         slidesToScroll: 1, // Прокрутка одного слайда за раз
-        dots: true // Включение точек для навигации
+        dots: true, // Включение точек для навигации
+        pauseOnFocus: true // Пауза при фокусе
     });
 });
 
 document.addEventListener('DOMContentLoaded', function () {
+    initRadioButtons();
+    initCheckBoxes();
+});
+
+function initRadioButtons() {
     const addAnswerOptionButton = document.getElementById('addAnswerOptionRadio');
     const answerOptionsContainer = document.getElementById('answerOptionsRadio');
     let answerOptionIndex = 0;  // Начальное значение индекса
@@ -57,10 +65,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
         answerOptionIndex++; // Увеличиваем индекс для нового варианта ответа
     });
-});
+}
 
-
-document.addEventListener('DOMContentLoaded', function () {
+function initCheckBoxes() {
     const addAnswerOptionButton = document.getElementById('addAnswerOptionCheck');
     const answerOptionsContainer = document.getElementById('answerOptionsCheck');
     let answerOptionIndex = 0;  // Начальное значение индекса
@@ -106,5 +113,4 @@ document.addEventListener('DOMContentLoaded', function () {
 
         answerOptionIndex++; // Увеличиваем индекс для нового варианта ответа
     });
-});
-
+}

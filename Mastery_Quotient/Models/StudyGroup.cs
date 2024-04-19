@@ -10,6 +10,7 @@ namespace Mastery_Quotient.Models
         public int? IdStudyGroup { get; set; }
         public string? NameStudyGroup { get; set; } 
         public int? CourseId { get; set; }
+        public int? IsDeleted { get; set; }
 
     }
 }

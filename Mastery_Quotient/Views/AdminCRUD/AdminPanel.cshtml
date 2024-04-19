@@ -7,8 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/navigationStyle.css">
     <link rel="stylesheet" href="../css/mainStyle.css">
-    <link rel="stylesheet" href="../css/crudStyle.css">
-    <link rel="stylesheet" href="../css/ModalWindowStyle.css">
+    <link rel="stylesheet" href="../css/AdminCRUDStyle.css">
+
     <link href="https://fonts.googleapis.com/css?family=Mulish:200,300,regular,500,600,700,800,900,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic"
           rel="stylesheet" />
     <title>Студенты</title>
@@ -18,10 +18,10 @@
         </a>
 
         <ul class="navigation_ul">
-            <li class="navigation_li"><a class="navigation_a" asp-action="News" asp-controller="admin">Новости</a></li>
-            <li class="navigation_li"><a class="navigation_a" asp-action="MaterialsAdmin" asp-controller="admin">Материалы</a></li>
-            <li class="navigation_li"><a class="navigation_a" asp-action="Course" asp-controller="admin">Тесты</a></li>
-            <li class="navigation_li"><a class="navigation_a" asp-action="PanelAdmin" asp-controller="AdminCRUD">Панель администратора</a></li>
+            <li class="navigation_li"><a class="navigation_a" asp-action="News" asp-controller="Admin">Новости</a></li>
+            <li class="navigation_li"><a class="navigation_a" asp-action="MaterialsAdmin" asp-controller="Admin">Материалы</a></li>
+            <li class="navigation_li"><a class="navigation_a" asp-action="Course" asp-controller="Admin">Тесты</a></li>
+            <li class="navigation_li"><a class="navigation_a" asp-action="AdminPanel" asp-controller="AdminCRUD">Панель администратора</a></li>
         </ul>
         <ul class="navigation_ul_right">
             <li class="navigation_li_right" style="float: right">
@@ -39,18 +39,18 @@
 <body>
    <main>
 
-        <div class="containerForm">
-            <button class="newInput" onclick="window.location.href='@Url.Action("StudyGroupAdminPanel", "AdminCRUD")'">
+        <div class="containerFormCRUD">
+            <button class="newInputCRUD" onclick="window.location.href='@Url.Action("StudyGroupAdminPanel", "AdminCRUD")'">
                 Учебная группа
             </button>
-            <button class="newInput" onclick="window.location.href='@Url.Action("DisciplineAdminPanel", "AdminCRUD")'">
+            <button class="newInputCRUD" onclick="window.location.href='@Url.Action("DisciplineAdminPanel", "AdminCRUD")'">
                 Дисциплина
             </button>
-            <button class="newInput" onclick="window.location.href='@Url.Action("TypeMaterialAdminPanel", "AdminCRUD")'">
+            <button class="newInputCRUD" onclick="window.location.href='@Url.Action("TypeMaterialAdminPanel", "AdminCRUD")'">
                 Тип материала
             </button>
-            <button class="newInput" onclick="window.location.href='@Url.Action("RoleAdminPanel", "AdminCRUD")'">
-                Роль
+            <button class="newInputCRUD" onclick="window.location.href='@Url.Action("TestParameterAdminPanel", "AdminCRUD")'">
+                Параметр тестирования
             </button>
         </div>
 

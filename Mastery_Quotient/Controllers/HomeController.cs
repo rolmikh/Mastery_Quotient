@@ -107,11 +107,11 @@ namespace Mastery_Quotient.Controllers
 
                         if (employees.RoleId == 1)
                         {
-                            return RedirectToAction("MainTeacher", "Teacher");
+                            return RedirectToAction("MaterialsTeacher", "Teacher");
                         }
                         else if (employees.RoleId == 2)
                         {
-                            return RedirectToAction("Main", "Admin");
+                            return RedirectToAction("MaterialsAdmin", "Admin");
                         }
                         else
                         {

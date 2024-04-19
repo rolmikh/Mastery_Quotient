@@ -38,6 +38,7 @@ namespace Mastery_Quotient.Controllers
         /// Загрузка представления страницы просмотра материалов
         /// </summary>
         /// <returns></returns>
+        /// 
         [HttpGet]
         public async Task<IActionResult> TeacherWindowMaterial()
         {
@@ -136,6 +137,7 @@ namespace Mastery_Quotient.Controllers
                 material.TypeMaterialId = typeMaterial;
                 material.EmployeeId = id;
                 material.PhotoMaterial = fileUrlPhoto;
+                material.IsDeleted = 0;
 
 
                 StringContent content = new StringContent(JsonConvert.SerializeObject(material), Encoding.UTF8, "application/json");
@@ -466,6 +468,10 @@ namespace Mastery_Quotient.Controllers
         /// <param name="typeId"></param>
         /// <param name="disciplineID"></param>
         /// <returns></returns>
+        /// 
+
+
+
         [HttpPost]
         public async Task<IActionResult> FiltrationMaterial(int typeId, int disciplineID)
         {
@@ -606,9 +612,66 @@ namespace Mastery_Quotient.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> UpdateMaterial()
+        public async Task<IActionResult> UpdateMaterial(int IdMaterial, string nameMaterial, int typeMaterial, int disciplineMaterial, IFormFile file, IFormFile filePhoto)
         {
-            return View();
+            try
+            {
+                if (file == null || file.Length == 0)
+                {
+                    return BadRequest("Файл не был загружен");
+                }
+                if (filePhoto == null || filePhoto.Length == 0)
+                {
+                    return BadRequest("Файл не был загружен");
+                }
+
+
+                string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                string fileUrl = await firebaseService.UploadMaterial(file.OpenReadStream(), fileName);
+
+                string fileNamePhoto = Guid.NewGuid().ToString() + Path.GetExtension(filePhoto.FileName);
+                string fileUrlPhoto = await firebaseService.UploadPhotoMaterial(filePhoto.OpenReadStream(), fileNamePhoto);
+
+
+
+                var apiUrl = configuration["AppSettings:ApiUrl"];
+
+                int id = int.Parse(TempData["AuthUser"].ToString());
+
+                TempData.Keep("AuthUser");
+
+                Material material = new Material();
+                material.IdMaterial = IdMaterial;
+                material.NameMaterial = nameMaterial;
+                material.DateCreatedMaterial = DateTime.Now;
+                material.FileMaterial = fileUrl;
+                material.DisciplineId = disciplineMaterial;
+                material.TypeMaterialId = typeMaterial;
+                material.EmployeeId = id;
+                material.PhotoMaterial = fileUrlPhoto;
+                material.IsDeleted = 0;
+
+
+                StringContent content = new StringContent(JsonConvert.SerializeObject(material), Encoding.UTF8, "application/json");
+
+                using (var httpClient = new HttpClient())
+                {
+                    var response = await httpClient.PutAsync(apiUrl + "Materials/" + IdMaterial, content);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return RedirectToAction("MaterialsTeacher", "Teacher");
+                    }
+                    else
+                    {
+                        return RedirectToAction("TeacherWindowMaterial", "Teacher");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Ошибка изменения данных" + ex.Message);
+            }
         }
 
         /// <summary>

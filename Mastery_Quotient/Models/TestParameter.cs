@@ -9,6 +9,10 @@ namespace Mastery_Quotient.Models
 
         public int? IdTestParameter { get; set; }
         public string? NameParameter { get; set; } 
-        public string? ValueParameter { get; set; } 
+        public string? ValueParameter { get; set; }
+        public int? IsDeleted { get; set; }
+
+
+        
     }
 }

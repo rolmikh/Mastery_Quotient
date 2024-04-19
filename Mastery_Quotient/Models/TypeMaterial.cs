@@ -8,5 +8,7 @@ namespace Mastery_Quotient.Models
       
         public int? IdTypeMaterial { get; set; }
         public string? NameTypeMaterial { get; set; }
+        public int? IsDeleted { get; set; }
+
     }
 }

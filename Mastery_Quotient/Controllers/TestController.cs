@@ -1,4 +1,5 @@
-﻿using Mastery_Quotient.Models;
+﻿using AngleSharp.Dom;
+using Mastery_Quotient.Models;
 using Mastery_Quotient.Service;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -145,6 +146,8 @@ namespace Mastery_Quotient.Controllers
         /// Загрузка представления страницы просмотра тестирований
         /// </summary>
         /// <returns></returns>
+
+
         [HttpGet]
         public async Task<IActionResult> TestTeacher()
         {
@@ -203,7 +206,7 @@ namespace Mastery_Quotient.Controllers
                             tests = JsonConvert.DeserializeObject<List<Test>>(apiResponse);
                         }
                     }
-                   
+
                 }
                 List<Test> testList = tests.Where(n => n.EmployeeId == employee.IdEmployee).ToList();
                 List<DisciplineEmployee> discipline = disciplineEmployees.Where(n => n.EmployeeId == employee.IdEmployee).ToList();
@@ -441,12 +444,64 @@ namespace Mastery_Quotient.Controllers
 
                 return RedirectToAction("TestTeacher", "Test");
             }
-            catch
+            catch (Exception e)
             {
-                return BadRequest("Ошибка удаления данных!");
+                return BadRequest("Ошибка удаления теста!" + e.Message);
             }
         }
 
+        [HttpPost]
+        public async Task<IActionResult> DeleteQuestion(int IdTestQuestion, int IdQuestion)
+        {
+            try
+            {
+                var apiUrl = configuration["AppSettings:ApiUrl"];
+                List<QuestionAnswerOption?> options = new List<QuestionAnswerOption?>();
+                using (var httpClient = new HttpClient())
+                {
+                    
+                   
+                    using (var response = await httpClient.GetAsync(apiUrl + "QuestionAnswerOptions/Filtration?idQuestion=" + IdQuestion))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        options = JsonConvert.DeserializeObject<List<QuestionAnswerOption>>(apiResponse);
+                    }
+                    List<int?> answerOptions = options.Select(n => n.AnswerOptionsId).ToList();
+
+                    List<int?> optionsDelete = options.Select(n => n.IdQuestionAnswerOptions).ToList();
+
+                    foreach (int answerQuestionId in optionsDelete)
+                    {
+                        using (var response = await httpClient.DeleteAsync(apiUrl + "QuestionAnswerOptions/" + answerQuestionId))
+                        {
+                            string apiResponse = await response.Content.ReadAsStringAsync();
+                        }
+                    }
+                    foreach (int answerId in answerOptions)
+                    {
+                        using (var response = await httpClient.DeleteAsync(apiUrl + "AnswerOptions/" + answerId))
+                        {
+                            string apiResponse = await response.Content.ReadAsStringAsync();
+                        }
+                    }
+                    using (var response = await httpClient.DeleteAsync(apiUrl + "TestQuestions/" + IdTestQuestion))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                    }
+                    using (var response = await httpClient.DeleteAsync(apiUrl + "Questions/" + IdQuestion))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                    }
+                }
+
+                return RedirectToAction("QuestionTest", "Test");
+            }
+            catch (Exception e)
+            {
+                return BadRequest("Ошибка удаления вопроса!" + e.Message);
+
+            }
+        }
 
         /// <summary>
         /// POST запрос добавления вопроса с письменным вариантом ответа
@@ -800,6 +855,131 @@ namespace Mastery_Quotient.Controllers
             catch
             {
                 return BadRequest("Ошибка");
+            }
+        }
+
+        /// <summary>
+        /// Загрузка представления изменения данных о тестировании
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> UpdateTest(int id)
+        {
+            try
+            {
+                int idEmployee = int.Parse(TempData["AuthUser"].ToString());
+
+                TempData.Keep("AuthUser");
+
+                var apiUrl = configuration["AppSettings:ApiUrl"];
+
+                Employee employee = new Employee();
+                List<Discipline> disciplines = new List<Discipline>();
+                List<DisciplineEmployee> disciplineEmployees = new List<DisciplineEmployee>();
+                List<TestParameter> testParameters = new List<TestParameter>();
+                Test tests = null;
+
+                using (var httpClient = new HttpClient())
+                {
+                    using (var response = await httpClient.GetAsync(apiUrl + "Employees/" + idEmployee))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        employee = JsonConvert.DeserializeObject<Employee>(apiResponse);
+                    }
+
+                    using (var response = await httpClient.GetAsync(apiUrl + "Disciplines"))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        disciplines = JsonConvert.DeserializeObject<List<Discipline>>(apiResponse);
+                    }
+
+                    using (var response = await httpClient.GetAsync(apiUrl + "DisciplineEmployee"))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        disciplineEmployees = JsonConvert.DeserializeObject<List<DisciplineEmployee>>(apiResponse);
+                    }
+
+                    using (var response = await httpClient.GetAsync(apiUrl + "TestParameters"))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        testParameters = JsonConvert.DeserializeObject<List<TestParameter>>(apiResponse);
+                    }
+                    using (var response = await httpClient.GetAsync(apiUrl + "Tests/" + id))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        tests = JsonConvert.DeserializeObject<Test>(apiResponse);
+                    }
+
+
+
+                }
+                
+                List<DisciplineEmployee> discipline = disciplineEmployees.Where(n => n.EmployeeId == employee.IdEmployee).ToList();
+                TestViewTeacher testViewTeacher = new TestViewTeacher(employee, disciplines, discipline, testParameters, new List<Test> { tests });
+                return View(testViewTeacher);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest();
+            }
+        }
+
+        /// <summary>
+        /// POST запрос изменения данных о тестировании
+        /// </summary>
+        /// <param name="IdTest"></param>
+        /// <param name="nameTest"></param>
+        /// <param name="testParameter"></param>
+        /// <param name="disciplineTest"></param>
+        /// <param name="deadlineCheck"></param>
+        /// <param name="deadlineDate"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> UpdateTest(int IdTest, string nameTest, string DateCreatedTest, int testParameter, int disciplineTest, bool deadlineCheck, string deadlineDate)
+        {
+            try
+            {
+                var apiUrl = configuration["AppSettings:ApiUrl"];
+
+                int id = int.Parse(TempData["AuthUser"].ToString());
+
+                TempData.Keep("AuthUser");
+
+                Test test = new Test();
+
+                test.IdTest = IdTest;
+                test.NameTest = nameTest;
+                test.DateCreatedTest = DateTime.Parse(DateCreatedTest);
+                if (deadlineCheck)
+                {
+                    test.Deadline = null;
+                }
+                else
+                {
+                    test.Deadline = DateTime.Parse(deadlineDate);
+                }
+                test.DisciplineId = disciplineTest;
+                test.EmployeeId = id;
+                test.TestParameterId = testParameter;
+                test.IsDeleted = 0;
+                test.Active = 1;
+
+
+
+                StringContent content = new StringContent(JsonConvert.SerializeObject(test), Encoding.UTF8, "application/json");
+
+                using (var httpClient = new HttpClient())
+                {
+                    var response = await httpClient.PutAsync(apiUrl + "Tests/" + IdTest, content);
+
+                    return RedirectToAction("TestTeacher", "Test");
+                    
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Ошибка изменения данных" + ex.Message);
             }
         }
     }
