@@ -20,7 +20,7 @@
         <ul class="navigation_ul">
             <li class="navigation_li"><a class="navigation_a" asp-action="News" asp-controller="Admin">Новости</a></li>
             <li class="navigation_li"><a class="navigation_a" asp-action="MaterialsAdmin" asp-controller="Admin">Материалы</a></li>
-            <li class="navigation_li"><a class="navigation_a" asp-action="Course" asp-controller="Admin">Тесты</a></li>
+            <li class="navigation_li"><a class="navigation_a" asp-action="AdminTestView" asp-controller="Admin">Тесты</a></li>
             <li class="navigation_li"><a class="navigation_a" asp-action="AdminPanel" asp-controller="AdminCRUD">Панель администратора</a></li>
         </ul>
         <ul class="navigation_ul_right">
@@ -52,7 +52,18 @@
             <button class="newInputCRUD" onclick="window.location.href='@Url.Action("TestParameterAdminPanel", "AdminCRUD")'">
                 Параметр тестирования
             </button>
+
+            <button class="newInputCRUD" onclick="window.location.href='@Url.Action("BackUpDatabase", "AdminCRUD")'">
+                Создать резервную копию базы данных
+            </button>
         </div>
+
+        @if(TempData["Message"] != null)
+        {
+            <div class="alert alert-success" role="alert">
+                @TempData["Message"]
+            </div>
+        }
 
     </main>
 </body>

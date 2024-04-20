@@ -1,0 +1,33 @@
+﻿@model Mastery_Quotient.Models.TypeMaterialView
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/mainStyle.css">
+    <link rel="stylesheet" href="@Url.Content("~/css/AdminCRUDStyle.css")">
+    <link href="https://fonts.googleapis.com/css?family=Mulish:200,300,regular,500,600,700,800,900,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic"
+          rel="stylesheet" />
+    <title>Изменение Типа материала</title>
+</head>
+
+<body>
+    <main>
+        <div class="form_updateCRUD">
+            <form asp-antiforgery="true" asp-action="UpdateTypeMaterial" asp-controller="AdminCRUD">
+                @foreach (var item in Model.TypeMaterials)
+                {
+                    <label hidden>Код типа материала</label>
+                    <input class="CrudInputAdmin" type="text" readonly required name="IdTypeMaterial" value="@item.IdTypeMaterial" placeholder="Код типа материала" />
+                    <label hidden>Название типа материала</label>
+                    <input class="CrudInputAdmin" type="text" required name="NameTypeMaterial" value="@item.NameTypeMaterial" placeholder="Название типа материала" />
+                    <input class="newCRUD" type="submit" value="Изменить тип материала" />
+                }
+            </form>
+        </div>
+    </main>
+
+</body>
+
+</html>

@@ -1,4 +1,6 @@
 ﻿@model Mastery_Quotient.Models.EmployeeModelView
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -24,7 +26,8 @@
                 <br />
                 <input class="CrudInput" type="email" required name="emailUser"
                        placeholder="Электронная почта" />
-                <br />
+                
+               
                 <label  hidden>Введите пароль</label>
                 <br />
                 <input class="CrudInput" type="password" required name="passwordUser" placeholder="Пароль" />
@@ -43,9 +46,17 @@
 
                 <input class="newInput" type="submit" value="Добавить сотрудника" />
 
-
+                @if (TempData["ErrorValidation"] != null)
+                {
+                    <div class="alert alert-danger">
+                        <p>@TempData["ErrorValidation"]</p>
+                    </div>
+                }
 
             </form>
+
+            
+            
         </div>
        
 

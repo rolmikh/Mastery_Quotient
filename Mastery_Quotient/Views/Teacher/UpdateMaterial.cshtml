@@ -18,6 +18,10 @@
             <form asp-antiforgery="true" asp-action="UpdateMaterial" asp-controller="teacher" enctype="multipart/form-data">
                  @foreach (var material in Model.Materials)
                 {
+                    var typeMaterialName = Model.TypeMaterials.Find(n => n.IdTypeMaterial == material.TypeMaterialId).NameTypeMaterial;
+                    var disciplineNameUpdate = Model.Disciplines.Find(n => n.IdDiscipline == material.DisciplineId).NameDiscipline;
+
+
                     <input name="IdMaterial" class="CrudInput" hidden readonly placeholder="Код материала" value="@material.IdMaterial" />
                     <input name="nameMaterial" class="CrudInput" placeholder="Название материала" value="@material.NameMaterial" />
                     <label class="CrudLabel">Выберите файл материала</label>
@@ -28,6 +32,7 @@
                     <input name="filePhoto" type="file" class="CrudInput" placeholder="Выберите фото материала" value="@material.PhotoMaterial" />
 
                     <select required id="typeMaterial" name="typeMaterial" class="CrudSelect" placeholder="Тип материала">
+                        <option value="@material.TypeMaterialId">@typeMaterialName</option>
 
                         @foreach (var typeMaterial in Model.TypeMaterials)
                         {
@@ -35,6 +40,7 @@
                         }
                     </select>
                     <select required id="disciplineMaterial" name="disciplineMaterial" class="CrudSelect" placeholder="Дисциплина">
+                        <option value="@material.DisciplineId">@disciplineNameUpdate</option>
 
                         @foreach (var discipline in Model.DisciplineEmployees)
                         {
@@ -47,33 +53,6 @@
                     <input type="submit" class="newInput" value="Изменить материал" />
 
 
-                    <script>
-                        document.addEventListener('DOMContentLoaded', function () {
-                            var typeMaterialSelect = document.getElementById('typeMaterial');
-                            var typeMaterialHidden = document.getElementsByName('TypeMaterialId')[0];
-
-                            typeMaterialSelect.addEventListener('change', function () {
-                                typeMaterialHidden.value = this.value;
-                            });
-
-                            // Установить начальное выбранное значение
-                            typeMaterialHidden.value = typeMaterialSelect.value;
-                        });
-                    </script>
-
-                    <script>
-                        document.addEventListener('DOMContentLoaded', function () {
-                            var disciplineSelect = document.getElementById('disciplineMaterial');
-                            var disciplineHidden = document.getElementsByName('DisciplineId')[0];
-
-                            disciplineSelect.addEventListener('change', function () {
-                                disciplineHidden.value = this.value;
-                            });
-
-                            // Установить начальное выбранное значение
-                            disciplineHidden.value = disciplineSelect.value;
-                        });
-                    </script>
                 }
 
             </form>

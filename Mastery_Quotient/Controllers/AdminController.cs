@@ -6,12 +6,12 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
-using Mastery_Quotient.Class;
 using Firebase.Storage;
 using System.Net.Sockets;
 using Mastery_Quotient.Service;
 using Ganss.Xss;
 using Microsoft.AspNetCore.Http.Extensions;
+using FluentValidation;
 
 namespace Mastery_Quotient.Controllers
 {
@@ -19,17 +19,17 @@ namespace Mastery_Quotient.Controllers
     {
         private readonly IConfiguration configuration;
 
-        //private GoogleDriveService googleDriveService;
+        private readonly IValidator<Employee> employeeValidator;
 
         FirebaseService firebaseService = new FirebaseService();
 
         FileService fileService = new FileService();
 
-        public AdminController(IConfiguration configuration, ILogger<AdminController> logger)
+        public AdminController(IConfiguration configuration, IValidator<Employee> employeeValidator, ILogger<AdminController> logger)
         {
             this.configuration = configuration;
+            this.employeeValidator = employeeValidator;
             _logger = logger;
-            //googleDriveService = new GoogleDriveService();
         }
 
         private readonly ILogger<AdminController> _logger;
@@ -266,6 +266,13 @@ namespace Mastery_Quotient.Controllers
                 employee.IsDeleted = 0;
                 employee.RoleId = roleUser;
 
+                var validationResult = await employeeValidator.ValidateAsync(employee);
+
+                if (!validationResult.IsValid)
+                {
+                    TempData["ErrorValidation"] = validationResult.Errors.FirstOrDefault()?.ErrorMessage;
+                    return RedirectToAction("TeacherNew", "Admin");
+                }
 
                 StringContent content = new StringContent(JsonConvert.SerializeObject(employee), Encoding.UTF8, "application/json");
 

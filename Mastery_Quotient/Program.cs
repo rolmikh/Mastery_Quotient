@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
+using FluentValidation.AspNetCore;
+using Mastery_Quotient.ModelsValidation;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +13,9 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 {
     options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Home/Authorization");
 });
+
+builder.Services.AddControllersWithViews()
+    .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<EmployeeValidator>());
 
 builder.Services.AddSession();
 var app = builder.Build();

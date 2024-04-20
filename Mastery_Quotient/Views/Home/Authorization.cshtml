@@ -30,12 +30,12 @@
 
                     <h1 class="h1Auto">Авторизация</h1>
                     <form asp-antiforgery="true" asp-action="Authorization" asp-controller="Home">
-                        <label class="authorizationLabel" hidden for="emailUser">Введите электронную почту</label>
+                        <label class="authorizationLabel" hidden >Введите электронную почту</label>
                         <br />
                         <input class="authorizationInput" type="email" required name="emailUser"
                                placeholder="Электронная почта" />
                         <br />
-                        <label class="authorizationLabel" hidden for="passwordUser">Введите пароль</label>
+                        <label class="authorizationLabel" hidden >Введите пароль</label>
                         <br />
                         <input class="authorizationInput" type="password" required name="passwordUser"
                                placeholder="Пароль" />
@@ -46,7 +46,7 @@
                         <input class="glow_button" type="submit" value="Авторизоваться" />
 
                     </form>
-                    <div class="containerLine">
+                   @*  <div class="containerLine">
                         <p class="line"></p>
                         <p>или</p>
                         <p class="line"></p>
@@ -56,13 +56,20 @@
                             <img src="../images/ic_google logo.png" height="15" width="15" alt="Google Logo">
                             Google
                         </button>
-                    </div>
+                    </div> *@
 
-
+                    @if (TempData["Message"] != null)
+                    {
+                        <div class="alert alert-success" role="alert">
+                            @TempData["Message"]
+                        </div>
+                    }
                 </div>
             </div>
 
         </div>
+
+
     </main>
 
     <!-- <footer>

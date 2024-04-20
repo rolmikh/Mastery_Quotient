@@ -11,7 +11,6 @@ using Google.Apis.Auth.OAuth2.Responses;
 using Google.Apis.Drive.v3;
 using Google.Apis.Services;
 using Newtonsoft.Json.Linq;
-using Mastery_Quotient.Class;
 
 namespace Mastery_Quotient.Controllers
 {
@@ -20,23 +19,17 @@ namespace Mastery_Quotient.Controllers
 
         private readonly IConfiguration configuration;
 
-        GoogleDriveService GoogleDriveService;
+        private readonly ILogger<HomeController> _logger;
+
 
         public HomeController(IConfiguration configuration, ILogger<HomeController> logger)
         {
             this.configuration = configuration;
             _logger = logger;
-            GoogleDriveService = new GoogleDriveService();
         }
 
-        //public ContentResult OnGet()
-        //{
-        //    var apiURl = configuration["AppSettings:ApiUrl"];
+        
 
-        //    return Content(apiURl);
-        //}
-
-        private readonly ILogger<HomeController> _logger;
 
         public IActionResult Index()
         {
@@ -62,8 +55,10 @@ namespace Mastery_Quotient.Controllers
         {
             try
             {
+               
                 var apiUrl = configuration["AppSettings:ApiUrl"];
-                
+
+
                 Employee employee = new Employee()
                 {
                     EmailEmployee = emailUser,
@@ -78,6 +73,8 @@ namespace Mastery_Quotient.Controllers
 
                 StringContent contentStudent = new StringContent(JsonConvert.SerializeObject(student), Encoding.UTF8, "application/json");
                 StringContent contentEmployee = new StringContent(JsonConvert.SerializeObject(employee), Encoding.UTF8, "application/json");
+
+                
 
                 using (var httpClient = new HttpClient())
                 {
@@ -122,6 +119,8 @@ namespace Mastery_Quotient.Controllers
                     }
                     else
                     {
+                        TempData["Message"] = "Неверная электронная почта или пароль!";
+
                         return RedirectToAction("Authorization", "Home");
                     }
                 }

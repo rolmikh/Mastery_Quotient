@@ -22,6 +22,11 @@
             <form asp-antiforgery="true" asp-action="UpdateTest" asp-controller="Test">
                 @foreach (var test in Model.Test)
                 {
+
+                    var parameterName = Model.TestParameters.Find(n => n.IdTestParameter == test.TestParameterId).NameParameter;
+                    var parameterValue = Model.TestParameters.Find(n => n.IdTestParameter == test.TestParameterId).ValueParameter;
+                    var disciplineNameUpdate = Model.Disciplines.Find(n => n.IdDiscipline == test.DisciplineId).NameDiscipline;
+
                     <input name="IdTest" class="CrudInput" hidden readonly placeholder="Код тестирования" value="@test.IdTest" />
                     <input name="NameTest" type="text" class="CrudInput" placeholder="Название тестирования" value="@test.NameTest" />
 
@@ -34,8 +39,13 @@
                     </div>
 
                     <select required id="testParameter" name="testParameter" class="CrudSelect" placeholder="Параметр тестирования">
+                        
+                        <option value="@test.TestParameterId">
+                            @parameterName - @parameterValue
+                        </option>
                         @foreach (var testParameters in Model.TestParameters)
                         {
+                            
                             <option value="@testParameters.IdTestParameter">
                                 @testParameters.NameParameter - @testParameters.ValueParameter
                             </option>
@@ -43,6 +53,8 @@
                     </select>
 
                     <select required id="disciplineTest" name="disciplineTest" class="CrudSelect" placeholder="Дисциплина">
+                        <option value="@test.DisciplineId">@disciplineNameUpdate</option>
+
                         @foreach (var discipline in Model.DisciplineEmployees)
                         {
                             var disciplinesID = Model.Disciplines.Find(n => n.IdDiscipline == discipline.DisciplineId).IdDiscipline;
@@ -56,32 +68,7 @@
                 }
             </form>
         </div>
-
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                var testParameterSelect = document.getElementById('testParameter');
-                var testParameterHidden = document.getElementsByName('TestParameterId')[0];
-
-                testParameterSelect.value = testParameterHidden.value;
-
-                testParameterSelect.addEventListener('change', function () {
-                    testParameterHidden.value = this.value;
-                });
-
-                var disciplineSelect = document.getElementById('disciplineTest');
-                var disciplineHidden = document.getElementsByName('DisciplineId')[0];
-
-                disciplineSelect.value = disciplineHidden.value;
-
-                disciplineSelect.addEventListener('change', function () {
-                    disciplineHidden.value = this.value;
-                });
-            });
-        </script>
-
-
-
-       
+ 
 
     </main>
 
