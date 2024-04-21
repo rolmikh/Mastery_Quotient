@@ -18,6 +18,8 @@
             <form asp-antiforgery="true" asp-action="UpdateStudent" asp-controller="Admin">
                 @foreach (var student in Model.Students)
                 {
+
+                    var studyGroupName = Model.StudyGroups.Find(n => n.IdStudyGroup == student.StudyGroupId).NameStudyGroup;
                     <label hidden>Введите код</label>
                     <input type="text" required name="idUser" class="CrudInput" hidden value="@student.IdStudent" placeholder="Код" />
                     <br />
@@ -37,9 +39,11 @@
                     <input type="password" hidden required name="passwordUser" value="@student.PasswordStudent" placeholder="Пароль" />
                     <label hidden>Выберите учебную группу</label>
                     <br />
-                }
+                
 
                 <select required id="studyGroupUser" name="studyGroupUser" class="CrudSelectMaterial" placeholder="Учебная группа">
+                        <option value="@student.StudyGroupId">@studyGroupName</option>
+
                     @foreach (var group in Model.StudyGroups)
                     {
                         <option value="@group.IdStudyGroup">@group.NameStudyGroup</option>
@@ -48,11 +52,20 @@
                 <br />
                 <input class="newInput" type="submit" value="Изменить студента" />
 
-
+                }
 
             </form>
         </div>
-        
+        @if (TempData["ErrorValidation"] != null)
+        {
+            <div class="alert alert-danger">
+
+                @foreach (var errorMessage in (string[])TempData["ErrorValidation"])
+                {
+                    <p>@errorMessage</p>
+                }
+            </div>
+        }
 
     </main>
 

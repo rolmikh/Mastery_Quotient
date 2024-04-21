@@ -22,7 +22,10 @@ namespace Mastery_Quotient.Controllers
             return View();
         }
 
-       
+       /// <summary>
+       /// Метод создания резервной копии базы данных
+       /// </summary>
+       /// <returns></returns>
         public async Task<IActionResult> BackUpDatabase()
         {
             try

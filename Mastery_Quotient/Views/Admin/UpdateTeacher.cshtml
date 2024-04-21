@@ -18,6 +18,10 @@
             <form asp-antiforgery="true" asp-action="UpdateTeacher" asp-controller="Admin">
                 @foreach (var employee in Model.Employees)
                 {
+                    var roleName = Model.Roles.Find(n => n.IdRole == employee.RoleId).NameRole;
+                    var roleID = Model.Roles.Find(n => n.IdRole == employee.RoleId).IdRole;
+
+                    
                     <input type="password" hidden required name="passwordUser" value="@employee.PasswordEmployee" placeholder="Пароль" />
                     <input type="password" hidden required name="saltUser" value="@employee.SaltEmployee" placeholder="Соль" />
                     <label hidden>Введите код</label>
@@ -31,21 +35,17 @@
                     <input type="text" required name="nameUser" class="CrudInput" value="@employee.NameEmployee" placeholder="Имя" />
                     <br />
                     <label hidden>Введите отчество</label>
-                    <input type="text" required name="middleNameUser" class="CrudInput" value="@employee.MiddleNameEmployee" placeholder="Отчество" />
+                    <input type="text" name="middleNameUser" class="CrudInput" value="@employee.MiddleNameEmployee" placeholder="Отчество" />
                     <br />
                     <label hidden>Введите электронную почту</label>
                     
                     <input type="email" required name="emailUser" class="CrudInput" value="@employee.EmailEmployee" placeholder="Электронная почта" />
                    
-
-
                     <label hidden>Выберите роль</label>
                     <br />
 
-                }
-
                 <select required id="roleUser" class="CrudSelectMaterial" name="roleUser" placeholder="Роль">
-                    <option selected disabled>Роль</option>
+                    <option value="@roleID">@roleName</option>
                     @foreach (var role in Model.Roles)
                     {
                         <option value="@role.IdRole">@role.NameRole</option>
@@ -54,11 +54,20 @@
                 <br />
                 <input class="newInput" type="submit" value="Изменить сотрудника" />
 
-
+                }
 
             </form>
         </div>
-        
+        @if (TempData["ErrorValidation"] != null)
+        {
+            <div class="alert alert-danger">
+
+                @foreach (var errorMessage in (string[])TempData["ErrorValidation"])
+                {
+                    <p>@errorMessage</p>
+                }
+            </div>
+        }
 
     </main>
 

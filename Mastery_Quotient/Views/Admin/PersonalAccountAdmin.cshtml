@@ -92,6 +92,17 @@
 
         </div>
 
+        @if (TempData["ErrorValidation"] != null)
+        {
+            <div class="alert alert-danger">
+
+                @foreach (var errorMessage in (string[])TempData["ErrorValidation"])
+                {
+                    <p>@errorMessage</p>
+                }
+            </div>
+        }
+
         <div id="myModal" class="modal">
             <div class="modal-content">
                 <span class="close">&times;</span>

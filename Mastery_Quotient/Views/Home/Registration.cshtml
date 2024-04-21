@@ -31,7 +31,7 @@
                 <div class="form_registration">
 
                     <h1 class="h1Auto">Регистрация</h1>
-                    <form asp-antiforgery="true" asp-action="Registration" asp-controller="Home">
+                    <form asp-antiforgery="true" asp-action="Code" asp-controller="Home">
                         <label class="authorizationLabel" hidden for="nameUser">Введите ФИО</label>
                         <br />
                         <input class="authorizationInput" type="text" required name="nameUser"
@@ -51,16 +51,20 @@
                         <br />
                         <select class="authorizationSelect" required id="groupUser" name="groupUser" placeholder="Учебная группа">
                             <option selected disabled>Учебная группа</option>
-                            @foreach(var group in Model)
+                            @foreach (var group in Model)
                             {
-                                <option   value="@group.IdStudyGroup">@group.NameStudyGroup</option>
-                            }  
+                                <option value="@group.IdStudyGroup">@group.NameStudyGroup</option>
+                            }
+                           
+
                         </select>
                         <br />
                         <input class="glow_button" type="submit" value="Регистрация" />
 
                     </form>
-                    <div class="containerLine">
+
+                  
+                    @* <div class="containerLine">
                         <p class="line"></p>
                         <p>или</p>
                         <p class="line"></p>
@@ -70,13 +74,24 @@
                             <img src="../images/ic_google logo.png" height="15" width="15" alt="Google Logo">
                             Google
                         </button>
-                    </div>
+                    </div> *@
 
 
                 </div>
             </div>
 
         </div>
+
+        @if (TempData["ErrorValidation"] != null)
+        {
+            <div class="alert alert-danger">
+
+                @foreach (var errorMessage in (string[])TempData["ErrorValidation"])
+                {
+                    <p>@errorMessage</p>
+                }
+            </div>
+        }
     </main>
 
     <!-- <footer>

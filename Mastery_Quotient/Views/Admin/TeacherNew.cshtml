@@ -46,12 +46,7 @@
 
                 <input class="newInput" type="submit" value="Добавить сотрудника" />
 
-                @if (TempData["ErrorValidation"] != null)
-                {
-                    <div class="alert alert-danger">
-                        <p>@TempData["ErrorValidation"]</p>
-                    </div>
-                }
+                
 
             </form>
 
@@ -59,7 +54,16 @@
             
         </div>
        
+        @if (TempData["ErrorValidation"] != null)
+        {
+            <div class="alert alert-danger">
 
+                @foreach (var errorMessage in (string[])TempData["ErrorValidation"])
+                {
+                    <p>@errorMessage</p>
+                }
+            </div>
+        }
     </main>
 
 

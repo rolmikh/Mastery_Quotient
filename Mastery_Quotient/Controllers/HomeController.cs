@@ -11,6 +11,9 @@ using Google.Apis.Auth.OAuth2.Responses;
 using Google.Apis.Drive.v3;
 using Google.Apis.Services;
 using Newtonsoft.Json.Linq;
+using Mastery_Quotient.Service;
+using FluentValidation;
+using Mastery_Quotient.ModelsValidation;
 
 namespace Mastery_Quotient.Controllers
 {
@@ -21,15 +24,16 @@ namespace Mastery_Quotient.Controllers
 
         private readonly ILogger<HomeController> _logger;
 
+        private readonly IValidator<Student> studentValidator;
 
-        public HomeController(IConfiguration configuration, ILogger<HomeController> logger)
+        EmailService emailService = new EmailService();
+
+        public HomeController(IConfiguration configuration, ILogger<HomeController> logger, IValidator<Student> studentValidator)
         {
             this.configuration = configuration;
             _logger = logger;
+            this.studentValidator = studentValidator;
         }
-
-        
-
 
         public IActionResult Index()
         {
@@ -163,63 +167,121 @@ namespace Mastery_Quotient.Controllers
             return RedirectToAction("Authorization", "Home");
         }
 
-        /// <summary>
-        /// POST запрос регистрации студентов в системе
-        /// </summary>
-        /// <param name="nameUser"></param>
-        /// <param name="emailUser"></param>
-        /// <param name="passwordUser"></param>
-        /// <param name="groupUser"></param>
-        /// <returns></returns>
+
         [HttpPost]
-        public async Task<IActionResult> Registration(string nameUser, string emailUser, string passwordUser, int groupUser)
+        public async Task<IActionResult> Code(string nameUser, string emailUser, string passwordUser, int groupUser)
+        {
+            try
+            {
+                int key = 0;
+
+
+                key = new Random().Next(100000,999999);
+                string[] subs = nameUser.Split();
+
+
+                if (subs.Length >= 2)
+                {
+                    StudentRegistrationModel.SurnameStudent = subs[0];
+
+                    if (subs.Length >= 3)
+                    {
+                        StudentRegistrationModel.NameStudent = subs[1];
+                        StudentRegistrationModel.MiddleNameStudent = string.Join(" ", subs.Skip(2));
+                    }
+                    else
+                    {
+                        StudentRegistrationModel.NameStudent = subs[1];
+                        StudentRegistrationModel.MiddleNameStudent = string.Empty;
+                    }
+                }
+
+                StudentRegistrationModel.EmailStudent = emailUser;
+                StudentRegistrationModel.PasswordStudent = passwordUser;
+                StudentRegistrationModel.IsDeleted = 0;
+                StudentRegistrationModel.StudyGroupId = groupUser;
+                StudentRegistrationModel.Key = key.ToString();
+
+                Student student = new Student();
+
+                student.SurnameStudent = StudentRegistrationModel.SurnameStudent;
+                student.NameStudent = StudentRegistrationModel.NameStudent;
+                student.MiddleNameStudent = StudentRegistrationModel.MiddleNameStudent;
+
+                student.EmailStudent = StudentRegistrationModel.EmailStudent;
+                student.PasswordStudent = StudentRegistrationModel.PasswordStudent;
+                student.IsDeleted = StudentRegistrationModel.IsDeleted;
+                student.StudyGroupId = StudentRegistrationModel.StudyGroupId;
+
+                var validationResult = await studentValidator.ValidateAsync(student);
+
+                if (!validationResult.IsValid)
+                {
+                    var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                    TempData["ErrorValidation"] = errorMessages;
+                    return RedirectToAction("Registration", "Home");
+                }
+
+                await emailService.SendEmail(StudentRegistrationModel.EmailStudent, "Код подтверждения MastQuo", $"{key} - ваш код подтверждения электронной почты");
+
+                return View("Code");
+            }
+            catch(Exception e)
+            {
+                return BadRequest("Ошибка: " + e.Message);
+            }
+        }
+
+
+        public ViewResult Code() => View();
+
+
+        [HttpPost]
+        public async Task<IActionResult> Registration(string key)
         {
             try
             {
                 var apiUrl = configuration["AppSettings:ApiUrl"];
 
-                string[] subs = nameUser.Split();
-
-
-                Student student = new Student();
-
-                if (subs.Length >= 2)
+                string keyKey = StudentRegistrationModel.Key;
+                if (key.Equals(keyKey))
                 {
-                    student.SurnameStudent = subs[0];
 
-                    if (subs.Length >= 3)
+                    Student student = new Student();
+
+                    student.SurnameStudent = StudentRegistrationModel.SurnameStudent;
+                    student.NameStudent = StudentRegistrationModel.NameStudent;
+                    student.MiddleNameStudent = StudentRegistrationModel.MiddleNameStudent;
+
+                    student.EmailStudent = StudentRegistrationModel.EmailStudent;
+                    student.PasswordStudent = StudentRegistrationModel.PasswordStudent;
+                    student.IsDeleted = StudentRegistrationModel.IsDeleted;
+                    student.StudyGroupId = StudentRegistrationModel.StudyGroupId;
+
+                    
+
+                    StringContent contentStudent = new StringContent(JsonConvert.SerializeObject(student), Encoding.UTF8, "application/json");
+
+                    using (var httpClient = new HttpClient())
                     {
-                        student.NameStudent = subs[1];
-                        student.MiddleNameStudent = string.Join(" ", subs.Skip(2));
-                    }
-                    else
-                    {
-                        student.NameStudent = subs[1];
-                        student.MiddleNameStudent = string.Empty;
+                        var responseStudent = await httpClient.PostAsync(apiUrl + "Students", contentStudent);
+
+                        if (responseStudent.IsSuccessStatusCode)
+                        {
+                            return RedirectToAction("Authorization", "Home");
+                        }
+                        else
+                        {
+                            return RedirectToAction("Registration", "Home");
+                        }
                     }
                 }
-
-                student.EmailStudent = emailUser;
-                student.PasswordStudent = passwordUser;
-                student.IsDeleted = 0;
-                student.StudyGroupId = groupUser;
-
-
-                StringContent contentStudent = new StringContent(JsonConvert.SerializeObject(student), Encoding.UTF8, "application/json");
-
-                using (var httpClient = new HttpClient())
+                else
                 {
-                    var responseStudent = await httpClient.PostAsync(apiUrl + "Students", contentStudent);
-
-                    if (responseStudent.IsSuccessStatusCode)
-                    {
-                        return RedirectToAction("Authorization", "Home");
-                    }
-                    else
-                    {
-                        return RedirectToAction("Registration", "Home");
-                    }
+                    return BadRequest("Ошибка кода подтверждения!");
                 }
+
+                
             }
             catch (Exception ex)
             {

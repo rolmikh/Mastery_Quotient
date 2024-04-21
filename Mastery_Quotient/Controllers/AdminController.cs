@@ -21,15 +21,20 @@ namespace Mastery_Quotient.Controllers
 
         private readonly IValidator<Employee> employeeValidator;
 
+        private readonly IValidator<Student> studentValidator;
+
+
         FirebaseService firebaseService = new FirebaseService();
 
         FileService fileService = new FileService();
 
-        public AdminController(IConfiguration configuration, IValidator<Employee> employeeValidator, ILogger<AdminController> logger)
+        public AdminController(IConfiguration configuration, IValidator<Employee> employeeValidator, ILogger<AdminController> logger, IValidator<Student> studentValidator)
         {
             this.configuration = configuration;
             this.employeeValidator = employeeValidator;
             _logger = logger;
+            this.studentValidator = studentValidator;
+
         }
 
         private readonly ILogger<AdminController> _logger;
@@ -95,7 +100,7 @@ namespace Mastery_Quotient.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
 
         }
@@ -109,7 +114,7 @@ namespace Mastery_Quotient.Controllers
         [HttpPost]
         public async Task<IActionResult> AdminWindowTeacher(string Search)
         {
-
+           
             if (Search != null)
             {
                 var apiUrl = configuration["AppSettings:ApiUrl"];
@@ -130,6 +135,8 @@ namespace Mastery_Quotient.Controllers
             }
             else
             {
+                TempData["Message"] = "По вашему запросу ничего не найдено";
+
                 return RedirectToAction("AdminWindowTeacher", "Admin");
             }
 
@@ -143,39 +150,36 @@ namespace Mastery_Quotient.Controllers
         [HttpPost]
         public async Task<IActionResult> FiltrationTeacher(int roleTeacher)
         {
-            try
+
+            if (roleTeacher != 0)
             {
-                if (roleTeacher != 0)
+                var apiUrl = configuration["AppSettings:ApiUrl"];
+
+                List<Employee> employees = new List<Employee>();
+
+                using (var httpClient = new HttpClient())
                 {
-                    var apiUrl = configuration["AppSettings:ApiUrl"];
-
-                    List<Employee> employees = new List<Employee>();
-
-                    using (var httpClient = new HttpClient())
+                    using (var response = await httpClient.GetAsync(apiUrl + "Employees/Filtration?idRole=" + roleTeacher))
                     {
-                        using (var response = await httpClient.GetAsync(apiUrl + "Employees/Filtration?idRole=" + roleTeacher))
-                        {
-                            var apiResponse = await response.Content.ReadAsStringAsync();
-                            employees = JsonConvert.DeserializeObject<List<Employee>>(apiResponse);
-                            TempData["Filtration"] = JsonConvert.SerializeObject(employees);
+                        var apiResponse = await response.Content.ReadAsStringAsync();
+                        employees = JsonConvert.DeserializeObject<List<Employee>>(apiResponse);
+                        TempData["Filtration"] = JsonConvert.SerializeObject(employees);
 
 
-                            return RedirectToAction("AdminWindowTeacher", "Admin");
+                        return RedirectToAction("AdminWindowTeacher", "Admin");
 
-
-                        }
 
                     }
-                }
-                else
-                {
-                    return RedirectToAction("AdminWindowTeacher", "Admin");
+
                 }
             }
-            catch
+            else
             {
-                return BadRequest("Ошибка");
+                TempData["Message"] = "По вашему запросу ничего не найдено";
+
+                return RedirectToAction("AdminWindowTeacher", "Admin");
             }
+
         }
 
         /// <summary>
@@ -221,7 +225,7 @@ namespace Mastery_Quotient.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
         }
 
@@ -260,6 +264,10 @@ namespace Mastery_Quotient.Controllers
                         employee.MiddleNameEmployee = string.Empty;
                     }
                 }
+                else
+                {
+                    return BadRequest("Введите корректное ФИО!");
+                }
 
                 employee.EmailEmployee = emailUser;
                 employee.PasswordEmployee = passwordUser;
@@ -270,7 +278,8 @@ namespace Mastery_Quotient.Controllers
 
                 if (!validationResult.IsValid)
                 {
-                    TempData["ErrorValidation"] = validationResult.Errors.FirstOrDefault()?.ErrorMessage;
+                    var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                    TempData["ErrorValidation"] = errorMessages;
                     return RedirectToAction("TeacherNew", "Admin");
                 }
 
@@ -292,7 +301,7 @@ namespace Mastery_Quotient.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
         }
 
@@ -328,6 +337,14 @@ namespace Mastery_Quotient.Controllers
                 employee.RoleId = roleUser;
                 employee.IsDeleted = 0;
 
+                var validationResult = await employeeValidator.ValidateAsync(employee);
+
+                if (!validationResult.IsValid)
+                {
+                    var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                    TempData["ErrorValidation"] = errorMessages;
+                    return RedirectToAction("UpdateTeacher", "Admin");
+                }
 
                 using (var httpClient = new HttpClient())
                 {
@@ -347,7 +364,7 @@ namespace Mastery_Quotient.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
         }
 
@@ -386,7 +403,7 @@ namespace Mastery_Quotient.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
         }
 
@@ -469,7 +486,7 @@ namespace Mastery_Quotient.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest("Ошибка!");
+                return BadRequest(ex.Message);
             }
         }
 
@@ -511,7 +528,7 @@ namespace Mastery_Quotient.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
         }
 
@@ -548,6 +565,14 @@ namespace Mastery_Quotient.Controllers
                 employee.RoleId = 2;
                 employee.IsDeleted = 0;
 
+                var validationResult = await employeeValidator.ValidateAsync(employee);
+
+                if (!validationResult.IsValid)
+                {
+                    var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                    TempData["ErrorValidation"] = errorMessages;
+                    return RedirectToAction("PersonalAccountAdmin", "Admin");
+                }
 
                 using (var httpClient = new HttpClient())
                 {
@@ -567,7 +592,7 @@ namespace Mastery_Quotient.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
         }
 
@@ -626,7 +651,7 @@ namespace Mastery_Quotient.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
         }
 
@@ -700,7 +725,7 @@ namespace Mastery_Quotient.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
 
         }
@@ -740,9 +765,9 @@ namespace Mastery_Quotient.Controllers
                     return RedirectToAction("AdminWindowStudent", "Admin");
                 }
             }
-            catch
+            catch (Exception ex)
             { 
-                return BadRequest("Ошибка");
+                return BadRequest(ex.Message);
             
             }
 
@@ -787,9 +812,9 @@ namespace Mastery_Quotient.Controllers
                     return RedirectToAction("AdminWindowStudent", "Admin");
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                return BadRequest("Ошибка");
+                return BadRequest(ex.Message);
             }
         }
 
@@ -827,6 +852,16 @@ namespace Mastery_Quotient.Controllers
                 student.StudyGroupId = studyGroupUser;
 
 
+                var validationResult = await studentValidator.ValidateAsync(student);
+
+                if (!validationResult.IsValid)
+                {
+                    var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                    TempData["ErrorValidation"] = errorMessages;
+                    return RedirectToAction("UpdateStudent", "Admin");
+                }
+
+
                 StringContent content = new StringContent(JsonConvert.SerializeObject(student), Encoding.UTF8, "application/json");
 
                 using (var httpClient = new HttpClient())
@@ -845,7 +880,7 @@ namespace Mastery_Quotient.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
         }
 
@@ -885,7 +920,7 @@ namespace Mastery_Quotient.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
         }
 
@@ -921,47 +956,6 @@ namespace Mastery_Quotient.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        //[HttpGet]
-        //public async Task<IActionResult> DetailsStudent(int id)
-        //{
-        //    try
-        //    {
-        //        var apiUrl = configuration["AppSettings:ApiUrl"];
-
-        //        Student student = new Student();
-        //        List<StudyGroup> studyGroups = new List<StudyGroup>();
-        //        List<Course> courses = new List<Course>();
-
-        //        using (var httpClient = new HttpClient())
-        //        {
-        //            var studentTask = httpClient.GetAsync(apiUrl + "Students/" + id);
-        //            var studyGroupsTask = httpClient.GetAsync(apiUrl + "StudyGroups");
-        //            var coursesTask = httpClient.GetAsync(apiUrl + "Courses");
-
-        //            await Task.WhenAll(studentTask, studyGroupsTask, coursesTask);
-
-        //            string apiResponse = await studentTask.Result.Content.ReadAsStringAsync();
-        //            student = JsonConvert.DeserializeObject<Student>(apiResponse);
-
-        //            apiResponse = await studyGroupsTask.Result.Content.ReadAsStringAsync();
-        //            studyGroups = JsonConvert.DeserializeObject<List<StudyGroup>>(apiResponse);
-
-        //            apiResponse = await coursesTask.Result.Content.ReadAsStringAsync();
-        //            courses = JsonConvert.DeserializeObject<List<Course>>(apiResponse);
-        //        }
-
-        //        StudyGroup group = studyGroups.Find(n => n.IdStudyGroup == student.StudyGroupId);
-        //        Course course = courses.Find(n => n.IdCourse == group.CourseId);
-        //        StudentModelDetails studentModelDetails = new StudentModelDetails(student, group, course);
-
-        //        return View(studentModelDetails);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest(ex.Message);
-        //    }
-        //}
-
         [HttpGet]
         public async Task<IActionResult> DetailsStudent(int id)
         {
@@ -999,7 +993,7 @@ namespace Mastery_Quotient.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest("Ошибка!");
+                return BadRequest(ex.Message);
             }
         }
 
@@ -1058,7 +1052,7 @@ namespace Mastery_Quotient.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest("Ошибка!");
+                return BadRequest(ex.Message);
             }
 
         }
@@ -1151,7 +1145,7 @@ namespace Mastery_Quotient.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
         }
 
@@ -1189,9 +1183,9 @@ namespace Mastery_Quotient.Controllers
                     return RedirectToAction("AdminTestView", "Admin");
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                return BadRequest("Ошибка");
+                return BadRequest(ex.Message);
 
             }
 
@@ -1308,7 +1302,7 @@ namespace Mastery_Quotient.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
 
         }
@@ -1368,9 +1362,9 @@ namespace Mastery_Quotient.Controllers
                     return RedirectToAction("AdminTestView", "Admin");
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                return BadRequest("Ошибка");
+                return BadRequest(ex.Message);
             }
         }
 
@@ -1408,9 +1402,9 @@ namespace Mastery_Quotient.Controllers
                     return RedirectToAction("MaterialsAdmin", "Admin");
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                return BadRequest("Ошибка");
+                return BadRequest(ex.Message);
 
             }
 
@@ -1473,9 +1467,9 @@ namespace Mastery_Quotient.Controllers
                     return RedirectToAction("MaterialsAdmin", "Admin");
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                return BadRequest("Ошибка");
+                return BadRequest(ex.Message);
             }
         }
 
