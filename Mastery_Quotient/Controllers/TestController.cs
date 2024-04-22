@@ -245,6 +245,13 @@ namespace Mastery_Quotient.Controllers
 
                         TempData["Search"] = JsonConvert.SerializeObject(tests);
 
+                        if (tests.Count == 0)
+                        {
+                            TempData["Message"] = "По вашему запросу ничего не найдено";
+                            return RedirectToAction("TestTeacher", "Test");
+
+                        }
+
                         return RedirectToAction("TestTeacher", "Test");
                     }
                 }
@@ -842,6 +849,13 @@ namespace Mastery_Quotient.Controllers
 
                         }
                         TempData["Filtration"] = JsonConvert.SerializeObject(tests);
+
+                        if (tests.Count == 0)
+                        {
+                            TempData["Message"] = "По вашему запросу ничего не найдено";
+                            return RedirectToAction("TestTeacher", "Test");
+
+                        }
 
                         return RedirectToAction("TestTeacher", "Test");
 

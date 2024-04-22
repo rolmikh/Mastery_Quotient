@@ -444,6 +444,13 @@ namespace Mastery_Quotient.Controllers
 
                         TempData["Search"] = JsonConvert.SerializeObject(materials);
 
+                        if (materials.Count == 0)
+                        {
+                            TempData["Message"] = "По вашему запросу ничего не найдено";
+                            return RedirectToAction("MaterialsTeacher", "Teacher");
+
+                        }
+
                         return RedirectToAction("MaterialsTeacher", "Teacher");
                     }
                 }
@@ -468,10 +475,6 @@ namespace Mastery_Quotient.Controllers
         /// <param name="typeId"></param>
         /// <param name="disciplineID"></param>
         /// <returns></returns>
-        /// 
-
-
-
         [HttpPost]
         public async Task<IActionResult> FiltrationMaterial(int typeId, int disciplineID)
         {
@@ -511,6 +514,13 @@ namespace Mastery_Quotient.Controllers
 
                         }
                         TempData["Filtration"] = JsonConvert.SerializeObject(materials);
+
+                        if (materials.Count == 0)
+                        {
+                            TempData["Message"] = "По вашему запросу ничего не найдено";
+                            return RedirectToAction("MaterialsTeacher", "Teacher");
+
+                        }
 
                         return RedirectToAction("MaterialsTeacher", "Teacher");
 

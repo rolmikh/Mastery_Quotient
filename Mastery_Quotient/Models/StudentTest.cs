@@ -6,5 +6,7 @@
         public int? StudentId { get; set;}
         public int? TestId { get; set; }
         public int? Result { get; set; }
+        public int? IsCompleted { get; set; }
+
     }
 }

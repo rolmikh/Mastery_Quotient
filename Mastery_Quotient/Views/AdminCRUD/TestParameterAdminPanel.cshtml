@@ -40,16 +40,16 @@
 <body>
     <div class="containerFormCRUD">
         <button class="newInputCRUD" onclick="window.location.href='@Url.Action("StudyGroupAdminPanel", "AdminCRUD")'">
-            Учебная группа
+            Учебные группы
         </button>
         <button class="newInputCRUD" onclick="window.location.href='@Url.Action("DisciplineAdminPanel", "AdminCRUD")'">
-            Дисциплина
+            Дисциплины
         </button>
         <button class="newInputCRUD" onclick="window.location.href='@Url.Action("TypeMaterialAdminPanel", "AdminCRUD")'">
-            Тип материала
+            Типы материалов
         </button>
         <button class="newInputCRUD" onclick="window.location.href='@Url.Action("TestParameterAdminPanel", "AdminCRUD")'">
-            Параметр тестирования
+            Параметры тестирования
         </button>
     </div>
     <div class="containerForm">
@@ -65,6 +65,7 @@
 
     </div>
     <main>
+        <br />
 
         @if (TempData["Message"] != null)
         {
@@ -72,6 +73,7 @@
                 @TempData["Message"]
             </div>
         }
+        <br />
 
         <table class="table">
             <thead>
@@ -115,6 +117,7 @@
                 <input class="newCRUD" type="submit" value="Добавить параметр тестирования" />
             </form>
         </div>
+        <br />
 
         @if (TempData["ErrorValidation"] != null)
         {
@@ -126,6 +129,7 @@
                 }
             </div>
         }
+        <br />
 
        
 

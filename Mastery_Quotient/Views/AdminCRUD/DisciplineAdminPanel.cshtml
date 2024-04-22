@@ -1,5 +1,211 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model Mastery_Quotient.Models.DisciplineModelView
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/navigationStyle.css">
+    <link rel="stylesheet" href="../css/mainStyle.css">
+    <link rel="stylesheet" href="../css/AdminCRUDStyle.css">
+    <link rel="stylesheet" href="../css/crudStyle.css">
+    <link rel="stylesheet" href="../css/ModalWindowStyle.css">
+    <link href="https://fonts.googleapis.com/css?family=Mulish:200,300,regular,500,600,700,800,900,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic"
+          rel="stylesheet" />
+    <title>Дисциплины</title>
+    <div class="container">
+        <a asp-action="main" asp-controller="admin">
+            <img class="navigation_img" src="../images/3QpbYI-LogoMakr.png">
+        </a>
+
+        <ul class="navigation_ul">
+            <li class="navigation_li"><a class="navigation_a" asp-action="News" asp-controller="Admin">Новости</a></li>
+            <li class="navigation_li"><a class="navigation_a" asp-action="MaterialsAdmin" asp-controller="Admin">Материалы</a></li>
+            <li class="navigation_li"><a class="navigation_a" asp-action="AdminTestView" asp-controller="Admin">Тесты</a></li>
+            <li class="navigation_li"><a class="navigation_a" asp-action="AdminPanel" asp-controller="AdminCRUD">Панель администратора</a></li>
+        </ul>
+        <ul class="navigation_ul_right">
+            <li class="navigation_li_right" style="float: right">
+                <a class="navigation_a_right" asp-action="AdminWindowTeacher" asp-controller="admin">Преподаватели</a>
+            </li>
+            <li class="navigation_li_right" style="float: right"><a class="navigation_a_right" asp-action="AdminWindowStudent" asp-controller="admin">Студенты</a></li>
+        </ul>
+        <button class="glow_button" onclick="window.location.href='@Url.Action("PersonalAccountAdmin", "admin")'">
+            Личный кабинет
+        </button>
+    </div>
+
+</head>
+
+<body>
+    <div class="containerFormCRUD">
+        <button class="newInputCRUD" onclick="window.location.href='@Url.Action("StudyGroupAdminPanel", "AdminCRUD")'">
+            Учебные группы
+        </button>
+        <button class="newInputCRUD" onclick="window.location.href='@Url.Action("DisciplineAdminPanel", "AdminCRUD")'">
+            Дисциплины
+        </button>
+        <button class="newInputCRUD" onclick="window.location.href='@Url.Action("TypeMaterialAdminPanel", "AdminCRUD")'">
+            Типы материалов
+        </button>
+        <button class="newInputCRUD" onclick="window.location.href='@Url.Action("TestParameterAdminPanel", "AdminCRUD")'">
+            Параметры тестирования
+        </button>
+    </div>
+    <div class="containerForm">
+        <form asp-antiforgery="true" asp-action="SearchDiscipline" asp-controller="AdminCRUD">
+
+            <input class="searchInput" type="text" name="Search" />
+            <button class="searchImage" type="submit">
+                <img width="40" height="40" src="../images/icons8-лупа-64.png" />
+            </button>
+        </form>
+
+        <form asp-antiforgery="true" asp-action="FiltrationDiscipline" asp-controller="AdminCRUD">
+            <select class="CrudSelect" required id="courseId" name="courseId" placeholder="Курс">
+                <option selected disabled>Курс</option>
+                @foreach (var course in Model.Courses)
+                {
+                    <option value="@course.IdCourse">@course.NumberCourse</option>
+                }
+            </select>
+            <button class="InputFiltr" type="submit">Фильтрация</button>
+
+        </form>
+
+    </div>
+    <main>
+        <br />
+
+        @if (TempData["Message"] != null)
+        {
+            <div class="alert alert-success" role="alert">
+                @TempData["Message"]
+            </div>
+        }
+        <br />
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Код</th>
+                    <th>Название дисциплины</th>
+                    <th>Курс</th>
+                    <th>Изменить</th>
+                    <th>Удалить</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var items in Model.Disciplines)
+                {
+                    var course = Model.Courses.Find(n => n.IdCourse == items.CourseId).NumberCourse;
+
+                    <tr>
+                        <td>@items.IdDiscipline</td>
+                        <td>@items.NameDiscipline</td>
+                        <td>@course</td>
+                        <td>
+                            <a asp-action="UpdateDiscipline" asp-controller="adminCRUD" asp-route-id="@items.IdDiscipline"><input type="image" width="50" height="50" src="../images/edit.png" /></a>
+                        </td>
+                        <td>
+                            <form id="deleteForm" asp-controller="AdminCRUD" asp-action="DeleteDiscipline" method="post">
+                                <input type="hidden" value="@items.IdDiscipline" name="IdDiscipline" />
+                                <button class="image_button" width="50" height="50" type="button">
+                                    <img>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <div class="form_newCRUD">
+            <form asp-antiforgery="true" asp-action="DisciplineNew" asp-controller="AdminCRUD">
+                <input class="CrudInputAdmin" type="text" required name="nameDiscipline" placeholder="Название дисциплины" />
+                <select class="CrudSelectAdmin" required id="courseId" name="courseId" placeholder="Курс">
+                    <option selected disabled>Курс</option>
+                    @foreach (var course in Model.Courses)
+                    {
+                        <option value="@course.IdCourse">@course.NumberCourse</option>
+                    }
+                </select>
+                <input class="newCRUD" type="submit" value="Добавить дисциплину" />
+            </form>
+        </div>
+        <br />
+
+        @if (TempData["ErrorValidation"] != null)
+        {
+            <div class="alert alert-danger">
+
+                @foreach (var errorMessage in (string[])TempData["ErrorValidation"])
+                {
+                    <p>@errorMessage</p>
+                }
+            </div>
+        }
+        <br />
+
+
+
+
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <p>Вы уверены, что хотите удалить эту запись?</p>
+                <form id="deleteForm" asp-controller="AdminCRUD" asp-action="DeleteDiscipline" method="post">
+                    <input type="hidden" id="IdDiscipline" name="IdDiscipline" />
+                    <button id="confirmDeleteBtnModal" class="newInput">Да</button>
+                    <button id="confirmBack" class="newInput">Отмена</button>
+                </form>
+            </div>
+        </div>
+
+        <script>
+            // Получаем ссылки на элементы DOM
+            var modal = document.getElementById('myModal'); // Получаем модальное окно по его id
+            var confirmDeleteBtn = document.getElementById('confirmDeleteBtnModal'); // Получаем кнопку подтверждения удаления
+            var confirmBackBtn = document.getElementById('confirmBack'); // Получаем кнопку отмены
+            var IdDisciplineInput = document.getElementById('IdDiscipline'); // Получаем скрытое поле для id дисциплины
+            var closeButton = document.querySelector('.modal-content .close');
+
+
+            // Добавляем обработчик события к кнопкам удаления
+            document.querySelectorAll('.image_button').forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    // При нажатии кнопки удаления открываем модальное окно
+                    modal.style.display = 'block';
+                    // Устанавливаем значение скрытого поля IdDisciplineInput равным id дисциплины из соответствующей строки таблицы
+                    IdDisciplineInput.value = btn.closest('tr').querySelector('[name="IdDiscipline"]').value;
+                });
+            });
+
+            // Обработчик события для кнопки "Отмена"
+            confirmBackBtn.onclick = function () {
+                // Предотвращаем отправку формы при нажатии кнопки "Отмена"
+                event.preventDefault();
+                // При нажатии кнопки "Отмена" закрываем модальное окно
+                modal.style.display = "none";
+            };
+
+            closeButton.onclick = function () {
+                modal.style.display = "none";
+            };
+
+            // Обработчик события для клика по области за пределами модального окна
+            window.onclick = function (event) {
+                // Если пользователь кликнул вне модального окна, закрываем его
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            };
+
+        </script>
+
+
+    </main>
+</body>
+
+</html>
+

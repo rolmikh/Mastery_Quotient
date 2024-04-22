@@ -41,22 +41,23 @@
 
         <div class="containerFormCRUD">
             <button class="newInputCRUD" onclick="window.location.href='@Url.Action("StudyGroupAdminPanel", "AdminCRUD")'">
-                Учебная группа
+                Учебные группы
             </button>
             <button class="newInputCRUD" onclick="window.location.href='@Url.Action("DisciplineAdminPanel", "AdminCRUD")'">
-                Дисциплина
+                Дисциплины
             </button>
             <button class="newInputCRUD" onclick="window.location.href='@Url.Action("TypeMaterialAdminPanel", "AdminCRUD")'">
-                Тип материала
+                Типы материалов
             </button>
             <button class="newInputCRUD" onclick="window.location.href='@Url.Action("TestParameterAdminPanel", "AdminCRUD")'">
-                Параметр тестирования
+                Параметры тестирования
             </button>
 
             <button class="newInputCRUD" onclick="window.location.href='@Url.Action("BackUpDatabase", "AdminCRUD")'">
                 Создать резервную копию базы данных
             </button>
         </div>
+        <br />
 
         @if(TempData["Message"] != null)
         {
@@ -64,6 +65,7 @@
                 @TempData["Message"]
             </div>
         }
+        <br />
 
     </main>
 </body>

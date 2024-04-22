@@ -1,0 +1,61 @@
+﻿@model Mastery_Quotient.Models.DisciplineModelView
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/mainStyle.css">
+    <link rel="stylesheet" href="@Url.Content("~/css/AdminCRUDStyle.css")">
+    <link href="https://fonts.googleapis.com/css?family=Mulish:200,300,regular,500,600,700,800,900,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic"
+          rel="stylesheet" />
+    <title>Изменение дисциплины</title>
+</head>
+
+<body>
+    <main>
+        <div class="form_updateCRUD">
+            <form asp-antiforgery="true" asp-action="UpdateDiscipline" asp-controller="AdminCRUD">
+                @foreach (var item in Model.Disciplines)
+                {
+
+                    var courseId = Model.Courses.Find(n => n.IdCourse == item.CourseId).IdCourse;
+                    var courseNumber = Model.Courses.Find(n => n.IdCourse == item.CourseId).NumberCourse;
+
+
+
+                    <label hidden>Код дисциплины</label>
+                    <input class="CrudInputAdmin" type="text" readonly required name="idDiscipline" value="@item.IdDiscipline" placeholder="Код дисциплины" />
+                    <label hidden>Название дисциплины</label>
+                    <input class="CrudInputAdmin" type="text" required name="nameDiscipline" value="@item.NameDiscipline" placeholder="Название дисциплины" />
+                    <label hidden>Курс</label>
+                    <select class="CrudSelectAdmin" required id="courseId" name="courseId" placeholder="Курс">
+                        <option value="@courseId">@courseNumber</option>
+                        @foreach (var course in Model.Courses)
+                        {
+                            <option value="@course.IdCourse">@course.NumberCourse</option>
+                        }
+                    </select>
+                    <input class="newCRUD" type="submit" value="Изменить дисциплину" />
+                }
+            </form>
+        </div>
+        <br />
+
+        @if (TempData["ErrorValidation"] != null)
+        {
+            <div class="alert alert-danger">
+
+                @foreach (var errorMessage in (string[])TempData["ErrorValidation"])
+                {
+                    <p>@errorMessage</p>
+                }
+            </div>
+        }
+        <br />
+
+    </main>
+
+</body>
+
+</html>

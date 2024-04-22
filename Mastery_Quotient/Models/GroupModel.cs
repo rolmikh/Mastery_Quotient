@@ -5,9 +5,12 @@
 
         public List<StudyGroup> StudyGroups { get; set; }
 
-        public GroupModel(List<StudyGroup> studyGroups)
+        public List<Course> Courses { get; set; }
+
+        public GroupModel(List<StudyGroup> studyGroups, List<Course> courses)
         {
             StudyGroups = studyGroups;
+            Courses = courses;
         }
     }
 }
