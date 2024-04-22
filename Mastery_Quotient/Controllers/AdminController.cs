@@ -762,6 +762,8 @@ namespace Mastery_Quotient.Controllers
                 }
                 else
                 {
+                    TempData["Message"] = "По вашему запросу ничего не найдено";
+
                     return RedirectToAction("AdminWindowStudent", "Admin");
                 }
             }
@@ -809,6 +811,8 @@ namespace Mastery_Quotient.Controllers
                 }
                 else
                 {
+                    TempData["Message"] = "По вашему запросу ничего не найдено";
+
                     return RedirectToAction("AdminWindowStudent", "Admin");
                 }
             }
@@ -1180,6 +1184,8 @@ namespace Mastery_Quotient.Controllers
                 }
                 else
                 {
+                    TempData["Message"] = "По вашему запросу ничего не найдено";
+
                     return RedirectToAction("AdminTestView", "Admin");
                 }
             }
@@ -1359,6 +1365,8 @@ namespace Mastery_Quotient.Controllers
                 }
                 else
                 {
+                    TempData["Message"] = "По вашему запросу ничего не найдено";
+
                     return RedirectToAction("AdminTestView", "Admin");
                 }
             }
@@ -1399,6 +1407,8 @@ namespace Mastery_Quotient.Controllers
                 }
                 else
                 {
+                    TempData["Message"] = "По вашему запросу ничего не найдено";
+
                     return RedirectToAction("MaterialsAdmin", "Admin");
                 }
             }
@@ -1464,6 +1474,8 @@ namespace Mastery_Quotient.Controllers
                 }
                 else
                 {
+                    TempData["Message"] = "По вашему запросу ничего не найдено";
+
                     return RedirectToAction("MaterialsAdmin", "Admin");
                 }
             }

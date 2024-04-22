@@ -66,6 +66,13 @@
     </div>
     <main>
 
+        @if (TempData["Message"] != null)
+        {
+            <div class="alert alert-success" role="alert">
+                @TempData["Message"]
+            </div>
+        }
+
         <table class="table">
             <thead>
                 <tr>
@@ -104,11 +111,21 @@
                 <label hidden>Название параметра</label>
                 <input class="CrudInputAdmin" type="text" required name="nameParameter" placeholder="Название параметра" />
                 <label hidden>Значение параметра</label>
-                <input class="CrudInputAdmin" type="text" required name="valueParameter" placeholder="Значение параметра" />
+                <input class="CrudInputAdmin" type="number" required name="valueParameter" placeholder="Значение параметра" />
                 <input class="newCRUD" type="submit" value="Добавить параметр тестирования" />
             </form>
         </div>
 
+        @if (TempData["ErrorValidation"] != null)
+        {
+            <div class="alert alert-danger">
+
+                @foreach (var errorMessage in (string[])TempData["ErrorValidation"])
+                {
+                    <p>@errorMessage</p>
+                }
+            </div>
+        }
 
        
 

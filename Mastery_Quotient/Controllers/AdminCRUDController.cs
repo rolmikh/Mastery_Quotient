@@ -1,5 +1,7 @@
-﻿using Google.Apis.Drive.v3.Data;
+﻿using FluentValidation;
+using Google.Apis.Drive.v3.Data;
 using Mastery_Quotient.Models;
+using Mastery_Quotient.ModelsValidation;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net.Http;
@@ -11,12 +13,17 @@ namespace Mastery_Quotient.Controllers
     {
         private readonly IConfiguration configuration;
 
-        public AdminCRUDController(IConfiguration configuration)
+        private readonly IValidator<TypeMaterial> typeMaterialValidator;
+
+        private readonly IValidator<TestParameter> testParameterValidator;
+
+        public AdminCRUDController(IConfiguration configuration, IValidator<TypeMaterial> typeMaterialValidator, IValidator<TestParameter> testParameterValidator)
         {
             this.configuration = configuration;
+            this.typeMaterialValidator = typeMaterialValidator;
+            this.testParameterValidator = testParameterValidator;
         }
 
-       
         public IActionResult AdminPanel()
         {
             return View();
@@ -92,6 +99,40 @@ namespace Mastery_Quotient.Controllers
         }
 
         /// <summary>
+        /// POST запрос поиска параметров тестирования
+        /// </summary>
+        /// <param name="Search"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> SearchTestParameter(string Search)
+        {
+            if (Search != null)
+            {
+                var apiUrl = configuration["AppSettings:ApiUrl"];
+                List<TestParameter> testParameters = new List<TestParameter>();
+
+
+                using (var httpClient = new HttpClient())
+                {
+                    var response = await httpClient.GetAsync(apiUrl + "TestParameters/Search?search=" + Search);
+
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    testParameters = JsonConvert.DeserializeObject<List<TestParameter>>(apiResponse);
+
+                    TempData["Search"] = JsonConvert.SerializeObject(testParameters);
+
+                    return RedirectToAction("TestParameterAdminPanel", "AdminCRUD");
+                }
+            }
+            else
+            {
+                TempData["Message"] = "По вашему запросу ничего не найдено";
+
+                return RedirectToAction("TestParameterAdminPanel", "AdminCRUD");
+            }
+        }
+
+        /// <summary>
         /// POST запрос добавления параметров тестирования
         /// </summary>
         /// <param name="nameParameter"></param>
@@ -109,6 +150,15 @@ namespace Mastery_Quotient.Controllers
                 testParameter.NameParameter = nameParameter;
                 testParameter.ValueParameter = valueParameter;
                 testParameter.IsDeleted = 0;
+
+                var validationResult = await testParameterValidator.ValidateAsync(testParameter);
+
+                if (!validationResult.IsValid)
+                {
+                    var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                    TempData["ErrorValidation"] = errorMessages;
+                    return RedirectToAction("TestParameterAdminPanel", "AdminCRUD");
+                }
 
                 StringContent content = new StringContent(JsonConvert.SerializeObject(testParameter), Encoding.UTF8, "application/json");
 
@@ -160,7 +210,7 @@ namespace Mastery_Quotient.Controllers
         }
 
         /// <summary>
-        /// POST запрос на изменение данных
+        /// POST запрос на изменение данных параметра тестирования
         /// </summary>
         /// <param name="idParameter"></param>
         /// <param name="nameParameter"></param>
@@ -179,6 +229,15 @@ namespace Mastery_Quotient.Controllers
                 testParameter.NameParameter = nameParameter;
                 testParameter.ValueParameter = valueParameter;
                 testParameter.IsDeleted = 0;
+
+                var validationResult = await testParameterValidator.ValidateAsync(testParameter);
+
+                if (!validationResult.IsValid)
+                {
+                    var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                    TempData["ErrorValidation"] = errorMessages;
+                    return RedirectToAction("TestParameterAdminPanel", "AdminCRUD");
+                }
 
                 StringContent content = new StringContent(JsonConvert.SerializeObject(testParameter), Encoding.UTF8, "application/json");
 
@@ -263,7 +322,41 @@ namespace Mastery_Quotient.Controllers
         }
 
         /// <summary>
-        /// POST запрос на добавление данных
+        /// POST запрос поиска типов материала
+        /// </summary>
+        /// <param name="Search"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> SearchTypeMaterial(string Search)
+        {
+            if (Search != null)
+            {
+                var apiUrl = configuration["AppSettings:ApiUrl"];
+                List<TypeMaterial> typeMaterials = new List<TypeMaterial>();
+
+
+                using (var httpClient = new HttpClient())
+                {
+                    var response = await httpClient.GetAsync(apiUrl + "TypeMaterials/Search?search=" + Search);
+
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    typeMaterials = JsonConvert.DeserializeObject<List<TypeMaterial>>(apiResponse);
+
+                    TempData["Search"] = JsonConvert.SerializeObject(typeMaterials);
+
+                    return RedirectToAction("TypeMaterialAdminPanel", "AdminCRUD");
+                }
+            }
+            else
+            {
+                TempData["Message"] = "По вашему запросу ничего не найдено";
+
+                return RedirectToAction("TypeMaterialAdminPanel", "AdminCRUD");
+            }
+        }
+
+        /// <summary>
+        /// POST запрос на добавление типа материала
         /// </summary>
         /// <param name="nameParameter"></param>
         /// <param name="valueParameter"></param>
@@ -279,6 +372,15 @@ namespace Mastery_Quotient.Controllers
 
                 typeMaterial.NameTypeMaterial = nameTypeMaterial;
                 typeMaterial.IsDeleted = 0;
+
+                var validationResult = await typeMaterialValidator.ValidateAsync(typeMaterial);
+
+                if (!validationResult.IsValid)
+                {
+                    var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                    TempData["ErrorValidation"] = errorMessages;
+                    return RedirectToAction("TypeMaterialAdminPanel", "AdminCRUD");
+                }
 
                 StringContent content = new StringContent(JsonConvert.SerializeObject(typeMaterial), Encoding.UTF8, "application/json");
 
@@ -345,6 +447,15 @@ namespace Mastery_Quotient.Controllers
                 typeMaterial.IdTypeMaterial = IdTypeMaterial;
                 typeMaterial.NameTypeMaterial = NameTypeMaterial;
                 typeMaterial.IsDeleted = 0;
+
+                var validationResult = await typeMaterialValidator.ValidateAsync(typeMaterial);
+
+                if (!validationResult.IsValid)
+                {
+                    var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                    TempData["ErrorValidation"] = errorMessages;
+                    return RedirectToAction("TypeMaterialAdminPanel", "AdminCRUD");
+                }
 
                 StringContent content = new StringContent(JsonConvert.SerializeObject(typeMaterial), Encoding.UTF8, "application/json");
 

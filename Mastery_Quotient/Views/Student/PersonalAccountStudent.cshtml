@@ -1,0 +1,138 @@
+﻿@model Mastery_Quotient.Models.StudentPersonalAccountModel
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/mainStyle.css">
+    <link rel="stylesheet" href="../css/navigationStyle.css">
+    <link rel="stylesheet" href="../css/personalAccountStyle.css">
+    <link rel="stylesheet" href="../css/ModalWindowStyle.css">
+    <link href="https://fonts.googleapis.com/css?family=Mulish:200,300,regular,500,600,700,800,900,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic"
+          rel="stylesheet" />
+    <title>Личный кабинет студента</title>
+    <div class="container">
+        <a asp-action="main" asp-controller="student">
+            <img class="navigation_img" src="../images/3QpbYI-LogoMakr.png">
+        </a>
+
+        <ul class="navigation_ul">
+            <li class="navigation_li"><a class="navigation_a" asp-action="News" asp-controller="Admin">Новости</a></li>
+            <li class="navigation_li"><a class="navigation_a" asp-action="MaterialStudent" asp-controller="Student">Материалы</a></li>
+            <li class="navigation_li"><a class="navigation_a" asp-action="TestStudent" asp-controller="Student">Тесты</a></li>
+            <li class="navigation_li"><a class="navigation_a" asp-action="AdminPanel" asp-controller="Student">Рейтинг</a></li>
+        </ul>
+       @*  <ul class="navigation_ul_right">
+            <li class="navigation_li_right" style="float: right">
+                <a class="navigation_a_right" asp-action="AdminWindowTeacher" asp-controller="admin">Преподаватели</a>
+            </li>
+            <li class="navigation_li_right" style="float: right"><a class="navigation_a_right" asp-action="AdminWindowStudent" asp-controller="admin">Студенты</a></li>
+        </ul> *@
+        <button class="glow_button" onclick="window.location.href='@Url.Action("PersonalAccountStudent", "student")'">
+            Личный кабинет
+        </button>
+    </div>
+
+</head>
+<body>
+    <main>
+        <div></div>
+        <div class="container">
+            <div class="form_photo">
+                <img class="photo" src="@Model.Student.PhotoStudent" width="50" height="50" />
+                <div class="div_photo">
+                    <a href="#" id="openModalLink">Изменить фото</a>
+                </div>
+                <div class="div_info">@Model.Student.SurnameStudent</div>
+                <div class="div_info">@Model.Student.NameStudent</div>
+                <div class="div_info">@Model.Student.MiddleNameStudent</div>
+                <input class="personalAccount_glow_button" type="submit" value="Изменить пароль" />
+                <a href="@Url.Action("Logout")"><button class="personalAccount_glow_button">Выйти из аккаунта</button></a>
+            </div>
+            <div class="form">
+                <h1 class="h1Auto">Личные данные</h1>
+                <form asp-antiforgery="true" asp-action="PersonalAccountStudent" asp-controller="Student">
+                    <br />
+                    <input class="personalAccountInput" type="text" required name="surnameUser" value="@Model.Student.SurnameStudent" placeholder="Фамилия" />
+                    <br />
+
+                    <label hidden>Имя</label>
+                    <br />
+                    <input class="personalAccountInput" type="text" required name="nameUser" value="@Model.Student.NameStudent" placeholder="Имя" />
+                    <br />
+
+                    <label hidden>Отчество</label>
+                    <br />
+                    <input class="personalAccountInput" type="text" required value="@Model.Student.MiddleNameStudent" name="middleNameUser"
+                           placeholder="Отчество" />
+                    <br />
+
+                    <label hidden>Введите электронную почту</label>
+                    <br />
+                    <input class="personalAccountInput" type="email" value="@Model.Student.EmailStudent" required name="emailUser" placeholder="Электронная почта" />
+                    <br />
+                    <label hidden>Выберите учебную группу</label>
+                    <br />
+                    <input class="personalAccountInput" type="text" value="@Model.StudyGroup.NameStudyGroup" readonly required name="studyGroupUser" placeholder="Учебная группа" />
+                    <br />
+
+                    <input class="personalAccount_glow_button" type="submit" value="Изменить" />
+
+                </form>
+
+
+
+            </div>
+
+        </div>
+
+        @if (TempData["ErrorValidation"] != null)
+        {
+            <div class="alert alert-danger">
+
+                @foreach (var errorMessage in (string[])TempData["ErrorValidation"])
+                {
+                    <p>@errorMessage</p>
+                }
+            </div>
+        }
+
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <p>Выберите файл</p>
+                <form id="uploadForm" asp-antiforgery="true" asp-controller="student" asp-action="UpdatePhoto" method="post" enctype="multipart/form-data">
+                    <input type="file" id="fileInput" name="photo" accept="image/*" />
+                    <button type="submit" class="newInput">Сохранить</button>
+                </form>
+            </div>
+        </div>
+
+
+    </main>
+    <script>
+        // Получаем ссылки на элементы DOM
+        var modal = document.getElementById('myModal');
+        var openModalLink = document.getElementById('openModalLink');
+        var closeButton = document.querySelector('.modal-content .close');
+
+        // Обработчик события для клика по ссылке
+        openModalLink.onclick = function () {
+            modal.style.display = "block";
+        };
+
+        // Закрываем модальное окно при клике на кнопку закрытия
+        closeButton.onclick = function () {
+            modal.style.display = "none";
+        };
+
+        // Закрываем модальное окно при клике вне его области
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        };
+    </script>
+
+</body>
+</html>

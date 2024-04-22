@@ -66,6 +66,13 @@
 
             </form>
         </div>
+
+        @if (TempData["Message"] != null)
+        {
+            <div class="alert alert-success" role="alert">
+                @TempData["Message"]
+            </div>
+        }
         <div class="formsContainer">
             @foreach (var item in Model.Test)
             {
