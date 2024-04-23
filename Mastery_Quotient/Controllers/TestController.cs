@@ -173,7 +173,7 @@ namespace Mastery_Quotient.Controllers
                         employee = JsonConvert.DeserializeObject<Employee>(apiResponse);
                     }
 
-                    using (var response = await httpClient.GetAsync(apiUrl + "Disciplines"))
+                    using (var response = await httpClient.GetAsync(apiUrl + "Disciplines/NoDeleted"))
                     {
                         string apiResponse = await response.Content.ReadAsStringAsync();
                         disciplines = JsonConvert.DeserializeObject<List<Discipline>>(apiResponse);
@@ -257,6 +257,8 @@ namespace Mastery_Quotient.Controllers
                 }
                 else
                 {
+                    TempData["Message"] = "По вашему запросу ничего не найдено";
+
                     return RedirectToAction("TestTeacher", "Test");
                 }
             }
@@ -863,6 +865,8 @@ namespace Mastery_Quotient.Controllers
                 }
                 else
                 {
+                    TempData["Message"] = "По вашему запросу ничего не найдено";
+
                     return RedirectToAction("TestTeacher", "Test");
                 }
             }

@@ -469,6 +469,8 @@ namespace Mastery_Quotient.Controllers
                 }
                 else
                 {
+                    TempData["Message"] = "По вашему запросу ничего не найдено";
+
                     return RedirectToAction("MaterialsTeacher", "Teacher");
                 }
             }
@@ -541,6 +543,8 @@ namespace Mastery_Quotient.Controllers
                 }
                 else
                 {
+                    TempData["Message"] = "По вашему запросу ничего не найдено";
+
                     return RedirectToAction("MaterialsTeacher", "Teacher");
                 }
             }

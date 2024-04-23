@@ -220,7 +220,7 @@ namespace Mastery_Quotient.Controllers
         /// Загрузка представления страницы материалов студента
         /// </summary>
         /// <returns></returns>
-        [HttpGet]
+        
         public async Task<IActionResult> MaterialStudent()
         {
             try
@@ -240,23 +240,34 @@ namespace Mastery_Quotient.Controllers
 
                 TempData.Keep("AuthUser");
 
-                using (var httpClient = new HttpClient()) 
+                using (var httpClient = new HttpClient())
                 {
-                    using (var response = await httpClient.GetAsync(apiUrl + "TypeMaterials"))
+                    using (var response = await httpClient.GetAsync(apiUrl + "TypeMaterials/NoDeleted"))
                     {
                         string apiResponse = await response.Content.ReadAsStringAsync();
                         typeMaterials = JsonConvert.DeserializeObject<List<TypeMaterial>>(apiResponse);
                     }
 
-                    using (var response = await httpClient.GetAsync(apiUrl + "Disciplines"))
+                    using (var response = await httpClient.GetAsync(apiUrl + "Disciplines/NoDeleted"))
                     {
                         string apiResponse = await response.Content.ReadAsStringAsync();
                         disciplines = JsonConvert.DeserializeObject<List<Discipline>>(apiResponse);
                     }
-                    using (var response = await httpClient.GetAsync(apiUrl + "Materials"))
+                    if (TempData.ContainsKey("Search"))
                     {
-                        string apiResponse = await response.Content.ReadAsStringAsync();
-                        materials = JsonConvert.DeserializeObject<List<Material>>(apiResponse);
+                        materials = JsonConvert.DeserializeObject<List<Material>>(TempData["Search"].ToString());
+                    }
+                    else if (TempData.ContainsKey("Filtration"))
+                    {
+                        materials = JsonConvert.DeserializeObject<List<Material>>(TempData["Filtration"].ToString());
+                    }
+                    else
+                    {
+                        using (var response = await httpClient.GetAsync(apiUrl + "Materials"))
+                        {
+                            string apiResponse = await response.Content.ReadAsStringAsync();
+                            materials = JsonConvert.DeserializeObject<List<Material>>(apiResponse);
+                        }
                     }
                     using (var response = await httpClient.GetAsync(apiUrl + "Students/" + id))
                     {
@@ -290,16 +301,7 @@ namespace Mastery_Quotient.Controllers
 
                 StudentMaterialModel studentMaterialModel = new StudentMaterialModel(materials, disciplines, typeMaterials, studyGroup, disciplineOfTheStudyGroups,employees,disciplineEmployees, student);
                 return View(studentMaterialModel);
-                //if (TempData.ContainsKey("Search"))
-                //{
-                //    materials = JsonConvert.DeserializeObject<List<Material>>(TempData["Search"].ToString());
-                //}
-                //else if (TempData.ContainsKey("Filtration"))
-                //{
-                //    materials = JsonConvert.DeserializeObject<List<Material>>(TempData["Filtration"].ToString());
-                //}
-                //else
-                //{
+                
             }
             catch (Exception ex)
             {
@@ -340,7 +342,7 @@ namespace Mastery_Quotient.Controllers
                         string apiResponse = await response.Content.ReadAsStringAsync();
                         employees = JsonConvert.DeserializeObject<List<Employee>>(apiResponse);
                     }
-                    using (var response = await httpClient.GetAsync(apiUrl + "Disciplines"))
+                    using (var response = await httpClient.GetAsync(apiUrl + "Disciplines/NoDeleted"))
                     {
                         string apiResponse = await response.Content.ReadAsStringAsync();
                         disciplines = JsonConvert.DeserializeObject<List<Discipline>>(apiResponse);
@@ -350,15 +352,26 @@ namespace Mastery_Quotient.Controllers
                         string apiResponse = await response.Content.ReadAsStringAsync();
                         disciplineEmployees = JsonConvert.DeserializeObject<List<DisciplineEmployee>>(apiResponse);
                     }
-                    using (var response = await httpClient.GetAsync(apiUrl + "TestParameters"))
+                    using (var response = await httpClient.GetAsync(apiUrl + "TestParameters/NoDeleted"))
                     {
                         string apiResponse = await response.Content.ReadAsStringAsync();
                         testParameters = JsonConvert.DeserializeObject<List<TestParameter>>(apiResponse);
                     }
-                    using (var response = await httpClient.GetAsync(apiUrl + "Tests"))
+                    if (TempData.ContainsKey("Search"))
                     {
-                        string apiResponse = await response.Content.ReadAsStringAsync();
-                        tests = JsonConvert.DeserializeObject<List<Test>>(apiResponse);
+                        tests = JsonConvert.DeserializeObject<List<Test>>(TempData["Search"].ToString());
+                    }
+                    else if (TempData.ContainsKey("Filtration"))
+                    {
+                        tests = JsonConvert.DeserializeObject<List<Test>>(TempData["Filtration"].ToString());
+                    }
+                    else
+                    {
+                        using (var response = await httpClient.GetAsync(apiUrl + "Tests"))
+                        {
+                            string apiResponse = await response.Content.ReadAsStringAsync();
+                            tests = JsonConvert.DeserializeObject<List<Test>>(apiResponse);
+                        }
                     }
                     using (var response = await httpClient.GetAsync(apiUrl + "Students/" + id))
                     {
@@ -507,5 +520,246 @@ namespace Mastery_Quotient.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+
+        /// <summary>
+        /// POST запрос поиска материалов
+        /// </summary>
+        /// <param name="Search"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> MaterialStudent(string Search)
+        {
+            try
+            {
+                if (Search != null)
+                {
+                    var apiUrl = configuration["AppSettings:ApiUrl"];
+                    List<Material> materials = new List<Material>();
+
+                    StringContent content = new StringContent(JsonConvert.SerializeObject(Search), Encoding.UTF8, "application/json");
+
+                    using (var httpClient = new HttpClient())
+                    {
+                        var response = await httpClient.GetAsync(apiUrl + "Materials/Search?search=" + Search);
+
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        materials = JsonConvert.DeserializeObject<List<Material>>(apiResponse);
+
+                        TempData["Search"] = JsonConvert.SerializeObject(materials);
+
+                        if (materials.Count == 0)
+                        {
+                            TempData["Message"] = "По вашему запросу ничего не найдено";
+                            return RedirectToAction("MaterialStudent", "Student");
+
+                        }
+
+                        return RedirectToAction("MaterialStudent", "Student");
+                    }
+                }
+                else
+                {
+                    return RedirectToAction("MaterialStudent", "Student");
+                }
+            }
+            catch
+            {
+                return BadRequest("Ошибка");
+
+            }
+
+
+
+        }
+
+        /// <summary>
+        /// POST запрос фильтрации материалов преподавателя
+        /// </summary>
+        /// <param name="typeId"></param>
+        /// <param name="disciplineID"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> FiltrationMaterialStudent(int typeId, int disciplineID)
+        {
+            try
+            {
+                if (typeId != 0 || disciplineID != 0)
+                {
+                    var apiUrl = configuration["AppSettings:ApiUrl"];
+
+                    List<Material> materials = new List<Material>();
+
+                    using (var httpClient = new HttpClient())
+                    {
+                        if (typeId != 0 && disciplineID == 0)
+                        {
+                            using (var response = await httpClient.GetAsync(apiUrl + "Materials/Filtration?idType=" + typeId))
+                            {
+                                var apiResponse = await response.Content.ReadAsStringAsync();
+                                materials = JsonConvert.DeserializeObject<List<Material>>(apiResponse);
+                            }
+                        }
+                        else if (typeId == 0 && disciplineID != 0)
+                        {
+                            using (var response = await httpClient.GetAsync(apiUrl + "Materials/Filtration?idDiscipline=" + disciplineID))
+                            {
+                                var apiResponse = await response.Content.ReadAsStringAsync();
+                                materials = JsonConvert.DeserializeObject<List<Material>>(apiResponse);
+                            }
+                        }
+                        else
+                        {
+                            using (var response = await httpClient.GetAsync(apiUrl + $"Materials/Filtration?idDiscipline={disciplineID}&idType={typeId}"))
+                            {
+                                var apiResponse = await response.Content.ReadAsStringAsync();
+                                materials = JsonConvert.DeserializeObject<List<Material>>(apiResponse);
+                            }
+
+                        }
+                        TempData["Filtration"] = JsonConvert.SerializeObject(materials);
+
+                        if (materials.Count == 0)
+                        {
+                            TempData["Message"] = "По вашему запросу ничего не найдено";
+                            return RedirectToAction("MaterialStudent", "Student");
+
+                        }
+
+                        return RedirectToAction("MaterialStudent", "Student");
+
+                    }
+                }
+                else
+                {
+                    return RedirectToAction("MaterialStudent", "Student");
+                }
+            }
+            catch
+            {
+                return BadRequest("Ошибка");
+            }
+        }
+
+
+        /// <summary>
+        /// POST запрос поиска тестирования
+        /// </summary>
+        /// <param name="Search"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> TestStudent(string Search)
+        {
+            try
+            {
+                if (Search != null)
+                {
+                    var apiUrl = configuration["AppSettings:ApiUrl"];
+                    List<Test> tests = new List<Test>();
+
+                    StringContent content = new StringContent(JsonConvert.SerializeObject(Search), Encoding.UTF8, "application/json");
+
+                    using (var httpClient = new HttpClient())
+                    {
+                        var response = await httpClient.GetAsync(apiUrl + "Tests/Search?search=" + Search);
+
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        tests = JsonConvert.DeserializeObject<List<Test>>(apiResponse);
+
+                        TempData["Search"] = JsonConvert.SerializeObject(tests);
+
+                        if (tests.Count == 0)
+                        {
+                            TempData["Message"] = "По вашему запросу ничего не найдено";
+                            return RedirectToAction("TestStudent", "Student");
+
+                        }
+
+                        return RedirectToAction("TestStudent", "Student");
+                    }
+                }
+                else
+                {
+                    return RedirectToAction("TestStudent", "Student");
+                }
+            }
+            catch
+            {
+                return BadRequest("Ошибка");
+
+            }
+
+
+
+        }
+
+        /// <summary>
+        /// POST запрос фильтрации тестирований
+        /// </summary>
+        /// <param name="parameterId"></param>
+        /// <param name="disciplineID"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> FiltrationTestStudent(int parameterId, int disciplineID)
+        {
+            try
+            {
+                if (parameterId != 0 || disciplineID != 0)
+                {
+                    var apiUrl = configuration["AppSettings:ApiUrl"];
+
+                    List<Test> tests = new List<Test>();
+
+                    using (var httpClient = new HttpClient())
+                    {
+                        if (parameterId != 0 && disciplineID == 0)
+                        {
+                            using (var response = await httpClient.GetAsync(apiUrl + "Tests/Filtration?idParameter=" + parameterId))
+                            {
+                                var apiResponse = await response.Content.ReadAsStringAsync();
+                                tests = JsonConvert.DeserializeObject<List<Test>>(apiResponse);
+                            }
+                        }
+                        else if (parameterId == 0 && disciplineID != 0)
+                        {
+                            using (var response = await httpClient.GetAsync(apiUrl + "Tests/Filtration?idDiscipline=" + disciplineID))
+                            {
+                                var apiResponse = await response.Content.ReadAsStringAsync();
+                                tests = JsonConvert.DeserializeObject<List<Test>>(apiResponse);
+                            }
+                        }
+                        else
+                        {
+                            using (var response = await httpClient.GetAsync(apiUrl + $"Tests/Filtration?idDiscipline={disciplineID}&idParameter={parameterId}"))
+                            {
+                                var apiResponse = await response.Content.ReadAsStringAsync();
+                                tests = JsonConvert.DeserializeObject<List<Test>>(apiResponse);
+                            }
+
+                        }
+                        TempData["Filtration"] = JsonConvert.SerializeObject(tests);
+
+                        if (tests.Count == 0)
+                        {
+                            TempData["Message"] = "По вашему запросу ничего не найдено";
+                            return RedirectToAction("TestStudent", "Student");
+
+                        }
+
+                        return RedirectToAction("TestStudent", "Student");
+
+                    }
+                }
+                else
+                {
+                    return RedirectToAction("TestStudent", "Student");
+                }
+            }
+            catch
+            {
+                return BadRequest("Ошибка");
+            }
+        }
+
     }
 }

@@ -38,14 +38,14 @@
 <body>
     <main>
         <div class="containerForm">
-            <form asp-antiforgery="true" asp-action="AdminTestView" asp-controller="Admin">
+            <form asp-antiforgery="true" asp-action="TestStudent" asp-controller="Student">
                 <input class="searchInput" type="text" name="Search" />
                 <button class="searchImage" type="submit">
                     <img width="40" height="40" src="../images/icons8-лупа-64.png" />
                 </button>
             </form>
-            <form asp-antiforgery="true" asp-action="FiltrationTest" asp-controller="Admin">
-               @*  <select class="CrudSelect" required id="disciplineID" name="disciplineID" placeholder="Дисциплина">
+            <form asp-antiforgery="true" asp-action="FiltrationTestStudent" asp-controller="Student">
+                <select class="CrudSelect" required id="disciplineID" name="disciplineID" placeholder="Дисциплина">
                     <option selected disabled>Дисциплина</option>
                     @foreach (var discipline in Model.Disciplines)
                     {
@@ -58,7 +58,7 @@
                     {
                         <option value="@parameter.IdTestParameter">@parameter.NameParameter @parameter.ValueParameter</option>
                     }
-                </select> *@
+                </select>
                 <button class="InputFiltr" type="submit">Фильтрация</button>
 
             </form>
@@ -85,6 +85,9 @@
 
                 var middleNameEmployee = Model.Employees.Find(n => n.IdEmployee == idEmployee).MiddleNameEmployee;
 
+                var photoEmployee = Model.Employees.Find(n => n.IdEmployee == idEmployee).PhotoEmployee;
+
+
                 @foreach (var item in Model.Test.Where(n => n.DisciplineId == idDiscipline))
                 {
 
@@ -96,7 +99,11 @@
                                 <label class="labelTest">@item.NameTest</label>
                                 <br />
                                 <label class="labelTest">Дата создания: @string.Format("{0:dd.MM.yyyy}", @item.DateCreatedTest)</label>
-                                <label class="labelTest">Опубликовано: @surnameEmployee @nameEmployee @middleNameEmployee</label>
+                                <label>
+                                    Опубликовано:
+                                    <img class="photo" src="@photoEmployee" width="20" height="20" />
+                                    @surnameEmployee @nameEmployee @middleNameEmployee
+                                </label>
                                 <input value="Просмотреть тестирование" class="buttonTest" type="submit" />
 
                             </div>

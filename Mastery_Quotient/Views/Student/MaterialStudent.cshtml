@@ -37,20 +37,24 @@
 <body>
     <main>
         <div class="containerForm">
-            <form asp-antiforgery="true" asp-action="MaterialsStudent" asp-controller="Student">
+            <form asp-antiforgery="true" asp-action="MaterialStudent" asp-controller="Student">
                 <input class="searchInput" type="text" name="Search" />
                 <button class="searchImage" type="submit">
                     <img width="40" height="40" src="../images/icons8-лупа-64.png" />
                 </button>
             </form>
-            <form asp-antiforgery="true" asp-action="FiltrationMaterial" asp-controller="Student">
-                @* <select class="CrudSelect" required id="disciplineID" name="disciplineID" placeholder="Дисциплина">
+            <form asp-antiforgery="true" asp-action="FiltrationMaterialStudent" asp-controller="Student">
+                <select class="CrudSelect" required id="disciplineID" name="disciplineID" placeholder="Дисциплина">
                     <option selected disabled>Дисциплина</option>
-                    @foreach (var discipline in Model.DisciplineOfTheStudyGroups)
+                    @foreach (var disciplineStudyGroup in Model.DisciplineOfTheStudyGroups)
                     {
-
-                        <option value="@discipline.IdDiscipline">@discipline.NameDiscipline</option>
+                        var idDiscipline = Model.Disciplines.Find(n => n.IdDiscipline == disciplineStudyGroup.DisciplineId).IdDiscipline;
+                        @foreach (var discipline in Model.Disciplines.Where(n => n.IdDiscipline == idDiscipline))
+                        {
+                            <option value="@discipline.IdDiscipline">@discipline.NameDiscipline</option>
+                        }
                     }
+
                 </select>
                 <select class="CrudSelect" required id="typeId" name="typeId" placeholder="Тип материала">
                     <option selected disabled>Тип материала</option>
@@ -58,12 +62,12 @@
                     {
                         <option value="@type.IdTypeMaterial">@type.NameTypeMaterial</option>
                     }
-                </select> *@
+                </select>
                 <button class="InputFiltr" type="submit">Фильтрация</button>
 
             </form>
         </div>
-        <br/>
+        <br />
         @if (TempData["Message"] != null)
         {
             <div class="alert alert-success" role="alert">
@@ -84,6 +88,9 @@
                 var nameEmployee = Model.Employees.Find(n => n.IdEmployee == idEmployee).NameEmployee;
 
                 var middleNameEmployee = Model.Employees.Find(n => n.IdEmployee == idEmployee).MiddleNameEmployee;
+
+                var photoEmployee = Model.Employees.Find(n => n.IdEmployee == idEmployee).PhotoEmployee;
+
                 
                 @foreach (var item in Model.Materials.Where(n => n.DisciplineId == idDiscipline))
                 {
@@ -93,7 +100,10 @@
 
                             <input type="image" class="imageMaterial" width="187" height="177" src="@item.PhotoMaterial" />
                             <label class="nameMaterial">@item.NameMaterial</label>
-                            <label>Опубликовано: @surnameEmployee @nameEmployee @middleNameEmployee</label>
+                            <label>Опубликовано:
+                                <img class="photo" src="@photoEmployee" width="20" height="20" />
+                                @surnameEmployee @nameEmployee @middleNameEmployee
+                            </label>
                             <input value="Подробнее" class="buttonMaterial" type="submit" />
 
                             <input hidden value="@item.FileMaterial" name="nameFile" />

@@ -78,6 +78,7 @@
         <div class="formsContainer">
             @foreach (var item in Model.Materials)
             {
+               
                 <form id="deleteForm" asp-controller="Teacher" asp-action="DeleteMaterial" method="post">
                     <input type="hidden" value="@item.IdMaterial" name="IdMaterial" />
                     <button class="image_button" width="50" height="50" type="button">
@@ -91,6 +92,11 @@
 
                         <input type="image" class="imageMaterial" width="187" height="177" src="@item.PhotoMaterial" />
                         <label class="nameMaterial">@item.NameMaterial</label>
+                        @* <label>
+                            Опубликовано:
+                            <img class="photo" src="@photoEmployee" width="20" height="20" />
+                            @surnameEmployee @nameEmployee @middleNameEmployee
+                        </label> *@
                         <input value="Подробнее" class="buttonMaterial" type="submit" />
 
                         <input hidden value="@item.FileMaterial" name="nameFile" />
