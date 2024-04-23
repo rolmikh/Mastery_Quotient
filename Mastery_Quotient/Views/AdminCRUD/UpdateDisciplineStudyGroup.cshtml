@@ -1,0 +1,65 @@
+﻿@model Mastery_Quotient.Models.DisciplineStudyGroupView
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/mainStyle.css">
+    <link rel="stylesheet" href="@Url.Content("~/css/AdminCRUDStyle.css")">
+    <link href="https://fonts.googleapis.com/css?family=Mulish:200,300,regular,500,600,700,800,900,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic"
+          rel="stylesheet" />
+    <title>Изменение дисциплины учебной группы</title>
+</head>
+
+<body>
+    <main>
+        <div class="form_updateCRUD">
+            <form asp-antiforgery="true" asp-action="UpdateDisciplineStudyGroup" asp-controller="AdminCRUD">
+                @foreach(var item in Model.DisciplineOfTheStudyGroups)
+                {
+                    var IDStudyGroup = Model.StudyGroups.Find(n => n.IdStudyGroup == item.StudyGroupId).IdStudyGroup;
+                    var nameStudyGroup = Model.StudyGroups.Find(n => n.IdStudyGroup == item.StudyGroupId).NameStudyGroup;
+                    var IdDiscipline = Model.Disciplines.Find(n => n.IdDiscipline == item.DisciplineId).IdDiscipline;
+                    var nameDiscipline = Model.Disciplines.Find(n => n.IdDiscipline == item.DisciplineId).NameDiscipline;
+                    <input class="CrudInputAdmin" type="text" readonly required name="IdDisciplineOfTheStudyGroup" value="@item.IdDisciplineOfTheStudyGroup" placeholder="Код учебной группы преподавателя" />
+                    <select class="CrudSelectAdmin" required id="StudyGroupId" name="StudyGroupId" placeholder="Учебная группа">
+                        <option value="@IDStudyGroup">@nameStudyGroup</option>
+                        @foreach (var studyGroup in Model.StudyGroups)
+                        {
+                            <option value="@studyGroup.IdStudyGroup">@studyGroup.NameStudyGroup</option>
+                        }
+                    </select>
+                    <select class="CrudSelectAdmin" required id="DisciplineId" name="DisciplineId" placeholder="Дисциплина">
+                        <option value="@IdDiscipline">@nameDiscipline</option>
+                        @foreach (var discipline in Model.Disciplines)
+                        {
+                            var course = Model.Courses.Find(n => n.IdCourse == discipline.CourseId).NumberCourse;
+                            <option value="@discipline.IdDiscipline">@discipline.NameDiscipline @course курс</option>
+                        }
+                    </select>
+                    <input class="newCRUD" type="submit" value="Изменить дисциплину учебной группы" />
+                }
+               
+            </form>
+            
+        </div>
+        <br />
+
+        @if (TempData["ErrorValidation"] != null)
+        {
+            <div class="alert alert-danger">
+
+                @foreach (var errorMessage in (string[])TempData["ErrorValidation"])
+                {
+                    <p>@errorMessage</p>
+                }
+            </div>
+        }
+        <br />
+
+    </main>
+
+</body>
+
+</html>

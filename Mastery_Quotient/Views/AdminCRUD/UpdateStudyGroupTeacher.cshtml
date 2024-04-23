@@ -1,0 +1,69 @@
+﻿@model Mastery_Quotient.Models.TeacherStudyGroup
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/mainStyle.css">
+    <link rel="stylesheet" href="@Url.Content("~/css/AdminCRUDStyle.css")">
+    <link href="https://fonts.googleapis.com/css?family=Mulish:200,300,regular,500,600,700,800,900,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic"
+          rel="stylesheet" />
+    <title>Изменение учебной группы преподавателя</title>
+</head>
+
+<body>
+    <main>
+        <div class="form_updateCRUD">
+            <form asp-antiforgery="true" asp-action="UpdateStudyGroupTeacher" asp-controller="AdminCRUD">
+                @foreach (var item in Model.EmployeeStudyGroups)
+                {
+                    var IDStudyGroup = Model.StudyGroups.Find(n => n.IdStudyGroup == item.StudyGroupId).IdStudyGroup;
+                    var nameStudyGroup = Model.StudyGroups.Find(n => n.IdStudyGroup == item.StudyGroupId).NameStudyGroup;
+                    var employeeSurname = Model.Employees.Find(n => n.IdEmployee == item.EmployeeId).SurnameEmployee;
+                    var employeeName = Model.Employees.Find(n => n.IdEmployee == item.EmployeeId).NameEmployee;
+                    var employeeMiddleName = Model.Employees.Find(n => n.IdEmployee == item.EmployeeId).MiddleNameEmployee;
+                    var employeeID = Model.Employees.Find(n => n.IdEmployee == item.EmployeeId).IdEmployee;
+                    <input class="CrudInputAdmin" type="text" readonly required name="IdEmployeeStudyGroup" value="@item.IdEmployeeStudyGroup" placeholder="Код учебной группы преподавателя" />
+
+                    <select class="CrudSelectAdmin" required id="StudyGroupId" name="StudyGroupId" placeholder="Учебная группа">
+                        <option value="@IDStudyGroup">@nameStudyGroup</option>
+                        @foreach (var studyGroup in Model.StudyGroups)
+                        {
+                            <option value="@studyGroup.IdStudyGroup">@studyGroup.NameStudyGroup</option>
+                        }
+                    </select>
+                    <select class="CrudSelectAdmin" required id="EmployeeId" name="EmployeeId" placeholder="Преподаватель">
+                        <option value="@employeeID">@employeeSurname @employeeName @employeeMiddleName</option>
+                        @foreach (var teacher in Model.Employees)
+                        {
+                            @if (teacher.RoleId == 1)
+                            {
+                                <option value="@teacher.IdEmployee">@teacher.SurnameEmployee @teacher.NameEmployee @teacher.MiddleNameEmployee</option>
+                            }
+
+                        }
+                    </select>
+                    <input class="newCRUD" type="submit" value="Изменить учебную группу преподавателя" />
+                }
+            </form>
+        </div>
+        <br />
+
+        @if (TempData["ErrorValidation"] != null)
+        {
+            <div class="alert alert-danger">
+
+                @foreach (var errorMessage in (string[])TempData["ErrorValidation"])
+                {
+                    <p>@errorMessage</p>
+                }
+            </div>
+        }
+        <br />
+
+    </main>
+
+</body>
+
+</html>

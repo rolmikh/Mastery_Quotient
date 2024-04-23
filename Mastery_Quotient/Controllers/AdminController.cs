@@ -479,7 +479,7 @@ namespace Mastery_Quotient.Controllers
                         roles = JsonConvert.DeserializeObject<List<Role>>(apiResponse);
                     }
 
-                    using (var response = await httpClient.GetAsync(apiUrl + "StudyGroups"))
+                    using (var response = await httpClient.GetAsync(apiUrl + "StudyGroups/NoDeleted"))
                     {
                         string apiResponse = await response.Content.ReadAsStringAsync();
                         studyGroups = JsonConvert.DeserializeObject<List<StudyGroup>>(apiResponse);
@@ -723,7 +723,7 @@ namespace Mastery_Quotient.Controllers
                         }
                     }
 
-                    using (var response = await httpClient.GetAsync(apiUrl + "StudyGroups"))
+                    using (var response = await httpClient.GetAsync(apiUrl + "StudyGroups/NoDeleted"))
                     {
                         string apiResponse = await response.Content.ReadAsStringAsync();
                         studyGroups = JsonConvert.DeserializeObject<List<StudyGroup>>(apiResponse);
@@ -938,7 +938,7 @@ namespace Mastery_Quotient.Controllers
                         student = JsonConvert.DeserializeObject<Student>(apiResponse);
                     }
 
-                    using (var response = await httpClient.GetAsync(apiUrl + "StudyGroups"))
+                    using (var response = await httpClient.GetAsync(apiUrl + "StudyGroups/NoDeleted"))
                     {
                         string apiResponse = await response.Content.ReadAsStringAsync();
                         studyGroups = JsonConvert.DeserializeObject<List<StudyGroup>>(apiResponse);
@@ -1046,13 +1046,13 @@ namespace Mastery_Quotient.Controllers
                 using (var httpClient = new HttpClient())
                 {
 
-                    using (var response = await httpClient.GetAsync(apiUrl + "TypeMaterials"))
+                    using (var response = await httpClient.GetAsync(apiUrl + "TypeMaterials/NoDeleted"))
                     {
                         string apiResponse = await response.Content.ReadAsStringAsync();
                         typeMaterials = JsonConvert.DeserializeObject<List<TypeMaterial>>(apiResponse);
                     }
 
-                    using (var response = await httpClient.GetAsync(apiUrl + "Disciplines"))
+                    using (var response = await httpClient.GetAsync(apiUrl + "Disciplines/NoDeleted"))
                     {
                         string apiResponse = await response.Content.ReadAsStringAsync();
                         disciplines = JsonConvert.DeserializeObject<List<Discipline>>(apiResponse);
@@ -1087,7 +1087,7 @@ namespace Mastery_Quotient.Controllers
 
         }
 
-        
+
 
 
         /// <summary>
@@ -1097,14 +1097,34 @@ namespace Mastery_Quotient.Controllers
         /// <returns></returns>
         public IActionResult FileMaterial(string nameFile)
         {
-            
+            if (nameFile.Contains("youtu.be"))
+            {
+                string[] fileNameParts = nameFile.Split("https://youtu.be/");
+                string fileNameID = fileNameParts[1];
+                ViewBag.FileType = "youtube";
+                ViewBag.NameFile = fileNameID;
 
-           ViewBag.NameFile = nameFile;
-
-
+            }
+            else
+            {
+                string[] fileNameParts = nameFile.Split('?'); // Разделить имя файла и токен
+                string fileNameWithoutToken = fileNameParts[0]; // Получить только имя файла без токена
+                string fileType = Path.GetExtension(fileNameWithoutToken).ToLower();
+                if (fileType == ".pdf")
+                {
+                    ViewBag.FileType = "pdf";
+                    ViewBag.NameFile = nameFile;
+                }
+                else
+                {
+                    ViewBag.FileType = "other";
+                    ViewBag.NameFile = nameFile;
+                }
+            }
             return View();
-
         }
+
+        
 
         /// <summary>
         /// Загрузка представления страницы просмотра тестирований
@@ -1134,7 +1154,7 @@ namespace Mastery_Quotient.Controllers
                         employee = JsonConvert.DeserializeObject<Employee>(apiResponse);
                     }
 
-                    using (var response = await httpClient.GetAsync(apiUrl + "Disciplines"))
+                    using (var response = await httpClient.GetAsync(apiUrl + "Disciplines/NoDeleted"))
                     {
                         string apiResponse = await response.Content.ReadAsStringAsync();
                         disciplines = JsonConvert.DeserializeObject<List<Discipline>>(apiResponse);
@@ -1146,7 +1166,7 @@ namespace Mastery_Quotient.Controllers
                         disciplineEmployees = JsonConvert.DeserializeObject<List<DisciplineEmployee>>(apiResponse);
                     }
 
-                    using (var response = await httpClient.GetAsync(apiUrl + "TestParameters"))
+                    using (var response = await httpClient.GetAsync(apiUrl + "TestParameters/NoDeleted"))
                     {
                         string apiResponse = await response.Content.ReadAsStringAsync();
                         testParameters = JsonConvert.DeserializeObject<List<TestParameter>>(apiResponse);

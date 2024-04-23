@@ -1,8 +1,8 @@
 ﻿using FluentValidation;
-using Google.Apis.Drive.v3.Data;
 using Mastery_Quotient.Models;
 using Mastery_Quotient.ModelsValidation;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging.Abstractions;
 using Newtonsoft.Json;
 using System.Net.Http;
 using System.Text;
@@ -21,13 +21,22 @@ namespace Mastery_Quotient.Controllers
 
         private readonly IValidator<Discipline> disciplineValidator;
 
-        public AdminCRUDController(IConfiguration configuration, IValidator<TypeMaterial> typeMaterialValidator, IValidator<TestParameter> testParameterValidator, IValidator<StudyGroup> studyGroupValidator, IValidator<Discipline> disciplineValidator)
+        private readonly IValidator<DisciplineEmployee> disciplineEmployeeValidator;
+
+        private readonly IValidator<DisciplineOfTheStudyGroup> disciplineOfTheStudyGroupValidator;
+
+        private readonly IValidator<EmployeeStudyGroup> employeeStudyGroupValidator;
+
+        public AdminCRUDController(IConfiguration configuration, IValidator<TypeMaterial> typeMaterialValidator, IValidator<TestParameter> testParameterValidator, IValidator<StudyGroup> studyGroupValidator, IValidator<Discipline> disciplineValidator, IValidator<DisciplineEmployee> disciplineEmployeeValidator, IValidator<DisciplineOfTheStudyGroup> disciplineOfTheStudyGroupValidator, IValidator<EmployeeStudyGroup> employeeStudyGroupValidator)
         {
             this.configuration = configuration;
             this.typeMaterialValidator = typeMaterialValidator;
             this.testParameterValidator = testParameterValidator;
             this.studyGroupValidator = studyGroupValidator;
             this.disciplineValidator = disciplineValidator;
+            this.disciplineEmployeeValidator = disciplineEmployeeValidator;
+            this.disciplineOfTheStudyGroupValidator = disciplineOfTheStudyGroupValidator;
+            this.employeeStudyGroupValidator = employeeStudyGroupValidator;
         }
 
         public IActionResult AdminPanel()
@@ -1103,5 +1112,674 @@ namespace Mastery_Quotient.Controllers
             }
 
         }
+
+
+        /// <summary>
+        /// Загрузка представления учебных групп преподавателей  
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> StudyGroupTeacher()
+        {
+            try
+            {
+                var apiUrl = configuration["AppSettings:ApiUrl"];
+
+                
+                List<StudyGroup> studyGroups = new List<StudyGroup>();
+                List<Course> courses = new List<Course>();
+                List<EmployeeStudyGroup> employeeStudyGroups = new List<EmployeeStudyGroup>();
+                List<Employee> employees = new List<Employee>();
+
+                using (var client = new HttpClient())
+                {
+                    //if (TempData.ContainsKey("Search"))
+                    //{
+                    //    disciplines = JsonConvert.DeserializeObject<List<Discipline>>(TempData["Search"].ToString());
+                    //}
+                    //else if (TempData.ContainsKey("Filtration"))
+                    //{
+                    //    disciplines = JsonConvert.DeserializeObject<List<Discipline>>(TempData["Filtration"].ToString());
+
+                    //}
+                    //else
+                    //{
+                    //}
+                    using (var response = await client.GetAsync(apiUrl + "StudyGroups/NoDeleted"))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        studyGroups = JsonConvert.DeserializeObject<List<StudyGroup>>(apiResponse);
+                    }
+                    using (var response = await client.GetAsync(apiUrl + "Courses"))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        courses = JsonConvert.DeserializeObject<List<Course>>(apiResponse);
+                    }
+                    using (var response = await client.GetAsync(apiUrl + "EmployeeStudyGroups"))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        employeeStudyGroups = JsonConvert.DeserializeObject<List<EmployeeStudyGroup>>(apiResponse);
+                    }
+                    using (var response = await client.GetAsync(apiUrl + "Employees"))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        employees = JsonConvert.DeserializeObject<List<Employee>>(apiResponse);
+                    }
+                   
+
+                }
+                TeacherStudyGroup teacherStudyGroup = new TeacherStudyGroup(studyGroups, courses, employeeStudyGroups, employees);
+                return View(teacherStudyGroup);
+            }
+            catch (Exception e)
+            {
+                return BadRequest("Ошибка " + e.Message);
+            }
+
+        }
+
+        
+        /// <summary>
+        /// POST запрос на добавление учебной группы сотрудника
+        /// </summary>
+        /// <param name="StudyGroupId"></param>
+        /// <param name="EmployeeId"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> StudyGroupEmployeeNew(int StudyGroupId, int EmployeeId)
+        {
+            try
+            {
+                var apiUrl = configuration["AppSettings:ApiUrl"];
+
+                EmployeeStudyGroup employeeStudyGroup = new EmployeeStudyGroup();
+                employeeStudyGroup.StudyGroupId = StudyGroupId;
+                employeeStudyGroup.EmployeeId = EmployeeId;
+
+
+
+                var validationResult = await employeeStudyGroupValidator.ValidateAsync(employeeStudyGroup);
+
+                if (!validationResult.IsValid)
+                {
+                    var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                    TempData["ErrorValidation"] = errorMessages;
+                    return RedirectToAction("StudyGroupTeacher", "AdminCRUD");
+                }
+
+                StringContent content = new StringContent(JsonConvert.SerializeObject(employeeStudyGroup), Encoding.UTF8, "application/json");
+
+                using (var httpClient = new HttpClient())
+                {
+                    var response = await httpClient.PostAsync(apiUrl + "EmployeeStudyGroups", content);
+
+                    return RedirectToAction("StudyGroupTeacher", "AdminCRUD");
+
+                }
+
+            }
+            catch (Exception e)
+            {
+                return BadRequest("Ошибка добавления данных " + e.Message);
+            }
+        }
+
+        /// <summary>
+        /// Загрузка представления изменения данных о учебной группе преподавателя
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> UpdateStudyGroupTeacher(int id)
+        {
+            try
+            {
+                var apiUrl = configuration["AppSettings:ApiUrl"];
+
+                List<StudyGroup> studyGroups = new List<StudyGroup>();
+                List<Course> courses = new List<Course>();
+                EmployeeStudyGroup employeeStudyGroups = null; 
+                List<Employee> employees = new List<Employee>();
+
+                using (var client = new HttpClient())
+                {
+                    using (var response = await client.GetAsync(apiUrl + "StudyGroups/NoDeleted"))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        studyGroups = JsonConvert.DeserializeObject<List<StudyGroup>>(apiResponse);
+                    }
+                    using (var response = await client.GetAsync(apiUrl + "Courses"))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        courses = JsonConvert.DeserializeObject<List<Course>>(apiResponse);
+                    }
+                    using (var response = await client.GetAsync(apiUrl + "EmployeeStudyGroups/" + id))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        employeeStudyGroups = JsonConvert.DeserializeObject<EmployeeStudyGroup>(apiResponse);
+                    }
+                    using (var response = await client.GetAsync(apiUrl + "Employees"))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        employees = JsonConvert.DeserializeObject<List<Employee>>(apiResponse);
+                    }
+                   
+
+                }
+                TeacherStudyGroup teacherStudyGroup = new TeacherStudyGroup(studyGroups, courses, new List<EmployeeStudyGroup> { employeeStudyGroups }, employees);
+                return View(teacherStudyGroup);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Ошибка " + ex.Message);
+            }
+        }
+
+      /// <summary>
+      /// POST запрос на изменение данных о учебной группе преподавателя
+      /// </summary>
+      /// <param name="IdEmployeeStudyGroup"></param>
+      /// <param name="StudyGroupId"></param>
+      /// <param name="EmployeeId"></param>
+      /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> UpdateStudyGroupTeacher(int IdEmployeeStudyGroup, int StudyGroupId, int EmployeeId)
+        {
+            try
+            {
+                var apiUrl = configuration["AppSettings:ApiUrl"];
+
+                EmployeeStudyGroup employeeStudyGroup = new EmployeeStudyGroup();
+                employeeStudyGroup.IdEmployeeStudyGroup = IdEmployeeStudyGroup;
+                employeeStudyGroup.StudyGroupId = StudyGroupId;
+                employeeStudyGroup.EmployeeId = EmployeeId;
+                
+
+
+                var validationResult = await employeeStudyGroupValidator.ValidateAsync(employeeStudyGroup);
+
+                if (!validationResult.IsValid)
+                {
+                    var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                    TempData["ErrorValidation"] = errorMessages;
+                    return RedirectToAction("UpdateStudyGroupTeacher", "AdminCRUD");
+                }
+
+                StringContent content = new StringContent(JsonConvert.SerializeObject(employeeStudyGroup), Encoding.UTF8, "application/json");
+
+                using (var httpClient = new HttpClient())
+                {
+                    var response = await httpClient.PutAsync(apiUrl + "EmployeeStudyGroups/" + IdEmployeeStudyGroup, content);
+
+                    return RedirectToAction("StudyGroupTeacher", "AdminCRUD");
+
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Ошибка изменения данных " + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// POST запрос на удаление данных о учебной группе преподавателя
+        /// </summary>
+        /// <param name="IdEmployeeStudyGroup"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> DeleteStudyGroupTeacher(int IdEmployeeStudyGroup)
+        {
+            try
+            {
+                var apiUrl = configuration["AppSettings:ApiUrl"];
+                using (var httpClient = new HttpClient())
+                {
+                    using (var response = await httpClient.DeleteAsync(apiUrl + "EmployeeStudyGroups/" + IdEmployeeStudyGroup))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                    }
+                }
+
+                return RedirectToAction("StudyGroupTeacher", "AdminCRUD");
+            }
+            catch (Exception e)
+            {
+                return BadRequest("Ошибка удаления данных " + e.Message);
+            }
+        }
+
+        /// <summary>
+        /// Загрузка представления страницы дисциплины учебной группы
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> DisciplineStudyGroup()
+        {
+            try
+            {
+                var apiUrl = configuration["AppSettings:ApiUrl"];
+
+                List<StudyGroup> studyGroups = new List<StudyGroup>();
+                List<DisciplineOfTheStudyGroup> disciplineOfTheStudyGroups = new List<DisciplineOfTheStudyGroup>();
+                List<Course> courses = new List<Course>();
+                List<Discipline> disciplines = new List<Discipline>();
+
+                using (var client = new HttpClient())
+                {
+                   
+                    using (var response = await client.GetAsync(apiUrl + "StudyGroups/NoDeleted"))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        studyGroups = JsonConvert.DeserializeObject<List<StudyGroup>>(apiResponse);
+                    }
+                    using (var response = await client.GetAsync(apiUrl + "DisciplineOfTheStudyGroups"))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        disciplineOfTheStudyGroups = JsonConvert.DeserializeObject<List<DisciplineOfTheStudyGroup>>(apiResponse);
+                    }
+                    using (var response = await client.GetAsync(apiUrl + "Courses"))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        courses = JsonConvert.DeserializeObject<List<Course>>(apiResponse);
+                    }
+                    using (var response = await client.GetAsync(apiUrl + "Disciplines/NoDeleted"))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        disciplines = JsonConvert.DeserializeObject<List<Discipline>>(apiResponse);
+                    }
+                    
+
+
+                }
+                DisciplineStudyGroupView disciplineStudyGroupView = new DisciplineStudyGroupView(studyGroups, disciplineOfTheStudyGroups, courses, disciplines);
+                return View(disciplineStudyGroupView);
+            }
+            catch (Exception e)
+            {
+                return BadRequest("Ошибка " + e.Message);
+            }
+
+        }
+
+
+        /// <summary>
+        /// POST запрос на добавление дисциплины учебной группы
+        /// </summary>
+        /// <param name="StudyGroupId"></param>
+        /// <param name="DisciplineId"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> StudyGroupDisciplineNew(int StudyGroupId, int DisciplineId)
+        {
+            try
+            {
+                var apiUrl = configuration["AppSettings:ApiUrl"];
+
+                DisciplineOfTheStudyGroup disciplineStudyGroup = new DisciplineOfTheStudyGroup();
+                disciplineStudyGroup.StudyGroupId = StudyGroupId;
+                disciplineStudyGroup.DisciplineId = DisciplineId;
+
+                var validationResult = await disciplineOfTheStudyGroupValidator.ValidateAsync(disciplineStudyGroup);
+
+                if (!validationResult.IsValid)
+                {
+                    var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                    TempData["ErrorValidation"] = errorMessages;
+                    return RedirectToAction("DisciplineStudyGroup", "AdminCRUD");
+                }
+
+                StringContent content = new StringContent(JsonConvert.SerializeObject(disciplineStudyGroup), Encoding.UTF8, "application/json");
+
+                using (var httpClient = new HttpClient())
+                {
+                    var response = await httpClient.PostAsync(apiUrl + "DisciplineOfTheStudyGroups", content);
+
+                    return RedirectToAction("DisciplineStudyGroup", "AdminCRUD");
+
+                }
+
+            }
+            catch (Exception e)
+            {
+                return BadRequest("Ошибка добавления данных " + e.Message);
+            }
+        }
+
+        /// <summary>
+        /// Загрузка представления изменения данных о дисциплине учебной группы
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> UpdateDisciplineStudyGroup(int id)
+        {
+            try
+            {
+                var apiUrl = configuration["AppSettings:ApiUrl"];
+
+                List<StudyGroup> studyGroups = new List<StudyGroup>();
+                DisciplineOfTheStudyGroup disciplineOfTheStudyGroups = null;
+                List<Course> courses = new List<Course>();
+                List<Discipline> disciplines = new List<Discipline>();
+
+                using (var client = new HttpClient())
+                {
+
+                    using (var response = await client.GetAsync(apiUrl + "StudyGroups/NoDeleted"))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        studyGroups = JsonConvert.DeserializeObject<List<StudyGroup>>(apiResponse);
+                    }
+                    using (var response = await client.GetAsync(apiUrl + "DisciplineOfTheStudyGroups/" + id))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        disciplineOfTheStudyGroups = JsonConvert.DeserializeObject<DisciplineOfTheStudyGroup>(apiResponse);
+                    }
+                    using (var response = await client.GetAsync(apiUrl + "Courses"))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        courses = JsonConvert.DeserializeObject<List<Course>>(apiResponse);
+                    }
+                    using (var response = await client.GetAsync(apiUrl + "Disciplines/NoDeleted"))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        disciplines = JsonConvert.DeserializeObject<List<Discipline>>(apiResponse);
+                    }
+
+
+                }
+                DisciplineStudyGroupView disciplineStudyGroupView = new DisciplineStudyGroupView(studyGroups, new List<DisciplineOfTheStudyGroup> { disciplineOfTheStudyGroups }, courses, disciplines);
+
+                return View(disciplineStudyGroupView);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Ошибка " + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// POST запрос на изменение данных о дисциплины учебной группы
+        /// </summary>
+        /// <param name="IdDisciplineOfTheStudyGroup"></param>
+        /// <param name="StudyGroupId"></param>
+        /// <param name="DisciplineId"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> UpdateDisciplineStudyGroup(int IdDisciplineOfTheStudyGroup, int StudyGroupId, int DisciplineId)
+        {
+            try
+            {
+                var apiUrl = configuration["AppSettings:ApiUrl"];
+
+                DisciplineOfTheStudyGroup disciplineOfTheStudyGroup = new DisciplineOfTheStudyGroup();
+                disciplineOfTheStudyGroup.IdDisciplineOfTheStudyGroup = IdDisciplineOfTheStudyGroup;
+                disciplineOfTheStudyGroup.DisciplineId = DisciplineId;
+                disciplineOfTheStudyGroup.StudyGroupId = StudyGroupId;
+
+                var validationResult = await disciplineOfTheStudyGroupValidator.ValidateAsync(disciplineOfTheStudyGroup);
+
+                if (!validationResult.IsValid)
+                {
+                    var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                    TempData["ErrorValidation"] = errorMessages;
+                    return RedirectToAction("UpdateDisciplineStudyGroup", "AdminCRUD");
+                }
+
+                StringContent content = new StringContent(JsonConvert.SerializeObject(disciplineOfTheStudyGroup), Encoding.UTF8, "application/json");
+
+                using (var httpClient = new HttpClient())
+                {
+                    var response = await httpClient.PutAsync(apiUrl + "DisciplineOfTheStudyGroups/" + IdDisciplineOfTheStudyGroup, content);
+
+                    return RedirectToAction("DisciplineStudyGroup", "AdminCRUD");
+
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Ошибка изменения данных " + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// POST запрос на удаление данных о дисциплине учебной группы
+        /// </summary>
+        /// <param name="IdDisciplineOfTheStudyGroup"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> DeleteStudyGroupDiscipline(int IdDisciplineOfTheStudyGroup)
+        {
+            try
+            {
+                var apiUrl = configuration["AppSettings:ApiUrl"];
+                using (var httpClient = new HttpClient())
+                {
+                    using (var response = await httpClient.DeleteAsync(apiUrl + "DisciplineOfTheStudyGroups/" + IdDisciplineOfTheStudyGroup))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                    }
+                }
+
+                return RedirectToAction("DisciplineStudyGroup", "AdminCRUD");
+            }
+            catch (Exception e)
+            {
+                return BadRequest("Ошибка удаления данных " + e.Message);
+            }
+        }
+
+        /// <summary>
+        /// Загрузка представления страницы дисциплины преподавателей
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> DisciplineTeacher()
+        {
+            try
+            {
+                var apiUrl = configuration["AppSettings:ApiUrl"];
+
+                List<Discipline> disciplines = new List<Discipline>();
+                List<Employee> employees = new List<Employee>();
+                List<DisciplineEmployee> disciplineEmployees = new List<DisciplineEmployee>();
+                List<Course> courses = new List<Course>();
+
+                using (var client = new HttpClient())
+                {
+                    using (var response = await client.GetAsync(apiUrl + "Disciplines/NoDeleted"))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        disciplines = JsonConvert.DeserializeObject<List<Discipline>>(apiResponse);
+                    }
+                    using (var response = await client.GetAsync(apiUrl + "Employees"))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        employees = JsonConvert.DeserializeObject<List<Employee>>(apiResponse);
+                    }
+                    using (var response = await client.GetAsync(apiUrl + "DisciplineEmployee"))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        disciplineEmployees = JsonConvert.DeserializeObject<List<DisciplineEmployee>>(apiResponse);
+                    }
+                    using (var response = await client.GetAsync(apiUrl + "Courses"))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        courses = JsonConvert.DeserializeObject<List<Course>>(apiResponse);
+                    }
+                }
+                DisciplineEmployeeView disciplineEmployeeView = new DisciplineEmployeeView(disciplines, employees, disciplineEmployees, courses);
+                return View(disciplineEmployeeView);
+            }
+            catch (Exception e)
+            {
+                return BadRequest("Ошибка " + e.Message);
+            }
+
+        }
+
+
+        /// <summary>
+        /// POST запрос добавления дисциплины преподавателя
+        /// </summary>
+        /// <param name="DisciplineId"></param>
+        /// <param name="EmployeeId"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> DisciplineTeacherNew(int DisciplineId, int EmployeeId)
+        {
+            try
+            {
+                var apiUrl = configuration["AppSettings:ApiUrl"];
+                DisciplineEmployee disciplineEmployee = new DisciplineEmployee();
+                disciplineEmployee.DisciplineId = DisciplineId;
+                disciplineEmployee.EmployeeId = EmployeeId;
+
+                var validationResult = await disciplineEmployeeValidator.ValidateAsync(disciplineEmployee);
+
+                if (!validationResult.IsValid)
+                {
+                    var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                    TempData["ErrorValidation"] = errorMessages;
+                    return RedirectToAction("DisciplineTeacher", "AdminCRUD");
+                }
+
+                StringContent content = new StringContent(JsonConvert.SerializeObject(disciplineEmployee), Encoding.UTF8, "application/json");
+
+                using (var httpClient = new HttpClient())
+                {
+                    var response = await httpClient.PostAsync(apiUrl + "DisciplineEmployees", content);
+
+                    return RedirectToAction("DisciplineTeacher", "AdminCRUD");
+
+                }
+
+            }
+            catch (Exception e)
+            {
+                return BadRequest("Ошибка добавления данных " + e.Message);
+            }
+        }
+
+        /// <summary>
+        /// Загрузка представления изменения данных о дисциплине преподавателя
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> UpdateDisciplineTeacher(int id)
+        {
+            try
+            {
+                var apiUrl = configuration["AppSettings:ApiUrl"];
+                List<Discipline> disciplines = new List<Discipline>();
+                List<Employee> employees = new List<Employee>();
+                DisciplineEmployee disciplineEmployees = new DisciplineEmployee();
+                List<Course> courses = new List<Course>();
+
+                using (var client = new HttpClient())
+                {
+                    using (var response = await client.GetAsync(apiUrl + "Disciplines/NoDeleted"))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        disciplines = JsonConvert.DeserializeObject<List<Discipline>>(apiResponse);
+                    }
+                    using (var response = await client.GetAsync(apiUrl + "Employees"))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        employees = JsonConvert.DeserializeObject<List<Employee>>(apiResponse);
+                    }
+                    using (var response = await client.GetAsync(apiUrl + "DisciplineEmployee/" + id))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        disciplineEmployees = JsonConvert.DeserializeObject<DisciplineEmployee>(apiResponse);
+                    }
+                    using (var response = await client.GetAsync(apiUrl + "Courses"))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        courses = JsonConvert.DeserializeObject<List<Course>>(apiResponse);
+                    }
+                }
+                DisciplineEmployeeView disciplineEmployeeView = new DisciplineEmployeeView(disciplines, employees, new List<DisciplineEmployee> { disciplineEmployees }, courses);
+
+                return View(disciplineEmployeeView);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Ошибка " + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// POST запрос на изменение данных о дисциплины учебной группы
+        /// </summary>
+        /// <param name="IdDisciplineOfTheStudyGroup"></param>
+        /// <param name="StudyGroupId"></param>
+        /// <param name="DisciplineId"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> UpdateDisciplineTeacher(int IdDisciplineEmployee, int DisciplineId, int EmployeeId)
+        {
+            try
+            {
+                var apiUrl = configuration["AppSettings:ApiUrl"];
+
+                DisciplineEmployee disciplineEmployee = new DisciplineEmployee();
+                disciplineEmployee.IdDisciplineEmployee = IdDisciplineEmployee;
+                disciplineEmployee.DisciplineId = DisciplineId;
+                disciplineEmployee.EmployeeId = EmployeeId;
+
+                var validationResult = await disciplineEmployeeValidator.ValidateAsync(disciplineEmployee);
+
+                if (!validationResult.IsValid)
+                {
+                    var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                    TempData["ErrorValidation"] = errorMessages;
+                    return RedirectToAction("UpdateDisciplineTeacher", "AdminCRUD");
+                }
+
+                StringContent content = new StringContent(JsonConvert.SerializeObject(disciplineEmployee), Encoding.UTF8, "application/json");
+
+                using (var httpClient = new HttpClient())
+                {
+                    var response = await httpClient.PutAsync(apiUrl + "DisciplineEmployees/" + IdDisciplineEmployee, content);
+
+                    return RedirectToAction("DisciplineTeacher", "AdminCRUD");
+
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Ошибка изменения данных " + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// POST запрос на удаление данных о дисциплине учебной группы
+        /// </summary>
+        /// <param name="IdDisciplineOfTheStudyGroup"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> DeleteDisciplineTeacher(int IdDisciplineEmployee)
+        {
+            try
+            {
+                var apiUrl = configuration["AppSettings:ApiUrl"];
+                using (var httpClient = new HttpClient())
+                {
+                    using (var response = await httpClient.DeleteAsync(apiUrl + "DisciplineEmployees/" + IdDisciplineEmployee))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                    }
+                }
+
+                return RedirectToAction("DisciplineTeacher", "AdminCRUD");
+            }
+            catch (Exception e)
+            {
+                return BadRequest("Ошибка удаления данных " + e.Message);
+            }
+        }
+
     }
 }

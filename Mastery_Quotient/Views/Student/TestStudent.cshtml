@@ -1,10 +1,14 @@
-﻿<!DOCTYPE html>
+﻿@model Mastery_Quotient.Models.TestViewStudent
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/mainStyle.css">
     <link rel="stylesheet" href="../css/navigationStyle.css">
+    <link rel="stylesheet" href="../css/TestStyle.css">
+    <link rel="stylesheet" href="../css/ModalWindowStyle.css">
+    <link rel="stylesheet" href="../css/crudStyle.css">
     <link href="https://fonts.googleapis.com/css?family=Mulish:200,300,regular,500,600,700,800,900,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic"
           rel="stylesheet" />
     <title>Тестирования</title>
@@ -33,6 +37,77 @@
 </head>
 <body>
     <main>
+        <div class="containerForm">
+            <form asp-antiforgery="true" asp-action="AdminTestView" asp-controller="Admin">
+                <input class="searchInput" type="text" name="Search" />
+                <button class="searchImage" type="submit">
+                    <img width="40" height="40" src="../images/icons8-лупа-64.png" />
+                </button>
+            </form>
+            <form asp-antiforgery="true" asp-action="FiltrationTest" asp-controller="Admin">
+               @*  <select class="CrudSelect" required id="disciplineID" name="disciplineID" placeholder="Дисциплина">
+                    <option selected disabled>Дисциплина</option>
+                    @foreach (var discipline in Model.Disciplines)
+                    {
+                        <option value="@discipline.IdDiscipline">@discipline.NameDiscipline</option>
+                    }
+                </select>
+                <select class="CrudSelect" required id="parameterId" name="parameterId" placeholder="Параметр тестирования">
+                    <option selected disabled>Параметр тестирования</option>
+                    @foreach (var parameter in Model.TestParameters)
+                    {
+                        <option value="@parameter.IdTestParameter">@parameter.NameParameter @parameter.ValueParameter</option>
+                    }
+                </select> *@
+                <button class="InputFiltr" type="submit">Фильтрация</button>
+
+            </form>
+        </div>
+        <br />
+        @if (TempData["Message"] != null)
+        {
+            <div class="alert alert-success" role="alert">
+                @TempData["Message"]
+            </div>
+        }
+        <br />
+
+        <div class="formsContainer">
+            @foreach (var disciplineStudyGroup in Model.DisciplineOfTheStudyGroup)
+            {
+                var idDiscipline = Model.Disciplines.Find(n => n.IdDiscipline == disciplineStudyGroup.DisciplineId).IdDiscipline;
+
+                var idEmployee = Model.DisciplineEmployees.Find(n => n.DisciplineId == idDiscipline).EmployeeId;
+
+                var surnameEmployee = Model.Employees.Find(n => n.IdEmployee == idEmployee).SurnameEmployee;
+
+                var nameEmployee = Model.Employees.Find(n => n.IdEmployee == idEmployee).NameEmployee;
+
+                var middleNameEmployee = Model.Employees.Find(n => n.IdEmployee == idEmployee).MiddleNameEmployee;
+
+                @foreach (var item in Model.Test.Where(n => n.DisciplineId == idDiscipline))
+                {
+
+                    <div class="divTestForm">
+                        <form asp-action="OneTestStudent" asp-antiforgery="true" asp-controller="Student">
+                            <div>
+                                <input name="testId" hidden value="@item.IdTest" />
+
+                                <label class="labelTest">@item.NameTest</label>
+                                <br />
+                                <label class="labelTest">Дата создания: @string.Format("{0:dd.MM.yyyy}", @item.DateCreatedTest)</label>
+                                <label class="labelTest">Опубликовано: @surnameEmployee @nameEmployee @middleNameEmployee</label>
+                                <input value="Просмотреть тестирование" class="buttonTest" type="submit" />
+
+                            </div>
+                        </form>
+                    </div>
+
+
+                }
+            }
+        </div>
+
 
     </main>
 

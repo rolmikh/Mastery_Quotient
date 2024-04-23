@@ -7,9 +7,6 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Security.Claims;
 using System.Text;
-using Google.Apis.Auth.OAuth2.Responses;
-using Google.Apis.Drive.v3;
-using Google.Apis.Services;
 using Newtonsoft.Json.Linq;
 using Mastery_Quotient.Service;
 using FluentValidation;
@@ -301,7 +298,7 @@ namespace Mastery_Quotient.Controllers
 
                 using (var httpClient = new HttpClient())
                 {
-                    using (var response = await httpClient.GetAsync(apiUrl + "StudyGroups"))
+                    using (var response = await httpClient.GetAsync(apiUrl + "StudyGroups/NoDeleted"))
                     {
                         string apiResponse = await response.Content.ReadAsStringAsync();
                         studyGroups = JsonConvert.DeserializeObject<List<StudyGroup>>(apiResponse);

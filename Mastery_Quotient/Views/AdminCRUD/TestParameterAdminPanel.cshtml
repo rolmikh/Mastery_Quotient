@@ -52,6 +52,18 @@
             Параметры тестирования
         </button>
     </div>
+    <div class="containerFormCRUD">
+
+        <button class="newInputCRUD" onclick="window.location.href='@Url.Action("StudyGroupTeacher", "AdminCRUD")'">
+            Учебные группы преподавателей
+        </button>
+        <button class="newInputCRUD" onclick="window.location.href='@Url.Action("DisciplineTeacher", "AdminCRUD")'">
+            Дисциплины преподавателей
+        </button>
+        <button class="newInputCRUD" onclick="window.location.href='@Url.Action("DisciplineStudyGroup", "AdminCRUD")'">
+            Дисциплины учебных групп
+        </button>
+    </div>
     <div class="containerForm">
         <form asp-antiforgery="true" asp-action="SearchTestParameter" asp-controller="AdminCRUD">
 

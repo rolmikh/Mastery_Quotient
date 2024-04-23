@@ -39,9 +39,10 @@
         <div class="form_new">
             <form asp-antiforgery="true" asp-action="TeacherWindowMaterial" asp-controller="teacher" enctype="multipart/form-data">
                 <input name="nameMaterial" class="CrudInput" placeholder="Название материала" />
-                <label class="CrudLabel">Выберите файл материала</label>
-
+                <label class="CrudLabel">Выберите файл материала или введите ссылку на видеоматериал</label>
                 <input name="file" type="file" class="CrudInput" placeholder="Выберите файл материала" />
+                <input name="videoMaterial" class="CrudInput" placeholder="Ссылка на видео" />
+
                 <label class="CrudLabel">Выберите фото материала</label>
 
                 <input name="filePhoto" type="file" class="CrudInput" placeholder="Выберите фото материала" />

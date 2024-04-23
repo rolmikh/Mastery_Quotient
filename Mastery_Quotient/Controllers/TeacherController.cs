@@ -63,7 +63,7 @@ namespace Mastery_Quotient.Controllers
                         employee = JsonConvert.DeserializeObject<Employee>(apiResponse);
                     }
 
-                    using (var response = await httpClient.GetAsync(apiUrl + "Disciplines"))
+                    using (var response = await httpClient.GetAsync(apiUrl + "Disciplines/NoDeleted"))
                     {
                         string apiResponse = await response.Content.ReadAsStringAsync();
                         disciplines = JsonConvert.DeserializeObject<List<Discipline>>(apiResponse);
@@ -75,7 +75,7 @@ namespace Mastery_Quotient.Controllers
                         disciplineEmployees = JsonConvert.DeserializeObject<List<DisciplineEmployee>>(apiResponse);
                     }
 
-                    using (var response = await httpClient.GetAsync(apiUrl + "TypeMaterials"))
+                    using (var response = await httpClient.GetAsync(apiUrl + "TypeMaterials/NoDeleted"))
                     {
                         string apiResponse = await response.Content.ReadAsStringAsync();
                         typeMaterials = JsonConvert.DeserializeObject<List<TypeMaterial>>(apiResponse);
@@ -100,22 +100,37 @@ namespace Mastery_Quotient.Controllers
         /// <param name="filePhoto"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> TeacherWindowMaterial(string nameMaterial, int typeMaterial, int disciplineMaterial, IFormFile file, IFormFile filePhoto)
+        public async Task<IActionResult> TeacherWindowMaterial(string nameMaterial, string videoMaterial, int typeMaterial, int disciplineMaterial, IFormFile file, IFormFile filePhoto)
         {
             try
             {
-                if(file == null || file.Length == 0)
+                Material material = new Material();
+
+                if (videoMaterial == null || videoMaterial.Length == 0)
                 {
-                    return BadRequest("Файл не был загружен");
+                    if (file == null || file.Length == 0)
+                    {
+                        return BadRequest("Файл не был загружен");
+                    }
+                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                    string fileUrl = await firebaseService.UploadMaterial(file.OpenReadStream(), fileName);
+                    material.FileMaterial = fileUrl;
+
                 }
-                if(filePhoto == null || filePhoto.Length == 0)
+                else
+                {
+                    material.FileMaterial = videoMaterial;
+
+                }
+
+
+                if (filePhoto == null || filePhoto.Length == 0)
                 {
                     return BadRequest("Файл не был загружен");
                 }
 
 
-                string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-                string fileUrl = await firebaseService.UploadMaterial(file.OpenReadStream(), fileName);
+                
 
                 string fileNamePhoto = Guid.NewGuid().ToString() + Path.GetExtension(filePhoto.FileName);
                 string fileUrlPhoto = await firebaseService.UploadPhotoMaterial(filePhoto.OpenReadStream(), fileNamePhoto);
@@ -128,11 +143,9 @@ namespace Mastery_Quotient.Controllers
 
                 TempData.Keep("AuthUser");
 
-                Material material = new Material();
 
                 material.NameMaterial = nameMaterial;
                 material.DateCreatedMaterial = DateTime.Now;
-                material.FileMaterial = fileUrl;
                 material.DisciplineId = disciplineMaterial;
                 material.TypeMaterialId = typeMaterial;
                 material.EmployeeId = id;
@@ -369,7 +382,7 @@ namespace Mastery_Quotient.Controllers
                         employee = JsonConvert.DeserializeObject<Employee>(apiResponse);
                     }
 
-                    using (var response = await httpClient.GetAsync(apiUrl + "Disciplines"))
+                    using (var response = await httpClient.GetAsync(apiUrl + "Disciplines/NoDeleted"))
                     {
                         string apiResponse = await response.Content.ReadAsStringAsync();
                         disciplines = JsonConvert.DeserializeObject<List<Discipline>>(apiResponse);
@@ -381,7 +394,7 @@ namespace Mastery_Quotient.Controllers
                         disciplineEmployees = JsonConvert.DeserializeObject<List<DisciplineEmployee>>(apiResponse);
                     }
 
-                    using (var response = await httpClient.GetAsync(apiUrl + "TypeMaterials"))
+                    using (var response = await httpClient.GetAsync(apiUrl + "TypeMaterials/NoDeleted"))
                     {
                         string apiResponse = await response.Content.ReadAsStringAsync();
                         typeMaterials = JsonConvert.DeserializeObject<List<TypeMaterial>>(apiResponse);

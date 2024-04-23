@@ -2,4 +2,83 @@
     ViewData["Title"] = "View File";
 }
 
-<iframe src="@ViewBag.NameFile" width="100%" height="100%"></iframe>
+<link rel="stylesheet" href="../css/ModalWindowStyle.css">
+
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <p>Файл не доступен для просмотра в браузере. Хотите скачать файл?</p>
+        <button id="downloadBtn" class="newInput">Скачать</button>
+        <button id="cancelBtn" class="newInput">Отмена</button>
+    </div>
+</div>
+
+@if (ViewBag.FileType != "pdf")
+{
+    if (ViewBag.FileType == "youtube")
+    {
+        <style>
+            .centered {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh; /* Высота экрана */
+            }
+        </style>
+
+        <div class="centered">
+            <iframe width="80%" height="80%" src="https://www.youtube.com/embed/@ViewBag.NameFile" frameborder="0" allowfullscreen></iframe>
+        </div>
+
+    }
+    else if (ViewBag.FileType != "pdf")
+    {
+        <script>
+            var modal = document.getElementById("myModal");
+            var btn = document.getElementById("downloadBtn");
+            var cancelBtn = document.getElementById("cancelBtn");
+            var closeBtn = document.querySelector(".close");
+
+            // Открытие модального окна
+            function openModal() {
+                modal.style.display = "block";
+            }
+
+            // Закрытие модального окна
+            function closeModal() {
+                modal.style.display = "none";
+            }
+
+            // Закрытие модального окна при клике на крестик
+            closeBtn.addEventListener("click", function () {
+                closeModal();
+            });
+
+            // Закрытие модального окна при клике на кнопку отмены
+            cancelBtn.addEventListener("click", function () {
+                closeModal();
+            });
+
+            // Скачивание файла при клике на кнопку скачать
+            btn.addEventListener("click", function () {
+                window.location.href = "@ViewBag.NameFile";
+            });
+
+            // Отображение модального окна при загрузке страницы
+            window.addEventListener("load", function () {
+                openModal();
+            });
+
+            // Закрытие модального окна при клике вне него
+            window.addEventListener("click", function (event) {
+                if (event.target === modal) {
+                    closeModal();
+                }
+            });
+        </script>
+    }
+}
+else
+{
+    <iframe id="myFrame" src="@ViewBag.NameFile" width="100%" height="100%" type="application/pdf"></iframe>
+}

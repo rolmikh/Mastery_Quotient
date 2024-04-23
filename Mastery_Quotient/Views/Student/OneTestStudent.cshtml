@@ -1,0 +1,127 @@
+﻿@model Mastery_Quotient.Models.ViewTestModel
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/mainStyle.css">
+    <link rel="stylesheet" href="../css/navigationStyle.css">
+    <link rel="stylesheet" href="../css/TestStyle.css">
+    <link rel="stylesheet" href="../css/ModalWindowStyle.css">
+    <link rel="stylesheet" href="../css/crudStyle.css">
+    <link href="https://fonts.googleapis.com/css?family=Mulish:200,300,regular,500,600,700,800,900,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic"
+          rel="stylesheet" />
+    <title>Тестирования</title>
+    <div class="container">
+        <a asp-action="main" asp-controller="student">
+            <img class="navigation_img" src="../images/3QpbYI-LogoMakr.png">
+        </a>
+
+        <ul class="navigation_ul">
+            <li class="navigation_li"><a class="navigation_a" asp-action="News" asp-controller="Admin">Новости</a></li>
+            <li class="navigation_li"><a class="navigation_a" asp-action="MaterialStudent" asp-controller="Student">Материалы</a></li>
+            <li class="navigation_li"><a class="navigation_a" asp-action="TestStudent" asp-controller="Student">Тесты</a></li>
+            <li class="navigation_li"><a class="navigation_a" asp-action="AdminPanel" asp-controller="Student">Рейтинг</a></li>
+        </ul>
+        @*   <ul class="navigation_ul_right">
+        <li class="navigation_li_right" style="float: right">
+        <a class="navigation_a_right" asp-action="AdminWindowTeacher" asp-controller="admin">Преподаватели</a>
+        </li>
+        <li class="navigation_li_right" style="float: right"><a class="navigation_a_right" asp-action="AdminWindowStudent" asp-controller="admin">Студенты</a></li>
+        </ul> *@
+        <button class="glow_button" onclick="window.location.href='@Url.Action("PersonalAccountStudent", "student")'">
+            Личный кабинет
+        </button>
+    </div>
+
+</head>
+<body>
+    <main>
+        <div class="h2form">
+
+            <h3>Название теста</h3>
+            <h3>Дата создания теста</h3>
+            @* <h3>@Model.Discipline.Find(n => n.IdDiscipline == @Model.disciplineEmployees).NameDiscipline</h3> *@
+            <h3>Преподаватель</h3>
+            <h3>Параметры теста</h3>
+            <h3>Срок сдачи</h3>
+
+        </div>
+        <div class="h2form">
+
+            <h3>@Model.Test.NameTest</h3>
+            <h3>@Model.Test.DateCreatedTest</h3>
+            @* <h3>@Model.Discipline.Find(n => n.IdDiscipline == @Model.disciplineEmployees).NameDiscipline</h3> *@
+            <h3>@Model.Employee.SurnameEmployee @Model.Employee.NameEmployee @Model.Employee.MiddleNameEmployee</h3>
+            <h3>@Model.Parameters.Find(n => n.IdTestParameter == @Model.Test.TestParameterId).NameParameter: @Model.Parameters.Find(n => n.IdTestParameter == @Model.Test.TestParameterId).ValueParameter</h3>
+            <h3>@Model.Test.Deadline</h3>
+
+        </div>
+
+        @foreach (var question in Model.TestQuestion)
+        {
+            var questionNumber = Model.Question.Find(n => n.IdQuestion == question.QuestionId).NumberQuestion;
+            var questionName = Model.Question.Find(n => n.IdQuestion == question.QuestionId).NameQuestion;
+            var questionTypeID = Model.Question.Find(n => n.IdQuestion == question.QuestionId).TypeQuestionId;
+
+            var questionID = Model.Question.Find(n => n.IdQuestion == question.QuestionId).IdQuestion;
+
+            <div class="formAnswer">
+                <div class="flexDiv">
+                    <div class="number">
+                        @questionNumber
+                    </div>
+                    <div class="name">
+                        @questionName
+                    </div>
+
+                </div>
+
+
+                @if (questionTypeID == 1)
+                {
+                    <textarea class="textareaForm" name="AnswerOptionViewModels[@questionID].AnswerOption" placeholder="Введите ответ"></textarea>
+                }
+                @if (questionTypeID == 2)
+                {
+                    <div class="AnswerForm">
+                        @foreach (var answer in Model.QuestionAnswerOption.Where(n => n.QuestionId == questionID))
+                        {
+                            var answerContent = Model.AnswerOption.Find(n => n.IdAnswerOptions == answer.AnswerOptionsId).ContentAnswer;
+
+                            <div class="Answer">
+                                <input type="radio" name="AnswerOptionViewModels[@questionID].SelectedAnswer" value="@answer.AnswerOptionsId" />
+                                @answerContent
+                            </div>
+                        }
+                    </div>
+
+                }
+                @if (questionTypeID == 3)
+                {
+                    <div class="AnswerForm">
+                        @foreach (var answer in Model.QuestionAnswerOption.Where(n => n.QuestionId == questionID))
+                        {
+                            var answerContent = Model.AnswerOption.Find(n => n.IdAnswerOptions == answer.AnswerOptionsId).ContentAnswer;
+
+                            <div class="Answer">
+                                <input type="checkbox" name="AnswerOptionViewModels[@questionID].SelectedAnswer" value="@answer.AnswerOptionsId" />
+                                @answerContent
+                            </div>
+                        }
+                    </div>
+
+                }
+            </div>
+            <form asp-antiforgery="true" asp-action="TestPublication" asp-controller="Student" method="post">
+                <input type="submit" class="newInputTest" value="Сохранить результаты" />
+
+            </form>
+        }
+
+
+
+    </main>
+
+</body>
+</html>
