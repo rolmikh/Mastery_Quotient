@@ -1,15 +1,20 @@
-﻿<!DOCTYPE html>
+﻿@model Mastery_Quotient.Models.NewsModel
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/mainStyle.css">
     <link rel="stylesheet" href="../css/navigationStyle.css">
+
+    <link rel="stylesheet" href="../css/TestStyle.css">
+    <link rel="stylesheet" href="../css/materialStyle.css">
+    <link rel="stylesheet" href="../css/crudStyle.css">
     <link href="https://fonts.googleapis.com/css?family=Mulish:200,300,regular,500,600,700,800,900,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic"
           rel="stylesheet" />
     <title>Страница студента</title>
     <div class="container">
-        <a asp-action="main" asp-controller="student">
+        <a asp-action="MainStudent" asp-controller="Student">
             <img class="navigation_img" src="../images/3QpbYI-LogoMakr.png">
         </a>
 
@@ -20,10 +25,10 @@
             <li class="navigation_li"><a class="navigation_a" asp-action="AdminPanel" asp-controller="Student">Рейтинг</a></li>
         </ul>
         @* <ul class="navigation_ul_right">
-            <li class="navigation_li_right" style="float: right">
-                <a class="navigation_a_right" asp-action="AdminWindowTeacher" asp-controller="admin">Преподаватели</a>
-            </li>
-            <li class="navigation_li_right" style="float: right"><a class="navigation_a_right" asp-action="AdminWindowStudent" asp-controller="admin">Студенты</a></li>
+        <li class="navigation_li_right" style="float: right">
+        <a class="navigation_a_right" asp-action="AdminWindowTeacher" asp-controller="admin">Преподаватели</a>
+        </li>
+        <li class="navigation_li_right" style="float: right"><a class="navigation_a_right" asp-action="AdminWindowStudent" asp-controller="admin">Студенты</a></li>
         </ul> *@
         <button class="glow_button" onclick="window.location.href='@Url.Action("PersonalAccountStudent", "student")'">
             Личный кабинет
@@ -33,6 +38,166 @@
 </head>
 <body>
     <main>
+        <div class="containerForm">
+            <form asp-antiforgery="true" asp-action="MaterialStudent" asp-controller="Student">
+                <input class="searchInput" type="text" name="Search" />
+                <button class="searchImage" type="submit">
+                    <img width="40" height="40" src="../images/icons8-лупа-64.png" />
+                </button>
+            </form>
+            <form asp-antiforgery="true" asp-action="FiltrationMaterialStudent" asp-controller="Student">
+                <select class="CrudSelect" required id="disciplineID" name="disciplineID" placeholder="Дисциплина">
+                    <option selected disabled>Дисциплина</option>
+                    @foreach (var disciplineStudyGroup in Model.DisciplineOfTheStudyGroup)
+                    {
+                        var idDiscipline = Model.Disciplines.Find(n => n.IdDiscipline == disciplineStudyGroup.DisciplineId).IdDiscipline;
+                        @foreach (var discipline in Model.Disciplines.Where(n => n.IdDiscipline == idDiscipline))
+                        {
+                            <option value="@discipline.IdDiscipline">@discipline.NameDiscipline</option>
+                        }
+                    }
+
+                </select>
+                <select class="CrudSelect" required id="typeId" name="typeId" placeholder="Тип материала">
+                    <option selected disabled>Тип материала</option>
+                    @foreach (var type in Model.TypeMaterials)
+                    {
+                        <option value="@type.IdTypeMaterial">@type.NameTypeMaterial</option>
+                    }
+                </select>
+                <button class="InputFiltr" type="submit">Фильтрация</button>
+
+            </form>
+        </div>
+        <br />
+        @if (TempData["Message"] != null)
+        {
+            <div class="alert alert-success" role="alert">
+                @TempData["Message"]
+            </div>
+        }
+        <br />
+        <h2>Материалы</h2>
+        <div class="formsContainer">
+            @foreach (var disciplineStudyGroup in Model.DisciplineOfTheStudyGroup)
+            {
+                var idDiscipline = Model.Disciplines.Find(n => n.IdDiscipline == disciplineStudyGroup.DisciplineId).IdDiscipline;
+
+                var idEmployee = Model.DisciplineEmployees.Find(n => n.DisciplineId == idDiscipline).EmployeeId;
+
+                var surnameEmployee = Model.Employees.Find(n => n.IdEmployee == idEmployee).SurnameEmployee;
+
+                var nameEmployee = Model.Employees.Find(n => n.IdEmployee == idEmployee).NameEmployee;
+
+                var middleNameEmployee = Model.Employees.Find(n => n.IdEmployee == idEmployee).MiddleNameEmployee;
+
+                var photoEmployee = Model.Employees.Find(n => n.IdEmployee == idEmployee).PhotoEmployee;
+
+
+                @foreach (var item in Model.Materials.Where(n => n.DisciplineId == idDiscipline))
+                {
+
+                    <div class="formMaterial">
+                        <form asp-action="FileMaterial" asp-antiforgery="true" asp-controller="admin">
+
+                            <input type="image" class="imageMaterial" width="187" height="177" src="@item.PhotoMaterial" />
+                            <label class="nameMaterial">@item.NameMaterial</label>
+                            <label>
+                                Опубликовано:
+                                <img class="photo" src="@photoEmployee" width="20" height="20" />
+                                @surnameEmployee @nameEmployee @middleNameEmployee
+                            </label>
+                            <input value="Подробнее" class="buttonMaterial" type="submit" />
+
+                            <input hidden value="@item.FileMaterial" name="nameFile" />
+                        </form>
+                    </div>
+
+                }
+            }
+
+        </div>
+
+        <div class="containerForm">
+            <form asp-antiforgery="true" asp-action="TestStudent" asp-controller="Student">
+                <input class="searchInput" type="text" name="Search" />
+                <button class="searchImage" type="submit">
+                    <img width="40" height="40" src="../images/icons8-лупа-64.png" />
+                </button>
+            </form>
+            <form asp-antiforgery="true" asp-action="FiltrationTestStudent" asp-controller="Student">
+                <select class="CrudSelect" required id="disciplineID" name="disciplineID" placeholder="Дисциплина">
+                    <option selected disabled>Дисциплина</option>
+                    @foreach (var discipline in Model.Disciplines)
+                    {
+                        <option value="@discipline.IdDiscipline">@discipline.NameDiscipline</option>
+                    }
+                </select>
+                <select class="CrudSelect" required id="parameterId" name="parameterId" placeholder="Параметр тестирования">
+                    <option selected disabled>Параметр тестирования</option>
+                    @foreach (var parameter in Model.TestParameters)
+                    {
+                        <option value="@parameter.IdTestParameter">@parameter.NameParameter @parameter.ValueParameter</option>
+                    }
+                </select>
+                <button class="InputFiltr" type="submit">Фильтрация</button>
+
+            </form>
+        </div>
+        <br />
+        @if (TempData["Message"] != null)
+        {
+            <div class="alert alert-success" role="alert">
+                @TempData["Message"]
+            </div>
+        }
+        <br />
+        <h2>Тестирования</h2>
+
+        <div class="formsContainer">
+            @foreach (var disciplineStudyGroup in Model.DisciplineOfTheStudyGroup)
+            {
+                var idDiscipline = Model.Disciplines.Find(n => n.IdDiscipline == disciplineStudyGroup.DisciplineId).IdDiscipline;
+
+                var idEmployee = Model.DisciplineEmployees.Find(n => n.DisciplineId == idDiscipline).EmployeeId;
+
+                var surnameEmployee = Model.Employees.Find(n => n.IdEmployee == idEmployee).SurnameEmployee;
+
+                var nameEmployee = Model.Employees.Find(n => n.IdEmployee == idEmployee).NameEmployee;
+
+                var middleNameEmployee = Model.Employees.Find(n => n.IdEmployee == idEmployee).MiddleNameEmployee;
+
+                var photoEmployee = Model.Employees.Find(n => n.IdEmployee == idEmployee).PhotoEmployee;
+
+
+                @foreach (var item in Model.Test.Where(n => n.DisciplineId == idDiscipline))
+                {
+
+                    <div class="divTestForm">
+                        <form asp-action="OneTestStudent" asp-antiforgery="true" asp-controller="Student">
+                            <div>
+                                <input name="testId" hidden value="@item.IdTest" />
+
+                                <label class="labelTest">@item.NameTest</label>
+                                <br />
+                                <label class="labelTest">Дата создания: @string.Format("{0:dd.MM.yyyy}", @item.DateCreatedTest)</label>
+                                <label>
+                                    Опубликовано:
+                                    <img class="photo" src="@photoEmployee" width="20" height="20" />
+                                    @surnameEmployee @nameEmployee @middleNameEmployee
+                                </label>
+                                <input value="Просмотреть тестирование" class="buttonTest" type="submit" />
+
+                            </div>
+                        </form>
+                    </div>
+
+
+                }
+            }
+        </div>
+
+
 
     </main>
 

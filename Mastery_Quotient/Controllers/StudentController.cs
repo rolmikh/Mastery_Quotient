@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using System.Text;
 using FluentValidation;
 using static System.Net.Mime.MediaTypeNames;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Mastery_Quotient.Controllers
 {
@@ -28,10 +29,7 @@ namespace Mastery_Quotient.Controllers
             this.studentValidator = studentValidator;
         }
 
-        public IActionResult MainStudent()
-        {
-            return View();
-        }
+        
 
         /// <summary>
         /// Загрузка представления личного кабинета студента
@@ -42,6 +40,11 @@ namespace Mastery_Quotient.Controllers
         {
             try
             {
+                if (!TempData.ContainsKey("AuthUser"))
+                {
+                    return RedirectToAction("Authorization", "Home");
+                }
+
                 int id = int.Parse(TempData["AuthUser"].ToString());
 
                 TempData.Keep("AuthUser");
@@ -225,6 +228,14 @@ namespace Mastery_Quotient.Controllers
         {
             try
             {
+                if (!TempData.ContainsKey("AuthUser"))
+                {
+                    return RedirectToAction("Authorization", "Home");
+                }
+
+                int id = int.Parse(TempData["AuthUser"].ToString());
+
+                TempData.Keep("AuthUser");
                 var apiUrl = configuration["AppSettings:ApiUrl"];
 
                 List<Material> materials = new List<Material>();
@@ -236,9 +247,7 @@ namespace Mastery_Quotient.Controllers
                 List<DisciplineEmployee> disciplineEmployees = new List<DisciplineEmployee>();
                 Student student = new Student();
 
-                int id = int.Parse(TempData["AuthUser"].ToString());
-
-                TempData.Keep("AuthUser");
+                
 
                 using (var httpClient = new HttpClient())
                 {
@@ -319,6 +328,15 @@ namespace Mastery_Quotient.Controllers
         {
             try
             {
+
+                if (!TempData.ContainsKey("AuthUser"))
+                {
+                    return RedirectToAction("Authorization", "Home");
+                }
+
+                int id = int.Parse(TempData["AuthUser"].ToString());
+
+                TempData.Keep("AuthUser");
                 var apiUrl = configuration["AppSettings:ApiUrl"];
 
                 List<Employee> employees = new List<Employee>();
@@ -331,9 +349,7 @@ namespace Mastery_Quotient.Controllers
                 List<DisciplineOfTheStudyGroup> disciplineOfTheStudyGroups = new List<DisciplineOfTheStudyGroup>();
                 List<StudentTest> studentTests = new List<StudentTest>();
 
-                int id = int.Parse(TempData["AuthUser"].ToString());
-
-                TempData.Keep("AuthUser");
+                
 
                 using (var httpClient = new HttpClient())
                 {
@@ -418,6 +434,13 @@ namespace Mastery_Quotient.Controllers
         {
             try
             {
+                if (!TempData.ContainsKey("AuthUser"))
+                {
+                    return RedirectToAction("Authorization", "Home");
+                }
+                int id = int.Parse(TempData["AuthUser"].ToString());
+
+                TempData.Keep("AuthUser");
 
                 TempData["testID"] = testId;
                 TempData.Keep("testID");
@@ -427,9 +450,6 @@ namespace Mastery_Quotient.Controllers
                 TempData.Keep("testID");
 
 
-                int id = int.Parse(TempData["AuthUser"].ToString());
-
-                TempData.Keep("AuthUser");
 
                 var apiUrl = configuration["AppSettings:ApiUrl"];
 
@@ -545,21 +565,57 @@ namespace Mastery_Quotient.Controllers
 
                         string apiResponse = await response.Content.ReadAsStringAsync();
                         materials = JsonConvert.DeserializeObject<List<Material>>(apiResponse);
-
-                        TempData["Search"] = JsonConvert.SerializeObject(materials);
+                        
 
                         if (materials.Count == 0)
                         {
                             TempData["Message"] = "По вашему запросу ничего не найдено";
+                            if (!TempData.ContainsKey("AuthUser"))
+                            {
+                                return RedirectToAction("News", "Student");
+                            }
+                            else if (TempData.ContainsKey("AuthUser"))
+                            {
+                                return RedirectToAction("MainStudent", "Student");
+
+                            }
                             return RedirectToAction("MaterialStudent", "Student");
 
                         }
 
+                        if (!TempData.ContainsKey("AuthUser"))
+                        {
+                            TempData["SearchMaterial"] = JsonConvert.SerializeObject(materials);
+
+                            return RedirectToAction("News", "Student");
+                        }
+                        else if (TempData.ContainsKey("AuthUser"))
+                        {
+                            TempData["SearchMaterial"] = JsonConvert.SerializeObject(materials);
+
+                            return RedirectToAction("MainStudent", "Student");
+
+                        }
+
+                        TempData["Search"] = JsonConvert.SerializeObject(materials);
+                       
                         return RedirectToAction("MaterialStudent", "Student");
                     }
                 }
                 else
                 {
+                    TempData["Message"] = "По вашему запросу ничего не найдено";
+
+                    if (!TempData.ContainsKey("AuthUser"))
+                    {
+                        return RedirectToAction("News", "Student");
+                    }
+                    else if (TempData.ContainsKey("AuthUser"))
+                    {
+
+                        return RedirectToAction("MainStudent", "Student");
+
+                    }
                     return RedirectToAction("MaterialStudent", "Student");
                 }
             }
@@ -617,14 +673,37 @@ namespace Mastery_Quotient.Controllers
                             }
 
                         }
-                        TempData["Filtration"] = JsonConvert.SerializeObject(materials);
 
+                        
                         if (materials.Count == 0)
                         {
                             TempData["Message"] = "По вашему запросу ничего не найдено";
+                            if (!TempData.ContainsKey("AuthUser"))
+                            {
+                                return RedirectToAction("News", "Student");
+                            }
+                            else if (TempData.ContainsKey("AuthUser"))
+                            {
+                                return RedirectToAction("MainStudent", "Student");
+
+                            }
                             return RedirectToAction("MaterialStudent", "Student");
 
                         }
+                        if (!TempData.ContainsKey("AuthUser"))
+                        {
+                            TempData["FiltrationMaterial"] = JsonConvert.SerializeObject(materials);
+
+                            return RedirectToAction("News", "Student");
+                        }
+                        else if (TempData.ContainsKey("AuthUser"))
+                        {
+                            TempData["FiltrationMaterial"] = JsonConvert.SerializeObject(materials);
+
+                            return RedirectToAction("MainStudent", "Student");
+
+                        }
+                        TempData["Filtration"] = JsonConvert.SerializeObject(materials);
 
                         return RedirectToAction("MaterialStudent", "Student");
 
@@ -632,6 +711,18 @@ namespace Mastery_Quotient.Controllers
                 }
                 else
                 {
+                    TempData["Message"] = "По вашему запросу ничего не найдено";
+
+                    if (!TempData.ContainsKey("AuthUser"))
+                    {
+                        return RedirectToAction("News", "Student");
+                    }
+                    else if (TempData.ContainsKey("AuthUser"))
+                    {
+
+                        return RedirectToAction("MainStudent", "Student");
+
+                    }
                     return RedirectToAction("MaterialStudent", "Student");
                 }
             }
@@ -665,21 +756,54 @@ namespace Mastery_Quotient.Controllers
 
                         string apiResponse = await response.Content.ReadAsStringAsync();
                         tests = JsonConvert.DeserializeObject<List<Test>>(apiResponse);
-
-                        TempData["Search"] = JsonConvert.SerializeObject(tests);
-
+                        
                         if (tests.Count == 0)
                         {
                             TempData["Message"] = "По вашему запросу ничего не найдено";
+                            if (!TempData.ContainsKey("AuthUser"))
+                            {
+                                return RedirectToAction("News", "Student");
+                            }
+                            else if (TempData.ContainsKey("AuthUser"))
+                            {
+                                return RedirectToAction("MainStudent", "Student");
+
+                            }
                             return RedirectToAction("TestStudent", "Student");
 
                         }
+
+                        if (!TempData.ContainsKey("AuthUser"))
+                        {
+                            TempData["SearchTest"] = JsonConvert.SerializeObject(tests);
+
+                            return RedirectToAction("News", "Student");
+                        }
+                        else if (TempData.ContainsKey("AuthUser"))
+                        {
+                            TempData["SearchTest"] = JsonConvert.SerializeObject(tests);
+
+                            return RedirectToAction("MainStudent", "Student");
+                        }
+                        TempData["Search"] = JsonConvert.SerializeObject(tests);
 
                         return RedirectToAction("TestStudent", "Student");
                     }
                 }
                 else
                 {
+                    TempData["Message"] = "По вашему запросу ничего не найдено";
+
+                    if (!TempData.ContainsKey("AuthUser"))
+                    {
+                        return RedirectToAction("News", "Student");
+                    }
+                    else if (TempData.ContainsKey("AuthUser"))
+                    {
+
+                        return RedirectToAction("MainStudent", "Student");
+
+                    }
                     return RedirectToAction("TestStudent", "Student");
                 }
             }
@@ -737,14 +861,37 @@ namespace Mastery_Quotient.Controllers
                             }
 
                         }
-                        TempData["Filtration"] = JsonConvert.SerializeObject(tests);
-
+                       
                         if (tests.Count == 0)
                         {
                             TempData["Message"] = "По вашему запросу ничего не найдено";
+                            if (!TempData.ContainsKey("AuthUser"))
+                            {
+                                return RedirectToAction("News", "Student");
+                            }
+                            else if(TempData.ContainsKey("AuthUser"))
+                            {
+                                return RedirectToAction("MainStudent", "Student");
+
+                            }
                             return RedirectToAction("TestStudent", "Student");
 
                         }
+
+                        if (!TempData.ContainsKey("AuthUser"))
+                        {
+                            TempData["FiltrationTest"] = JsonConvert.SerializeObject(tests);
+
+                            return RedirectToAction("News", "Student");
+                        }
+                        else if (TempData.ContainsKey("AuthUser"))
+                        {
+                            TempData["FiltrationTest"] = JsonConvert.SerializeObject(tests);
+
+                            return RedirectToAction("MainStudent", "Student");
+
+                        }
+                        TempData["Filtration"] = JsonConvert.SerializeObject(tests);
 
                         return RedirectToAction("TestStudent", "Student");
 
@@ -752,6 +899,18 @@ namespace Mastery_Quotient.Controllers
                 }
                 else
                 {
+                    TempData["Message"] = "По вашему запросу ничего не найдено";
+
+                    if (!TempData.ContainsKey("AuthUser"))
+                    {
+                        return RedirectToAction("News", "Student");
+                    }
+                    else if (TempData.ContainsKey("AuthUser"))
+                    {
+
+                        return RedirectToAction("MainStudent", "Student");
+
+                    }
                     return RedirectToAction("TestStudent", "Student");
                 }
             }
@@ -761,5 +920,332 @@ namespace Mastery_Quotient.Controllers
             }
         }
 
+        /// <summary>
+        /// POST запрос сохранения результатов тестирования
+        /// </summary>
+        /// <param name="userAnswers"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> TestSave(List<UserAnswerViewModel> userAnswers)
+        {
+            try
+            {
+                int testID = int.Parse(TempData["testID"].ToString());
+                TempData.Keep("testID");
+
+                int id = int.Parse(TempData["AuthUser"].ToString());
+
+                TempData.Keep("AuthUser");
+
+                var apiUrl = configuration["AppSettings:ApiUrl"];
+
+                StudentTest studentTest = new StudentTest();
+                TestQuestion question = new TestQuestion();
+                QuestionAnswerOption questionAnswerOption = new QuestionAnswerOption();
+
+                studentTest.StudentId = id;
+                studentTest.TestId = testID;
+                studentTest.Result = 0;
+                studentTest.IsCompleted = 0;
+
+                StringContent content = new StringContent(JsonConvert.SerializeObject(studentTest), Encoding.UTF8, "application/json");
+
+                using (var httpClient = new HttpClient())
+                {
+
+                    var response = await httpClient.PostAsync(apiUrl + "StudentTests", content);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var responseContent = await response.Content.ReadAsStringAsync();
+
+                        var createdStudentTest = JsonConvert.DeserializeObject<StudentTest>(responseContent);
+
+                        for (int i = 0; i < userAnswers.Count; i++)
+                        {
+                            using (var responseQuestion = await httpClient.GetAsync(apiUrl + "TestQuestions/Search?search=" + int.Parse(userAnswers[i].QuestionId.ToString())))
+                            {
+                                string apiResponse = await responseQuestion.Content.ReadAsStringAsync();
+                                List<TestQuestion> questions = JsonConvert.DeserializeObject<List<TestQuestion>>(apiResponse);
+                                question = questions.FirstOrDefault();
+                            }
+                            StudentAnswer studentAnswer = new StudentAnswer();
+                            if (userAnswers[i].QuestionTypeId == 1)
+                            {
+                                studentAnswer.StudentTestId = createdStudentTest.IdStudentTest;
+                                studentAnswer.ContentAnswer = userAnswers[i].AnswerOption;
+                                studentAnswer.TestQuestionId = question.IdTestQuestion;
+                                studentAnswer.IsDeleted = 0;
+                                StringContent contentStudentAnswer = new StringContent(JsonConvert.SerializeObject(studentAnswer), Encoding.UTF8, "application/json");
+
+                                var responseStudentAnswer = await httpClient.PostAsync(apiUrl + "StudentAnswers", contentStudentAnswer);
+                            }
+                            else if (userAnswers[i].QuestionTypeId == 2)
+                            {
+                                studentAnswer.StudentTestId = createdStudentTest.IdStudentTest;
+                                studentAnswer.TestQuestionId = question.IdTestQuestion;
+                                studentAnswer.IsDeleted = 0;
+                                using (var responseAnswer = await httpClient.GetAsync(apiUrl + "QuestionAnswerOptions/FiltrationAnswer?idAnswer=" + int.Parse(userAnswers[i].SelectedAnswerId.ToString())))
+                                {
+                                    string apiResponse = await responseAnswer.Content.ReadAsStringAsync();
+
+                                    List<QuestionAnswerOption> questionAnswerOptions = JsonConvert.DeserializeObject<List<QuestionAnswerOption>>(apiResponse);
+                                    questionAnswerOption = questionAnswerOptions.FirstOrDefault();
+                                }
+                                studentAnswer.QuestionAnswerOptionsId = questionAnswerOption.IdQuestionAnswerOptions;
+                                StringContent contentStudentAnswer = new StringContent(JsonConvert.SerializeObject(studentAnswer), Encoding.UTF8, "application/json");
+
+                                var responseStudentAnswer = await httpClient.PostAsync(apiUrl + "StudentAnswers", contentStudentAnswer);
+                            }
+                            else if (userAnswers[i].QuestionTypeId == 3)
+                            {
+                                foreach(var item in userAnswers[i].SelectedAnswerIds)
+                                {
+                                    studentAnswer.StudentTestId = createdStudentTest.IdStudentTest;
+                                    studentAnswer.TestQuestionId = question.IdTestQuestion;
+                                    studentAnswer.IsDeleted = 0;
+                                    using (var responseAnswer = await httpClient.GetAsync(apiUrl + "QuestionAnswerOptions/FiltrationAnswer?idAnswer=" + item))
+                                    {
+                                        string apiResponse = await responseAnswer.Content.ReadAsStringAsync();
+                                        List<QuestionAnswerOption> questionAnswerOptions = JsonConvert.DeserializeObject<List<QuestionAnswerOption>>(apiResponse);
+                                        questionAnswerOption = questionAnswerOptions.FirstOrDefault();
+                                    }
+
+                                    studentAnswer.QuestionAnswerOptionsId = questionAnswerOption.IdQuestionAnswerOptions;
+
+                                    StringContent contentAnswerOption = new StringContent(JsonConvert.SerializeObject(studentAnswer), Encoding.UTF8, "application/json");
+                                    var responseAnswerOption = await httpClient.PostAsync(apiUrl + "StudentAnswers", contentAnswerOption);
+                                
+                                }
+
+                            }
+                            else
+                            {
+                                return BadRequest("Ошибка!");
+                            }
+                            
+                            
+                        }
+                    }
+                    else
+                    {
+                        return BadRequest();
+
+                    }
+
+                    return RedirectToAction("TestStudent","Student");
+                }
+
+            }
+            catch (Exception e)
+            {
+                return BadRequest($"Failed to save {e}");
+            }
+            
+        }
+
+
+
+        /// <summary>
+        /// Загрузка главной страницы студента
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IActionResult> MainStudent()
+        {
+            try
+            {
+                var apiUrl = configuration["AppSettings:ApiUrl"];
+
+                int id = int.Parse(TempData["AuthUser"].ToString());
+                TempData.Keep("AuthUser");
+                Student student = new Student();
+                List<StudyGroup> studyGroups = null;
+                List<DisciplineOfTheStudyGroup> disciplineOfTheStudyGroups = new List<DisciplineOfTheStudyGroup>();
+                List<Employee> employees = new List<Employee>();
+                List<Discipline> disciplines = new List<Discipline>();
+                List<DisciplineEmployee> disciplineEmployees = new List<DisciplineEmployee>();
+                List<TestParameter> testParameters = new List<TestParameter>();
+                List<Test> tests = new List<Test>();
+                List<Material> materials = new List<Material>();
+                List<TypeMaterial> typeMaterials = new List<TypeMaterial>();
+                using (var httpClient = new HttpClient())
+                {
+                    using (var response = await httpClient.GetAsync(apiUrl + "Employees"))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        employees = JsonConvert.DeserializeObject<List<Employee>>(apiResponse);
+                    }
+                    using (var response = await httpClient.GetAsync(apiUrl + "Disciplines/NoDeleted"))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        disciplines = JsonConvert.DeserializeObject<List<Discipline>>(apiResponse);
+                    }
+                    using (var response = await httpClient.GetAsync(apiUrl + "DisciplineEmployee"))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        disciplineEmployees = JsonConvert.DeserializeObject<List<DisciplineEmployee>>(apiResponse);
+                    }
+                    using (var response = await httpClient.GetAsync(apiUrl + "TestParameters/NoDeleted"))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        testParameters = JsonConvert.DeserializeObject<List<TestParameter>>(apiResponse);
+                    }
+                    if (TempData.ContainsKey("SearchTest"))
+                    {
+                        tests = JsonConvert.DeserializeObject<List<Test>>(TempData["SearchTest"].ToString());
+                    }
+                    else if (TempData.ContainsKey("FiltrationTest"))
+                    {
+                        tests = JsonConvert.DeserializeObject<List<Test>>(TempData["FiltrationTest"].ToString());
+                    }
+                    else
+                    {
+                        using (var response = await httpClient.GetAsync(apiUrl + "Tests"))
+                        {
+                            string apiResponse = await response.Content.ReadAsStringAsync();
+                            tests = JsonConvert.DeserializeObject<List<Test>>(apiResponse);
+                        }
+                    }
+                    if (TempData.ContainsKey("SearchMaterial"))
+                    {
+                        materials = JsonConvert.DeserializeObject<List<Material>>(TempData["SearchMaterial"].ToString());
+                    }
+                    else if (TempData.ContainsKey("FiltrationMaterial"))
+                    {
+                        materials = JsonConvert.DeserializeObject<List<Material>>(TempData["FiltrationMaterial"].ToString());
+                    }
+                    else
+                    {
+                        using (var response = await httpClient.GetAsync(apiUrl + "Materials"))
+                        {
+                            string apiResponse = await response.Content.ReadAsStringAsync();
+                            materials = JsonConvert.DeserializeObject<List<Material>>(apiResponse);
+                        }
+                    }
+                    using (var response = await httpClient.GetAsync(apiUrl + "TypeMaterials/NoDeleted"))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        typeMaterials = JsonConvert.DeserializeObject<List<TypeMaterial>>(apiResponse);
+                    }
+                    using (var response = await httpClient.GetAsync(apiUrl + "Students/" + id))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        student = JsonConvert.DeserializeObject<Student>(apiResponse);
+                    }
+                    using (var response = await httpClient.GetAsync(apiUrl + "StudyGroups"))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        studyGroups = JsonConvert.DeserializeObject<List<StudyGroup>>(apiResponse);
+                    }
+                    var group = studyGroups.Find(n => n.IdStudyGroup == student.StudyGroupId).IdStudyGroup;
+                    using (var response = await httpClient.GetAsync(apiUrl + "DisciplineOfTheStudyGroups/Filtration?idStudyGroup=" + group))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        disciplineOfTheStudyGroups = JsonConvert.DeserializeObject<List<DisciplineOfTheStudyGroup>>(apiResponse);
+                    }
+                }
+
+                    
+                    
+                    StudyGroup studyGroup = studyGroups.Find(n => n.IdStudyGroup == student.StudyGroupId);
+                    NewsModel newsModel = new NewsModel(employees, disciplines, disciplineEmployees, testParameters, tests, student, disciplineOfTheStudyGroups, studyGroup, materials, typeMaterials);
+                    return View(newsModel);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Загрузка главной страницы
+        /// </summary>
+        /// <returns></returns>
+         [AllowAnonymous]
+        public async Task<IActionResult> News()
+        {
+            try
+            {
+                TempData.Remove("AuthUser");
+                var apiUrl = configuration["AppSettings:ApiUrl"];
+
+
+                List<Employee> employees = new List<Employee>();
+                List<Discipline> disciplines = new List<Discipline>();
+                List<DisciplineEmployee> disciplineEmployees = new List<DisciplineEmployee>();
+                List<TestParameter> testParameters = new List<TestParameter>();
+                List<Test> tests = new List<Test>();
+                List<Material> materials = new List<Material>();
+                List<TypeMaterial> typeMaterials = new List<TypeMaterial>();
+                using (var httpClient = new HttpClient())
+                {
+                    using (var response = await httpClient.GetAsync(apiUrl + "Employees"))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        employees = JsonConvert.DeserializeObject<List<Employee>>(apiResponse);
+                    }
+                    using (var response = await httpClient.GetAsync(apiUrl + "Disciplines/NoDeleted"))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        disciplines = JsonConvert.DeserializeObject<List<Discipline>>(apiResponse);
+                    }
+                    using (var response = await httpClient.GetAsync(apiUrl + "DisciplineEmployee"))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        disciplineEmployees = JsonConvert.DeserializeObject<List<DisciplineEmployee>>(apiResponse);
+                    }
+                    using (var response = await httpClient.GetAsync(apiUrl + "TestParameters/NoDeleted"))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        testParameters = JsonConvert.DeserializeObject<List<TestParameter>>(apiResponse);
+                    }
+                    if (TempData.ContainsKey("SearchTest"))
+                    {
+                        tests = JsonConvert.DeserializeObject<List<Test>>(TempData["SearchTest"].ToString());
+                    }
+                    else if (TempData.ContainsKey("FiltrationTest"))
+                    {
+                        tests = JsonConvert.DeserializeObject<List<Test>>(TempData["FiltrationTest"].ToString());
+                    }
+                    else
+                    {
+                        using (var response = await httpClient.GetAsync(apiUrl + "Tests"))
+                        {
+                            string apiResponse = await response.Content.ReadAsStringAsync();
+                            tests = JsonConvert.DeserializeObject<List<Test>>(apiResponse);
+                        }
+                    }
+                    if (TempData.ContainsKey("SearchMaterial"))
+                    {
+                        materials = JsonConvert.DeserializeObject<List<Material>>(TempData["SearchMaterial"].ToString());
+                    }
+                    else if (TempData.ContainsKey("FiltrationMaterial"))
+                    {
+                        materials = JsonConvert.DeserializeObject<List<Material>>(TempData["FiltrationMaterial"].ToString());
+                    }
+                    else
+                    {
+                        using (var response = await httpClient.GetAsync(apiUrl + "Materials"))
+                        {
+                            string apiResponse = await response.Content.ReadAsStringAsync();
+                            materials = JsonConvert.DeserializeObject<List<Material>>(apiResponse);
+                        }
+                    }
+                    using (var response = await httpClient.GetAsync(apiUrl + "TypeMaterials/NoDeleted"))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        typeMaterials = JsonConvert.DeserializeObject<List<TypeMaterial>>(apiResponse);
+                    }
+                }
+
+                NewsModel newsModel = new NewsModel(employees, disciplines, disciplineEmployees, testParameters, tests, null, null, null, materials, typeMaterials);
+                return View(newsModel);
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

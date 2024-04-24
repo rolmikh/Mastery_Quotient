@@ -15,8 +15,5 @@ jobs:
         with:
           dotnet-version: '6.0.x'
           
-      - name: Install StyleCop.Analyzers
-        run: dotnet add package StyleCop.Analyzers --version 1.1.118 --package-directory ./.nuget/packages
-
       - name: Check Style
         run: dotnet build /p:ValidateStyleCopSettings=true /p:StyleCopCachePath=./.stylecop-cache

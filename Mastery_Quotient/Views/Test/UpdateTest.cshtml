@@ -69,7 +69,17 @@
             </form>
         </div>
  
+        @if (TempData["ErrorValidation"] != null)
+        {
+            <div class="alert alert-danger">
 
+                @foreach (var errorMessage in (string[])TempData["ErrorValidation"])
+                {
+                    <p>@errorMessage</p>
+                }
+            </div>
+        }
+        <br />
     </main>
 
 

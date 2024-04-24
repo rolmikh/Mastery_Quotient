@@ -1,5 +1,7 @@
 ﻿using AngleSharp.Dom;
+using FluentValidation;
 using Mastery_Quotient.Models;
+using Mastery_Quotient.ModelsValidation;
 using Mastery_Quotient.Service;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -14,11 +16,23 @@ namespace Mastery_Quotient.Controllers
 
         private readonly IConfiguration configuration;
 
-        public TestController(ILogger<TestController> logger, IConfiguration configuration)
+        private readonly IValidator<Test> testValidator;
+
+        private readonly IValidator<Question> questionValidator;
+
+        private readonly IValidator<AnswerOption> answerOptionValidator;
+
+        public TestController(ILogger<TestController> logger, IConfiguration configuration, IValidator<Test> testValidator, IValidator<Question> questionValidator, IValidator<AnswerOption> answerOptionValidator)
         {
             _logger = logger;
             this.configuration = configuration;
+            this.testValidator = testValidator;
+            this.questionValidator = questionValidator;
+            this.answerOptionValidator = answerOptionValidator;
         }
+
+
+
 
         /// <summary>
         /// Загрузка представления страницы добавления тестирований
@@ -116,8 +130,15 @@ namespace Mastery_Quotient.Controllers
                 test.TestParameterId = parameterTest;
                 test.IsDeleted = 0;
                 test.Active = 1;
-               
 
+                var validationResult = await testValidator.ValidateAsync(test);
+
+                if (!validationResult.IsValid)
+                {
+                    var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                    TempData["ErrorValidation"] = errorMessages;
+                    return RedirectToAction("TeacherWindowTest", "Test");
+                }
 
                 StringContent content = new StringContent(JsonConvert.SerializeObject(test), Encoding.UTF8, "application/json");
 
@@ -282,7 +303,8 @@ namespace Mastery_Quotient.Controllers
 
             try
             {
-                if(testId != 0)
+
+                if (testId != 0)
                 {
                     TempData["testID"] = testId;
                 }
@@ -526,6 +548,8 @@ namespace Mastery_Quotient.Controllers
             {
                 var apiUrl = configuration["AppSettings:ApiUrl"];
 
+                
+                
                 Question question = new Question();
                 question.NumberQuestion = numberQuestion;
                 question.NameQuestion = nameQuestion;
@@ -533,6 +557,17 @@ namespace Mastery_Quotient.Controllers
                 if(typeQuestion.Contains("Письменный"))
                 {
                     question.TypeQuestionId = 1;
+                }
+
+                
+
+                var validationResult = await questionValidator.ValidateAsync(question);
+
+                if (!validationResult.IsValid)
+                {
+                    var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                    TempData["ErrorValidation"] = errorMessages;
+                    return RedirectToAction("QuestionTest", "Test");
                 }
 
                 StringContent content = new StringContent(JsonConvert.SerializeObject(question), Encoding.UTF8, "application/json");
@@ -594,7 +629,12 @@ namespace Mastery_Quotient.Controllers
             {
                 int i = 1;
                 var apiUrl = configuration["AppSettings:ApiUrl"];
+                if (model.AnswerOptionViewModels == null)
+                {
+                    TempData["MessageValidation"] = "Добавьте вариант ответа";
 
+                    return RedirectToAction("QuestionTest", "Test");
+                }
                 Question question = new Question();
                 question.NumberQuestion = numberQuestion;
                 question.NameQuestion = nameQuestion;
@@ -606,6 +646,14 @@ namespace Mastery_Quotient.Controllers
                 else
                 {
                     return BadRequest();
+                }
+                var validationResult = await questionValidator.ValidateAsync(question);
+
+                if (!validationResult.IsValid)
+                {
+                    var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                    TempData["ErrorValidation"] = errorMessages;
+                    return RedirectToAction("QuestionTest", "Test");
                 }
 
                 StringContent content = new StringContent(JsonConvert.SerializeObject(question), Encoding.UTF8, "application/json");
@@ -631,6 +679,15 @@ namespace Mastery_Quotient.Controllers
                             else
                             {
                                 answerOption.CorrectnessAnswer = 1;
+                            }
+
+                            var validationResultTwo = await answerOptionValidator.ValidateAsync(answerOption);
+
+                            if (!validationResultTwo.IsValid)
+                            {
+                                var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                                TempData["ErrorValidation"] = errorMessages;
+                                return RedirectToAction("QuestionTest", "Test");
                             }
 
                             StringContent contentAnswerOption = new StringContent(JsonConvert.SerializeObject(answerOption), Encoding.UTF8, "application/json");
@@ -701,7 +758,12 @@ namespace Mastery_Quotient.Controllers
             {
                 int i = 1;
                 var apiUrl = configuration["AppSettings:ApiUrl"];
+                if (model.AnswerOptionViewModels == null)
+                {
+                    TempData["MessageValidation"] = "Добавьте вариант ответа";
 
+                    return RedirectToAction("QuestionTest", "Test");
+                }
                 Question question = new Question();
                 question.NumberQuestion = numberQuestion;
                 question.NameQuestion = nameQuestion;
@@ -714,7 +776,14 @@ namespace Mastery_Quotient.Controllers
                 {
                     return BadRequest();
                 }
+                var validationResult = await questionValidator.ValidateAsync(question);
 
+                if (!validationResult.IsValid)
+                {
+                    var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                    TempData["ErrorValidation"] = errorMessages;
+                    return RedirectToAction("QuestionTest", "Test");
+                }
                 StringContent content = new StringContent(JsonConvert.SerializeObject(question), Encoding.UTF8, "application/json");
 
                 using (var httpClient = new HttpClient())
@@ -730,6 +799,7 @@ namespace Mastery_Quotient.Controllers
                         var createdQuestion = JsonConvert.DeserializeObject<Question>(responseContent);
                         foreach (var answer in model.AnswerOptionViewModels)
                         {
+                           
                             AnswerOption answerOption = new AnswerOption();
                             answerOption.NumberAnswer = i++;
                             answerOption.ContentAnswer = answer.AnswerOption;
@@ -741,7 +811,14 @@ namespace Mastery_Quotient.Controllers
                             {
                                 answerOption.CorrectnessAnswer = 1;
                             }
+                            var validationResultTwo = await answerOptionValidator.ValidateAsync(answerOption);
 
+                            if (!validationResultTwo.IsValid)
+                            {
+                                var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                                TempData["ErrorValidation"] = errorMessages;
+                                return RedirectToAction("QuestionTest", "Test");
+                            }
                             StringContent contentAnswerOption = new StringContent(JsonConvert.SerializeObject(answerOption), Encoding.UTF8, "application/json");
                             var responseAnswerOption = await httpClient.PostAsync(apiUrl + "AnswerOptions", contentAnswerOption);
 
@@ -983,7 +1060,14 @@ namespace Mastery_Quotient.Controllers
                 test.IsDeleted = 0;
                 test.Active = 1;
 
+                var validationResult = await testValidator.ValidateAsync(test);
 
+                if (!validationResult.IsValid)
+                {
+                    var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                    TempData["ErrorValidation"] = errorMessages;
+                    return RedirectToAction("TestTeacher", "Test");
+                }
 
                 StringContent content = new StringContent(JsonConvert.SerializeObject(test), Encoding.UTF8, "application/json");
 

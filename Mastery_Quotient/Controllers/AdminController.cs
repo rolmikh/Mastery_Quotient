@@ -1097,6 +1097,15 @@ namespace Mastery_Quotient.Controllers
         /// <returns></returns>
         public IActionResult FileMaterial(string nameFile)
         {
+            if (!TempData.ContainsKey("AuthUser"))
+            {
+                return RedirectToAction("Authorization", "Home");
+            }
+
+            int id = int.Parse(TempData["AuthUser"].ToString());
+
+            TempData.Keep("AuthUser");
+
             if (nameFile.Contains("youtu.be"))
             {
                 string[] fileNameParts = nameFile.Split("https://youtu.be/");

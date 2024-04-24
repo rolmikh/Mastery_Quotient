@@ -7,6 +7,8 @@ using Newtonsoft.Json;
 using System.Text;
 using Mastery_Quotient.Service;
 using static System.Net.Mime.MediaTypeNames;
+using FluentValidation;
+using Mastery_Quotient.ModelsValidation;
 
 namespace Mastery_Quotient.Controllers
 {
@@ -17,9 +19,15 @@ namespace Mastery_Quotient.Controllers
 
         FirebaseService firebaseService = new FirebaseService();
 
-        public TeacherController(IConfiguration configuration, ILogger<AdminController> logger)
+        private readonly IValidator<Material> materialValidator;
+
+        private readonly IValidator<Employee> employeeValidator;
+
+        public TeacherController(IConfiguration configuration, IValidator<Material> materialValidator, IValidator<Employee> employeeValidator, ILogger<AdminController> logger)
         {
             this.configuration = configuration;
+            this.materialValidator = materialValidator;
+            this.employeeValidator = employeeValidator;
             _logger = logger;
         }
 
@@ -152,6 +160,14 @@ namespace Mastery_Quotient.Controllers
                 material.PhotoMaterial = fileUrlPhoto;
                 material.IsDeleted = 0;
 
+                var validationResult = await materialValidator.ValidateAsync(material);
+
+                if (!validationResult.IsValid)
+                {
+                    var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                    TempData["ErrorValidation"] = errorMessages;
+                    return RedirectToAction("TeacherWindowMaterial", "Teacher");
+                }
 
                 StringContent content = new StringContent(JsonConvert.SerializeObject(material), Encoding.UTF8, "application/json");
 
@@ -252,7 +268,14 @@ namespace Mastery_Quotient.Controllers
                 employee.RoleId = 2;
                 employee.IsDeleted = 0;
 
+                var validationResult = await employeeValidator.ValidateAsync(employee);
 
+                if (!validationResult.IsValid)
+                {
+                    var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                    TempData["ErrorValidation"] = errorMessages;
+                    return RedirectToAction("PersonalAccountTeacher", "Teacher");
+                }
                 using (var httpClient = new HttpClient())
                 {
                     StringContent content = new StringContent(JsonConvert.SerializeObject(employee), Encoding.UTF8, "application/json");
@@ -678,6 +701,14 @@ namespace Mastery_Quotient.Controllers
                 material.PhotoMaterial = fileUrlPhoto;
                 material.IsDeleted = 0;
 
+                var validationResult = await materialValidator.ValidateAsync(material);
+
+                if (!validationResult.IsValid)
+                {
+                    var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                    TempData["ErrorValidation"] = errorMessages;
+                    return RedirectToAction("TeacherWindowMaterial", "Teacher");
+                }
 
                 StringContent content = new StringContent(JsonConvert.SerializeObject(material), Encoding.UTF8, "application/json");
 

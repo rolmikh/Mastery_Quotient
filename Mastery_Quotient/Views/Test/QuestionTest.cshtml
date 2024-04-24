@@ -74,8 +74,8 @@
                     <h2>Добавление вопроса</h2>
                     <form asp-antiforgery="true" asp-action="QuestionInput" asp-controller="Test" method="post">
                         <h3>Вопрос с письменным вариантом ответа</h3>
-                        <input name="numberQuestion" class="CrudInput" type="number" placeholder="Номер вопроса" />
-                        <input name="nameQuestion" class="CrudInput" placeholder="Название вопроса" />
+                        <input name="numberQuestion" required class="CrudInput" type="number" placeholder="Номер вопроса" />
+                        <input name="nameQuestion" required class="CrudInput" placeholder="Название вопроса" />
 
                         <input name="typeQuestion" hidden value="Письменный вопрос" />
 
@@ -88,8 +88,8 @@
                     <h2>Добавление вопроса</h2>
                     <form asp-antiforgery="true" asp-action="QuestionOne" asp-controller="Test" method="post">
                         <h3>Вопрос с одним вариантом ответа</h3>
-                        <input name="numberQuestion" class="CrudInput" type="number" placeholder="Номер вопроса" />
-                        <input name="nameQuestion" class="CrudInput" placeholder="Название вопроса" />
+                        <input name="numberQuestion" required class="CrudInput" type="number" placeholder="Номер вопроса" />
+                        <input name="nameQuestion" required class="CrudInput" placeholder="Название вопроса" />
 
                         <input name="typeQuestion" hidden value="Вопрос с одним вариантом ответа" />
 
@@ -107,8 +107,8 @@
                     <h2>Добавление вопроса</h2>
                     <form asp-antiforgery="true" asp-action="QuestionTwo" asp-controller="Test" method="post">
                         <h3>Вопрос с несколькими вариантами ответа</h3>
-                        <input name="numberQuestion" class="CrudInput" type="number" placeholder="Номер вопроса" />
-                        <input name="nameQuestion" class="CrudInput" placeholder="Название вопроса" />
+                        <input name="numberQuestion" required class="CrudInput" type="number" placeholder="Номер вопроса" />
+                        <input name="nameQuestion" required class="CrudInput" placeholder="Название вопроса" />
 
                         <input name="typeQuestion" hidden value="Вопрос с несколькими вариантами ответа" />
 
@@ -121,8 +121,25 @@
                 </div>
             </div>
         }
-        
+        <br/>
+        @if (TempData["ErrorValidation"] != null)
+        {
+            <div class="alert alert-danger">
 
+                @foreach (var errorMessage in (string[])TempData["ErrorValidation"])
+                {
+                    <p>@errorMessage</p>
+                }
+            </div>
+        }
+        <br />
+        @if (TempData["MessageValidation"] != null)
+        {
+            <div class="alert alert-success" role="alert">
+                @TempData["MessageValidation"]
+            </div>
+        }
+        <br />
 
         @foreach (var question in Model.TestQuestion)
         {
