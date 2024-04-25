@@ -28,8 +28,6 @@ namespace Mastery_Quotient.Controllers
 
         FirebaseService firebaseService = new FirebaseService();
 
-        FileService fileService = new FileService();
-
         public AdminController(IConfiguration configuration, IValidator<Employee> employeeValidator, ILogger<AdminController> logger, IValidator<Student> studentValidator)
         {
             this.configuration = configuration;

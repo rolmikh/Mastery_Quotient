@@ -1160,7 +1160,7 @@ namespace Mastery_Quotient.Controllers
                         string apiResponse = await response.Content.ReadAsStringAsync();
                         employeeStudyGroups = JsonConvert.DeserializeObject<List<EmployeeStudyGroup>>(apiResponse);
                     }
-                    using (var response = await client.GetAsync(apiUrl + "Employees"))
+                    using (var response = await client.GetAsync(apiUrl + "Employees/All"))
                     {
                         string apiResponse = await response.Content.ReadAsStringAsync();
                         employees = JsonConvert.DeserializeObject<List<Employee>>(apiResponse);
@@ -1258,7 +1258,7 @@ namespace Mastery_Quotient.Controllers
                         string apiResponse = await response.Content.ReadAsStringAsync();
                         employeeStudyGroups = JsonConvert.DeserializeObject<EmployeeStudyGroup>(apiResponse);
                     }
-                    using (var response = await client.GetAsync(apiUrl + "Employees"))
+                    using (var response = await client.GetAsync(apiUrl + "Employees/All"))
                     {
                         string apiResponse = await response.Content.ReadAsStringAsync();
                         employees = JsonConvert.DeserializeObject<List<Employee>>(apiResponse);
@@ -1592,7 +1592,7 @@ namespace Mastery_Quotient.Controllers
                         string apiResponse = await response.Content.ReadAsStringAsync();
                         disciplines = JsonConvert.DeserializeObject<List<Discipline>>(apiResponse);
                     }
-                    using (var response = await client.GetAsync(apiUrl + "Employees"))
+                    using (var response = await client.GetAsync(apiUrl + "Employees/All"))
                     {
                         string apiResponse = await response.Content.ReadAsStringAsync();
                         employees = JsonConvert.DeserializeObject<List<Employee>>(apiResponse);
@@ -1684,7 +1684,7 @@ namespace Mastery_Quotient.Controllers
                         string apiResponse = await response.Content.ReadAsStringAsync();
                         disciplines = JsonConvert.DeserializeObject<List<Discipline>>(apiResponse);
                     }
-                    using (var response = await client.GetAsync(apiUrl + "Employees"))
+                    using (var response = await client.GetAsync(apiUrl + "Employees/All"))
                     {
                         string apiResponse = await response.Content.ReadAsStringAsync();
                         employees = JsonConvert.DeserializeObject<List<Employee>>(apiResponse);

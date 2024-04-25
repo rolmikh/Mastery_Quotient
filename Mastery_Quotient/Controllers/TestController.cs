@@ -167,8 +167,6 @@ namespace Mastery_Quotient.Controllers
         /// Загрузка представления страницы просмотра тестирований
         /// </summary>
         /// <returns></returns>
-
-
         [HttpGet]
         public async Task<IActionResult> TestTeacher()
         {
@@ -1084,5 +1082,116 @@ namespace Mastery_Quotient.Controllers
                 return BadRequest("Ошибка изменения данных" + ex.Message);
             }
         }
+
+        //[HttpGet]
+        //public async Task<IActionResult> UpdateTestQuestion(int id)
+        //{
+        //    try
+        //    {
+
+        //        if (testId != 0)
+        //        {
+        //            TempData["testID"] = testId;
+        //        }
+
+
+        //        int testID = int.Parse(TempData["testID"].ToString());
+        //        TempData.Keep("testID");
+
+
+        //        int idUser = int.Parse(TempData["AuthUser"].ToString());
+
+        //        TempData.Keep("AuthUser");
+
+        //        var apiUrl = configuration["AppSettings:ApiUrl"];
+
+        //        Test test = new Test();
+        //        List<TypeQuestion> typeQuestions = new List<TypeQuestion>();
+        //        List<TestParameter> testParameters = new List<TestParameter>();
+        //        List<Question> questions = new List<Question>();
+        //        List<TestQuestion> testQuestions = new List<TestQuestion>();
+        //        List<AnswerOption> answerOptions = new List<AnswerOption>();
+        //        List<QuestionAnswerOption> questionAnswerOptions = new List<QuestionAnswerOption>();
+        //        Employee employee = new Employee();
+        //        List<Discipline> disciplines = new List<Discipline>();
+        //        List<DisciplineEmployee> disciplineEmployees = new List<DisciplineEmployee>();
+
+
+        //        using (var httpClient = new HttpClient())
+        //        {
+        //            using (var response = await httpClient.GetAsync(apiUrl + "Tests/" + testID))
+        //            {
+        //                string apiResponse = await response.Content.ReadAsStringAsync();
+        //                test = JsonConvert.DeserializeObject<Test>(apiResponse);
+        //            }
+
+        //            using (var response = await httpClient.GetAsync(apiUrl + "TypeQuestions"))
+        //            {
+        //                string apiResponse = await response.Content.ReadAsStringAsync();
+        //                typeQuestions = JsonConvert.DeserializeObject<List<TypeQuestion>>(apiResponse);
+        //            }
+
+        //            using (var response = await httpClient.GetAsync(apiUrl + "TestParameters"))
+        //            {
+        //                string apiResponse = await response.Content.ReadAsStringAsync();
+        //                testParameters = JsonConvert.DeserializeObject<List<TestParameter>>(apiResponse);
+        //            }
+
+        //            using (var response = await httpClient.GetAsync(apiUrl + "Questions"))
+        //            {
+        //                string apiResponse = await response.Content.ReadAsStringAsync();
+        //                questions = JsonConvert.DeserializeObject<List<Question>>(apiResponse);
+        //            }
+
+        //            using (var response = await httpClient.GetAsync(apiUrl + "TestQuestions"))
+        //            {
+        //                string apiResponse = await response.Content.ReadAsStringAsync();
+        //                testQuestions = JsonConvert.DeserializeObject<List<TestQuestion>>(apiResponse);
+        //            }
+
+        //            using (var response = await httpClient.GetAsync(apiUrl + "AnswerOptions"))
+        //            {
+        //                string apiResponse = await response.Content.ReadAsStringAsync();
+        //                answerOptions = JsonConvert.DeserializeObject<List<AnswerOption>>(apiResponse);
+        //            }
+
+        //            using (var response = await httpClient.GetAsync(apiUrl + "QuestionAnswerOptions"))
+        //            {
+        //                string apiResponse = await response.Content.ReadAsStringAsync();
+        //                questionAnswerOptions = JsonConvert.DeserializeObject<List<QuestionAnswerOption>>(apiResponse);
+        //            }
+
+        //            using (var response = await httpClient.GetAsync(apiUrl + "Employees/" + idUser))
+        //            {
+        //                string apiResponse = await response.Content.ReadAsStringAsync();
+        //                employee = JsonConvert.DeserializeObject<Employee>(apiResponse);
+        //            }
+
+        //            using (var response = await httpClient.GetAsync(apiUrl + "Disciplines"))
+        //            {
+        //                string apiResponse = await response.Content.ReadAsStringAsync();
+        //                disciplines = JsonConvert.DeserializeObject<List<Discipline>>(apiResponse);
+        //            }
+
+        //            using (var response = await httpClient.GetAsync(apiUrl + "DisciplineEmployee"))
+        //            {
+        //                string apiResponse = await response.Content.ReadAsStringAsync();
+        //                disciplineEmployees = JsonConvert.DeserializeObject<List<DisciplineEmployee>>(apiResponse);
+        //            }
+        //        }
+        //        List<DisciplineEmployee> discipline = disciplineEmployees.Where(n => n.EmployeeId == employee.IdEmployee).ToList();
+        //        List<TestParameter> testsParameters = testParameters.Where(n => n.IdTestParameter == test.TestParameterId).ToList();
+        //        List<TestQuestion> testQuestionsList = testQuestions.Where(n => n.TestId == test.IdTest).ToList();
+
+        //        ViewTestModel viewTestModel = new ViewTestModel(test, typeQuestions, testsParameters, questions, testQuestionsList, answerOptions, questionAnswerOptions, employee, disciplines, discipline);
+
+        //        return View(viewTestModel);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest();
+        //    }
+        //}
+    
     }
 }

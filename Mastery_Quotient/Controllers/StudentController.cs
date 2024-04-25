@@ -294,7 +294,7 @@ namespace Mastery_Quotient.Controllers
                         string apiResponse = await response.Content.ReadAsStringAsync();
                         disciplineOfTheStudyGroups = JsonConvert.DeserializeObject<List<DisciplineOfTheStudyGroup>>(apiResponse);
                     }
-                    using (var response = await httpClient.GetAsync(apiUrl + "Employees"))
+                    using (var response = await httpClient.GetAsync(apiUrl + "Employees/All"))
                     {
                         string apiResponse = await response.Content.ReadAsStringAsync();
                         employees = JsonConvert.DeserializeObject<List<Employee>>(apiResponse);
@@ -353,7 +353,7 @@ namespace Mastery_Quotient.Controllers
 
                 using (var httpClient = new HttpClient())
                 {
-                    using (var response = await httpClient.GetAsync(apiUrl + "Employees"))
+                    using (var response = await httpClient.GetAsync(apiUrl + "Employees/All"))
                     {
                         string apiResponse = await response.Content.ReadAsStringAsync();
                         employees = JsonConvert.DeserializeObject<List<Employee>>(apiResponse);
@@ -1070,7 +1070,7 @@ namespace Mastery_Quotient.Controllers
                 List<TypeMaterial> typeMaterials = new List<TypeMaterial>();
                 using (var httpClient = new HttpClient())
                 {
-                    using (var response = await httpClient.GetAsync(apiUrl + "Employees"))
+                    using (var response = await httpClient.GetAsync(apiUrl + "Employees/All"))
                     {
                         string apiResponse = await response.Content.ReadAsStringAsync();
                         employees = JsonConvert.DeserializeObject<List<Employee>>(apiResponse);
@@ -1161,7 +1161,7 @@ namespace Mastery_Quotient.Controllers
         /// Загрузка главной страницы
         /// </summary>
         /// <returns></returns>
-         [AllowAnonymous]
+        [AllowAnonymous]
         public async Task<IActionResult> News()
         {
             try
@@ -1179,7 +1179,7 @@ namespace Mastery_Quotient.Controllers
                 List<TypeMaterial> typeMaterials = new List<TypeMaterial>();
                 using (var httpClient = new HttpClient())
                 {
-                    using (var response = await httpClient.GetAsync(apiUrl + "Employees"))
+                    using (var response = await httpClient.GetAsync(apiUrl + "Employees/All"))
                     {
                         string apiResponse = await response.Content.ReadAsStringAsync();
                         employees = JsonConvert.DeserializeObject<List<Employee>>(apiResponse);
@@ -1247,5 +1247,7 @@ namespace Mastery_Quotient.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        
     }
 }

@@ -157,7 +157,9 @@
                     <div class="name">
                         @questionName
                     </div>
-                    
+                    <div>
+                        <a asp-action="UpdateTestQuestion" asp-controller="Test" asp-route-id="@question.IdTestQuestion"><input type="image" width="50" height="50" src="../images/edit.png" /></a>
+                    </div>
                     <div class="test_button">
                         <form id="deleteForm" asp-controller="Test" asp-action="DeleteQuestion" method="post">
                             <input type="hidden" value="@question.IdTestQuestion" name="IdTestQuestion" />

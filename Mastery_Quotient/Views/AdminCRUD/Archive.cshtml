@@ -37,7 +37,7 @@
 </head>
 
 <body>
-   <main>
+    <main>
 
         <div class="containerFormCRUD">
             <button class="newInputCRUD" onclick="window.location.href='@Url.Action("StudyGroupAdminPanel", "AdminCRUD")'">
@@ -59,7 +59,7 @@
         </div>
         <br />
 
-        @if(TempData["Message"] != null)
+        @if (TempData["Message"] != null)
         {
             <div class="alert alert-success" role="alert">
                 @TempData["Message"]
@@ -77,9 +77,6 @@
             </button>
             <button class="newInputCRUD" onclick="window.location.href='@Url.Action("DisciplineStudyGroup", "AdminCRUD")'">
                 Дисциплины учебных групп
-            </button>
-            <button class="newInputCRUD" onclick="window.location.href='@Url.Action("Archive", "AdminCRUD")'">
-                Архив
             </button>
         </div>
 

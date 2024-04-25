@@ -46,7 +46,11 @@
                 <div class="div_info">@Model.Student.SurnameStudent</div>
                 <div class="div_info">@Model.Student.NameStudent</div>
                 <div class="div_info">@Model.Student.MiddleNameStudent</div>
-                <input class="personalAccount_glow_button" type="submit" value="Изменить пароль" />
+                <form asp-antiforgery="true" asp-action="UpdatePassword" asp-controller="Home">
+                    <input hidden name="email" value="@Model.Student.EmailStudent"/>
+                    <input class="personalAccount_glow_button" type="submit" value="Изменить пароль" />
+
+                </form>
                 <a href="@Url.Action("Logout")"><button class="personalAccount_glow_button">Выйти из аккаунта</button></a>
             </div>
             <div class="form">

@@ -49,8 +49,11 @@
                 <div class="div_info">@Model.Employee.SurnameEmployee</div>
                 <div class="div_info">@Model.Employee.NameEmployee</div>
                 <div class="div_info">@Model.Employee.MiddleNameEmployee</div>
-                <input class="personalAccount_glow_button" type="submit" value="Изменить пароль" />
-                <a href="@Url.Action("Logout")"><button class ="personalAccount_glow_button">Выйти из аккаунта</button></a>
+                <form asp-antiforgery="true" asp-action="UpdatePassword" asp-controller="Home">
+                    <input hidden name="email" value="@Model.Employee.EmailEmployee" />
+                    <input class="personalAccount_glow_button" type="submit" value="Изменить пароль" />
+
+                </form>                <a href="@Url.Action("Logout")"><button class="personalAccount_glow_button">Выйти из аккаунта</button></a>
             </div>
             <div class="form">
 
