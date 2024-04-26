@@ -6,8 +6,6 @@
 
         public List<TypeQuestion> TypeQuestion { get; set; }
 
-        public List<TestParameter> Parameters { get; set; }
-
         public List<Question> Question { get; set; }
 
         public List<TestQuestion> TestQuestion { get; set; }
@@ -22,11 +20,10 @@
 
         public List<DisciplineEmployee> disciplineEmployees { get; set; }
 
-        public ViewTestModel(Test test, List<TypeQuestion> typeQuestion, List<TestParameter> parameters, List<Question> question, List<TestQuestion> testQuestion, List<AnswerOption> answerOption, List<QuestionAnswerOption> questionAnswerOption, Employee employee, List<Discipline> discipline, List<DisciplineEmployee> disciplineEmployees)
+        public ViewTestModel(Test test, List<TypeQuestion> typeQuestion, List<Question> question, List<TestQuestion> testQuestion, List<AnswerOption> answerOption, List<QuestionAnswerOption> questionAnswerOption, Employee employee, List<Discipline> discipline, List<DisciplineEmployee> disciplineEmployees)
         {
             Test = test;
             TypeQuestion = typeQuestion;
-            Parameters = parameters;
             Question = question;
             TestQuestion = testQuestion;
             AnswerOption = answerOption;

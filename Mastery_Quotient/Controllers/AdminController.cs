@@ -1286,7 +1286,6 @@ namespace Mastery_Quotient.Controllers
 
                 Test test = new Test();
                 List<TypeQuestion> typeQuestions = new List<TypeQuestion>();
-                List<TestParameter> testParameters = new List<TestParameter>();
                 List<Question> questions = new List<Question>();
                 List<TestQuestion> testQuestions = new List<TestQuestion>();
                 List<AnswerOption> answerOptions = new List<AnswerOption>();
@@ -1308,12 +1307,6 @@ namespace Mastery_Quotient.Controllers
                     {
                         string apiResponse = await response.Content.ReadAsStringAsync();
                         typeQuestions = JsonConvert.DeserializeObject<List<TypeQuestion>>(apiResponse);
-                    }
-
-                    using (var response = await httpClient.GetAsync(apiUrl + "TestParameters"))
-                    {
-                        string apiResponse = await response.Content.ReadAsStringAsync();
-                        testParameters = JsonConvert.DeserializeObject<List<TestParameter>>(apiResponse);
                     }
 
                     using (var response = await httpClient.GetAsync(apiUrl + "Questions"))
@@ -1359,10 +1352,9 @@ namespace Mastery_Quotient.Controllers
                     }
                 }
                 List<DisciplineEmployee> discipline = disciplineEmployees.Where(n => n.EmployeeId == employee.IdEmployee).ToList();
-                List<TestParameter> testsParameters = testParameters.Where(n => n.IdTestParameter == test.TestParameterId).ToList();
                 List<TestQuestion> testQuestionsList = testQuestions.Where(n => n.TestId == test.IdTest).ToList();
 
-                ViewTestModel viewTestModel = new ViewTestModel(test, typeQuestions, testsParameters, questions, testQuestionsList, answerOptions, questionAnswerOptions, employee, disciplines, discipline);
+                ViewTestModel viewTestModel = new ViewTestModel(test, typeQuestions, questions, testQuestionsList, answerOptions, questionAnswerOptions, employee, disciplines, discipline);
 
                 return View(viewTestModel);
             }

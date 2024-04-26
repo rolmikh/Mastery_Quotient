@@ -55,18 +55,11 @@
                         <option value="@discipline.IdDiscipline">@discipline.NameDiscipline</option>
                     }
                 </select>
-                <select class="CrudSelect" required id="parameterId" name="parameterId" placeholder="Параметр тестирования">
-                    <option selected disabled>Параметр тестирования</option>
-                    @foreach (var parameter in Model.TestParameters)
-                    {
-                        <option value="@parameter.IdTestParameter">@parameter.NameParameter @parameter.ValueParameter</option>
-                    }
-                </select>
                 <button class="InputFiltr" type="submit">Фильтрация</button>
 
             </form>
         </div>
-        <br/>
+        <br />
         @if (TempData["Message"] != null)
         {
             <div class="alert alert-success" role="alert">
@@ -78,22 +71,24 @@
         <div class="formsContainer">
             @foreach (var item in Model.Test)
             {
+                @if (item.Active == 0)
+                {
+                    <div class="divTestForm">
+                        <form asp-action="AdminOneTestView" asp-antiforgery="true" asp-controller="Admin">
+                            <div>
+                                <input name="testId" hidden value="@item.IdTest" />
 
-                <div class="divTestForm">
-                    <form asp-action="AdminOneTestView" asp-antiforgery="true" asp-controller="Admin">
-                        <div>
-                            <input name="testId" hidden value="@item.IdTest" />
+                                <div class="labelTest" style="font-weight: bold">@item.NameTest</div>
+                                <br />
+                                <div class="labelTest">Дата создания: @string.Format("{0:dd.MM.yyyy}", @item.DateCreatedTest)</div>
+                                <input value="Просмотреть тестирование" class="buttonTest" type="submit" />
 
-                            <label class="labelTest">@item.NameTest</label>
-                            <br />
-                            <label class="labelTest">Дата создания: @string.Format("{0:dd.MM.yyyy}", @item.DateCreatedTest)</label>
-                            <input value="Просмотреть тестирование" class="buttonTest" type="submit" />
+                            </div>
+                        </form>
+                    </div>
+                }
 
-                        </div>
-                    </form>
-                </div>
 
-                
             }
         </div>
 

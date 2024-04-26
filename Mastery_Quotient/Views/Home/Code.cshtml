@@ -17,24 +17,18 @@
 
 <body>
     <main>
-        <div></div>
-        <div class="container">
-            <div class="img_authorization">
-                <img src="../images/Image.png">
-            </div>
-            <div class="authorizationCenter">
 
-                    
-                <form asp-action="Registration">
-                    <div>
-                        <input class="authorizationInput" name="key" id="key" type="number" placeholder="Код подтверждения" />
+        <div class="form_new">
 
-                    </div>
-                    <input class="glow_button" type="submit" value="Подтвердить" />
-                </form>
-                  
 
-            </div>
+            <form asp-antiforgery="true" asp-controller="Home" asp-action="Registration">
+                <div>
+                    <input class="authorizationInput" name="key" id="key" type="number" placeholder="Код подтверждения" />
+
+                </div>
+                <input class="glow_button" type="submit" value="Подтвердить" />
+            </form>
+
 
         </div>
     </main>

@@ -19,9 +19,6 @@ namespace Mastery_Quotient.ModelsValidation
                 .Must(x => !x.Equals(0))
                 .WithMessage("Выберите дисциплину!");
 
-            this.RuleFor(x => x.TestParameterId)
-               .Must(x => !x.Equals(0))
-               .WithMessage("Выберите параметр тестирования!");
 
         }
 

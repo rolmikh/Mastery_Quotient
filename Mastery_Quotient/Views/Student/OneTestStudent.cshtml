@@ -21,7 +21,7 @@
             <li class="navigation_li"><a class="navigation_a" asp-action="MainStudent" asp-controller="Student">Новости</a></li>
             <li class="navigation_li"><a class="navigation_a" asp-action="MaterialStudent" asp-controller="Student">Материалы</a></li>
             <li class="navigation_li"><a class="navigation_a" asp-action="TestStudent" asp-controller="Student">Тесты</a></li>
-            <li class="navigation_li"><a class="navigation_a" asp-action="AdminPanel" asp-controller="Student">Рейтинг</a></li>
+            <li class="navigation_li"><a class="navigation_a" asp-action="MyTest" asp-controller="Student">Мои тестирования</a></li>
         </ul>
         @*   <ul class="navigation_ul_right">
         <li class="navigation_li_right" style="float: right">
@@ -43,7 +43,6 @@
             <h3>Дата создания теста</h3>
             @* <h3>@Model.Discipline.Find(n => n.IdDiscipline == @Model.disciplineEmployees).NameDiscipline</h3> *@
             <h3>Преподаватель</h3>
-            <h3>Параметры теста</h3>
             <h3>Срок сдачи</h3>
 
         </div>
@@ -53,7 +52,6 @@
             <h3>@Model.Test.DateCreatedTest</h3>
             @* <h3>@Model.Discipline.Find(n => n.IdDiscipline == @Model.disciplineEmployees).NameDiscipline</h3> *@
             <h3>@Model.Employee.SurnameEmployee @Model.Employee.NameEmployee @Model.Employee.MiddleNameEmployee</h3>
-            <h3>@Model.Parameters.Find(n => n.IdTestParameter == @Model.Test.TestParameterId).NameParameter: @Model.Parameters.Find(n => n.IdTestParameter == @Model.Test.TestParameterId).ValueParameter</h3>
             <h3>@Model.Test.Deadline</h3>
 
         </div>

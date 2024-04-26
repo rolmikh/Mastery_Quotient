@@ -38,19 +38,6 @@
                         <label for="deadlineCheck">Без срока сдачи</label>
                     </div>
 
-                    <select required id="testParameter" name="testParameter" class="CrudSelect" placeholder="Параметр тестирования">
-                        
-                        <option value="@test.TestParameterId">
-                            @parameterName - @parameterValue
-                        </option>
-                        @foreach (var testParameters in Model.TestParameters)
-                        {
-                            
-                            <option value="@testParameters.IdTestParameter">
-                                @testParameters.NameParameter - @testParameters.ValueParameter
-                            </option>
-                        }
-                    </select>
 
                     <select required id="disciplineTest" name="disciplineTest" class="CrudSelect" placeholder="Дисциплина">
                         <option value="@test.DisciplineId">@disciplineNameUpdate</option>

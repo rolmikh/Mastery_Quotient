@@ -22,7 +22,7 @@
             <li class="navigation_li"><a class="navigation_a" asp-action="News" asp-controller="Student">Новости</a></li>
             <li class="navigation_li"><a class="navigation_a" asp-action="MaterialStudent" asp-controller="Student">Материалы</a></li>
             <li class="navigation_li"><a class="navigation_a" asp-action="TestStudent" asp-controller="Student">Тесты</a></li>
-            <li class="navigation_li"><a class="navigation_a" asp-action="AdminPanel" asp-controller="Student">Рейтинг</a></li>
+            <li class="navigation_li"><a class="navigation_a" asp-action="MyTest" asp-controller="Student">Мои тестирования</a></li>
         </ul>
         @* <ul class="navigation_ul_right">
         <li class="navigation_li_right" style="float: right">
@@ -38,95 +38,94 @@
 </head>
 <body>
     <main>
-            <div class="containerForm">
-                <form asp-antiforgery="true" asp-action="MaterialStudent" asp-controller="Student">
-                    <input class="searchInput" type="text" name="Search" />
-                    <button class="searchImage" type="submit">
-                        <img width="40" height="40" src="../images/icons8-лупа-64.png" />
-                    </button>
-                </form>
-                <form asp-antiforgery="true" asp-action="FiltrationMaterialStudent" asp-controller="Student">
-                    <select class="CrudSelect" required id="disciplineID" name="disciplineID" placeholder="Дисциплина">
-                        <option selected disabled>Дисциплина</option>
-                        @foreach (var discipline in Model.Disciplines)
-                        {
-                            <option value="@discipline.IdDiscipline">@discipline.NameDiscipline</option>
-                        }
-                    </select>
-                    <select class="CrudSelect" required id="typeId" name="typeId" placeholder="Тип материала">
-                        <option selected disabled>Тип материала</option>
-                        @foreach (var type in Model.TypeMaterials)
-                        {
-                            <option value="@type.IdTypeMaterial">@type.NameTypeMaterial</option>
-                        }
-                    </select>
-                    <button class="InputFiltr" type="submit">Фильтрация</button>
+        <div class="containerForm">
+            <form asp-antiforgery="true" asp-action="MaterialStudent" asp-controller="Student">
+                <input class="searchInput" type="text" name="Search" />
+                <button class="searchImage" type="submit">
+                    <img width="40" height="40" src="../images/icons8-лупа-64.png" />
+                </button>
+            </form>
+            <form asp-antiforgery="true" asp-action="FiltrationMaterialStudent" asp-controller="Student">
+                <select class="CrudSelect" required id="disciplineID" name="disciplineID" placeholder="Дисциплина">
+                    <option selected disabled>Дисциплина</option>
+                    @foreach (var discipline in Model.Disciplines)
+                    {
+                        <option value="@discipline.IdDiscipline">@discipline.NameDiscipline</option>
+                    }
+                </select>
+                <select class="CrudSelect" required id="typeId" name="typeId" placeholder="Тип материала">
+                    <option selected disabled>Тип материала</option>
+                    @foreach (var type in Model.TypeMaterials)
+                    {
+                        <option value="@type.IdTypeMaterial">@type.NameTypeMaterial</option>
+                    }
+                </select>
+                <button class="InputFiltr" type="submit">Фильтрация</button>
 
-                </form>
+            </form>
+        </div>
+        <br />
+
+        @if (TempData["Message"] != null)
+        {
+            <div class="alert alert-success" role="alert">
+                @TempData["Message"]
             </div>
-            <br />
-
-            @if (TempData["Message"] != null)
+        }
+        <br />
+        <br />
+        <br />
+        <h2>Материалы</h2>
+        <div class="formsContainer">
+            @foreach (var item in Model.Materials)
             {
-                <div class="alert alert-success" role="alert">
-                    @TempData["Message"]
+                <div class="formMaterial">
+                    <form asp-action="FileMaterial" asp-antiforgery="true" asp-controller="admin">
+
+                        <input type="image" class="imageMaterial" width="187" height="177" src="@item.PhotoMaterial" />
+                        <label class="nameMaterial">@item.NameMaterial</label>
+                        <input value="Подробнее" class="buttonMaterial" type="submit" />
+
+                        <input hidden value="@item.FileMaterial" name="nameFile" />
+                    </form>
                 </div>
+
             }
-            <br />
-            <h2>Материалы</h2>
-            <div class="formsContainer">
-                @foreach (var item in Model.Materials)
-                {
-                    <div class="formMaterial">
-                        <form asp-action="FileMaterial" asp-antiforgery="true" asp-controller="admin">
+        </div>
+        <div class="containerForm">
+            <form asp-antiforgery="true" asp-action="TestStudent" asp-controller="Student">
+                <input class="searchInput" type="text" name="Search" />
+                <button class="searchImage" type="submit">
+                    <img width="40" height="40" src="../images/icons8-лупа-64.png" />
+                </button>
+            </form>
+            <form asp-antiforgery="true" asp-action="FiltrationTestStudent" asp-controller="Student">
+                <select class="CrudSelect" required id="disciplineID" name="disciplineID" placeholder="Дисциплина">
+                    <option selected disabled>Дисциплина</option>
+                    @foreach (var discipline in Model.Disciplines)
+                    {
+                        <option value="@discipline.IdDiscipline">@discipline.NameDiscipline</option>
+                    }
+                </select>
 
-                            <input type="image" class="imageMaterial" width="187" height="177" src="@item.PhotoMaterial" />
-                            <label class="nameMaterial">@item.NameMaterial</label>
-                            <input value="Подробнее" class="buttonMaterial" type="submit" />
+                <button class="InputFiltr" type="submit">Фильтрация</button>
 
-                            <input hidden value="@item.FileMaterial" name="nameFile" />
-                        </form>
-                    </div>
-
-                }
+            </form>
+        </div>
+        <br />
+        @if (TempData["Message"] != null)
+        {
+            <div class="alert alert-success" role="alert">
+                @TempData["Message"]
             </div>
-            <div class="containerForm">
-                <form asp-antiforgery="true" asp-action="TestStudent" asp-controller="Student">
-                    <input class="searchInput" type="text" name="Search" />
-                    <button class="searchImage" type="submit">
-                        <img width="40" height="40" src="../images/icons8-лупа-64.png" />
-                    </button>
-                </form>
-                <form asp-antiforgery="true" asp-action="FiltrationTestStudent" asp-controller="Student">
-                    <select class="CrudSelect" required id="disciplineID" name="disciplineID" placeholder="Дисциплина">
-                        <option selected disabled>Дисциплина</option>
-                        @foreach (var discipline in Model.Disciplines)
-                        {
-                            <option value="@discipline.IdDiscipline">@discipline.NameDiscipline</option>
-                        }
-                    </select>
-                    <select class="CrudSelect" required id="parameterId" name="parameterId" placeholder="Параметр тестирования">
-                        <option selected disabled>Параметр тестирования</option>
-                        @foreach (var parameter in Model.TestParameters)
-                        {
-                            <option value="@parameter.IdTestParameter">@parameter.NameParameter @parameter.ValueParameter</option>
-                        }
-                    </select>
-                    <button class="InputFiltr" type="submit">Фильтрация</button>
-
-                </form>
-            </div>
-            <br />
-            @if (TempData["Message"] != null)
-            {
-                <div class="alert alert-success" role="alert">
-                    @TempData["Message"]
-                </div>
-            }
-            <br />
-            <h2>Тестирования</h2>
-            <div class="formsContainer">
-                @foreach (var item in Model.Test)
+        }
+        <br />
+        <br />
+        <br />
+        <h2>Тестирования</h2>
+        <div class="formsContainer">
+            @foreach (var item in Model.Test)
+            {@if (item.Active == 0)
                 {
 
                     <div class="divTestForm">
@@ -134,18 +133,21 @@
                             <div>
                                 <input name="testId" hidden value="@item.IdTest" />
 
-                                <label class="labelTest">@item.NameTest</label>
+                                <div class="labelTest" style="font-weight: bold">@item.NameTest</div>
                                 <br />
-                                <label class="labelTest">Дата создания: @string.Format("{0:dd.MM.yyyy}", @item.DateCreatedTest)</label>
-                                <input value="Просмотреть тестирование" class="buttonTest" type="submit" />
+                                <div class="labelTest">Дата создания: @string.Format("{0:dd.MM.yyyy}", @item.DateCreatedTest)</div>
+                                <br />
+
+                                <input value="Пройти тестирование" class="buttonTest" type="submit" />
 
                             </div>
                         </form>
                     </div>
-
-
                 }
-            </div>
+
+
+            }
+        </div>
 
     </main>
 

@@ -21,10 +21,9 @@
         </a>
 
         <ul class="navigation_ul">
-            <li class="navigation_li"><a class="navigation_a" asp-action="News" asp-controller="Teacher">Новости</a></li>
             <li class="navigation_li"><a class="navigation_a" asp-action="MaterialsTeacher" asp-controller="Teacher">Материалы</a></li>
             <li class="navigation_li"><a class="navigation_a" asp-action="TestTeacher" asp-controller="Test">Тесты</a></li>
-            <li class="navigation_li"><a class="navigation_a" asp-action="Rating" asp-controller="Teacher">Рейтинг</a></li>
+            <li class="navigation_li"><a class="navigation_a" asp-action="StudentTestDone" asp-controller="Test">Тестирования студентов</a></li>
         </ul>
         <ul class="navigation_ul_right">
             <li class="navigation_li_right" style="float: right">
@@ -55,13 +54,6 @@
                         <option value="@discipline.IdDiscipline">@discipline.NameDiscipline</option>
                     }
                 </select>
-                <select class="CrudSelect" required id="parameterId" name="parameterId" placeholder="Параметр тестирования">
-                    <option selected disabled>Параметр тестирования</option>
-                    @foreach (var parameter in Model.TestParameters)
-                    {
-                        <option value="@parameter.IdTestParameter">@parameter.NameParameter @parameter.ValueParameter</option>
-                    }
-                </select>
                 <button class="InputFiltr" type="submit">Фильтрация</button>
 
             </form>
@@ -85,8 +77,9 @@
                                 
                                 <input name="testId" hidden value="@item.IdTest" />
                                 <br/>
-                                <label class="labelTest">@item.NameTest</label>
-                                <label class="labelTest">Дата создания: @string.Format("{0:dd.MM.yyyy}", @item.DateCreatedTest)</label>
+                                <div class="labelTest" style="font-weight: bold">@item.NameTest</div>
+                                <br/>
+                                <div class="labelTest">Дата создания: @string.Format("{0:dd.MM.yyyy}", @item.DateCreatedTest)</div>
                                 <input value="Просмотреть тестирование" class="buttonTest" type="submit" />
 
                             </div>

@@ -49,7 +49,6 @@
             <h3>Дата создания теста</h3>
             @* <h3>@Model.Discipline.Find(n => n.IdDiscipline == @Model.disciplineEmployees).NameDiscipline</h3> *@
             <h3>Преподаватель</h3>
-            <h3>Параметры теста</h3>
             <h3>Срок сдачи</h3>
 
         </div>
@@ -59,7 +58,6 @@
             <h3>@Model.Test.DateCreatedTest</h3>
             @* <h3>@Model.Discipline.Find(n => n.IdDiscipline == @Model.disciplineEmployees).NameDiscipline</h3> *@
             <h3>@Model.Employee.SurnameEmployee @Model.Employee.NameEmployee @Model.Employee.MiddleNameEmployee</h3>
-            <h3>@Model.Parameters.Find(n => n.IdTestParameter == @Model.Test.TestParameterId).NameParameter: @Model.Parameters.Find(n => n.IdTestParameter == @Model.Test.TestParameterId).ValueParameter</h3>
             <h3>@Model.Test.Deadline</h3>
 
         </div>

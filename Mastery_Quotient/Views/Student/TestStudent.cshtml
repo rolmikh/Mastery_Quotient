@@ -21,13 +21,13 @@
             <li class="navigation_li"><a class="navigation_a" asp-action="MainStudent" asp-controller="Student">Новости</a></li>
             <li class="navigation_li"><a class="navigation_a" asp-action="MaterialStudent" asp-controller="Student">Материалы</a></li>
             <li class="navigation_li"><a class="navigation_a" asp-action="TestStudent" asp-controller="Student">Тесты</a></li>
-            <li class="navigation_li"><a class="navigation_a" asp-action="AdminPanel" asp-controller="Student">Рейтинг</a></li>
+            <li class="navigation_li"><a class="navigation_a" asp-action="MyTest" asp-controller="Student">Мои тестирования</a></li>
         </ul>
-      @*   <ul class="navigation_ul_right">
-            <li class="navigation_li_right" style="float: right">
-                <a class="navigation_a_right" asp-action="AdminWindowTeacher" asp-controller="admin">Преподаватели</a>
-            </li>
-            <li class="navigation_li_right" style="float: right"><a class="navigation_a_right" asp-action="AdminWindowStudent" asp-controller="admin">Студенты</a></li>
+        @*   <ul class="navigation_ul_right">
+        <li class="navigation_li_right" style="float: right">
+        <a class="navigation_a_right" asp-action="AdminWindowTeacher" asp-controller="admin">Преподаватели</a>
+        </li>
+        <li class="navigation_li_right" style="float: right"><a class="navigation_a_right" asp-action="AdminWindowStudent" asp-controller="admin">Студенты</a></li>
         </ul> *@
         <button class="glow_button" onclick="window.location.href='@Url.Action("PersonalAccountStudent", "student")'">
             Личный кабинет
@@ -50,13 +50,6 @@
                     @foreach (var discipline in Model.Disciplines)
                     {
                         <option value="@discipline.IdDiscipline">@discipline.NameDiscipline</option>
-                    }
-                </select>
-                <select class="CrudSelect" required id="parameterId" name="parameterId" placeholder="Параметр тестирования">
-                    <option selected disabled>Параметр тестирования</option>
-                    @foreach (var parameter in Model.TestParameters)
-                    {
-                        <option value="@parameter.IdTestParameter">@parameter.NameParameter @parameter.ValueParameter</option>
                     }
                 </select>
                 <button class="InputFiltr" type="submit">Фильтрация</button>
@@ -90,25 +83,27 @@
 
                 @foreach (var item in Model.Test.Where(n => n.DisciplineId == idDiscipline))
                 {
+                    @if (item.Active == 0)
+                    {
+                        <div class="divTestForm">
+                            <form asp-action="OneTestStudent" asp-antiforgery="true" asp-controller="Student">
+                                <div>
+                                    <input name="testId" hidden value="@item.IdTest" />
 
-                    <div class="divTestForm">
-                        <form asp-action="OneTestStudent" asp-antiforgery="true" asp-controller="Student">
-                            <div>
-                                <input name="testId" hidden value="@item.IdTest" />
+                                    <label class="labelTest" style="font-weight: bold">@item.NameTest</label>
+                                    <br />
+                                    <div class="labelTest">Дата создания: @string.Format("{0:dd.MM.yyyy}", @item.DateCreatedTest)</div>
+                                    <br />
+                                    <div>
+                                        <img class="photoEmployee" src="@photoEmployee" width="20" height="20" />
+                                        @surnameEmployee @nameEmployee @middleNameEmployee
+                                    </div>
+                                    <input value="Пройти тестирование" class="buttonTest" type="submit" />
 
-                                <label class="labelTest">@item.NameTest</label>
-                                <br />
-                                <label class="labelTest">Дата создания: @string.Format("{0:dd.MM.yyyy}", @item.DateCreatedTest)</label>
-                                <label>
-                                    Опубликовано:
-                                    <img class="photoEmployee" src="@photoEmployee" width="20" height="20" />
-                                    @surnameEmployee @nameEmployee @middleNameEmployee
-                                </label>
-                                <input value="Просмотреть тестирование" class="buttonTest" type="submit" />
-
-                            </div>
-                        </form>
-                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    }
 
 
                 }
