@@ -1,4 +1,4 @@
-﻿@model Mastery_Quotient.Models.EmployeeModelView
+﻿@model Mastery_Quotient.Models.StudentModelView
 <!DOCTYPE html>
 <html lang="en">
 
@@ -80,14 +80,14 @@
                 Архив
             </button>
         </div>
-        <br/>
+        <br />
         <br />
         <br />
         <br />
         <div class="containerFormCRUD">
-            <h2 style="text-align: center">Сотрудники</h2>
-            <button class="newInputCRUD" onclick="window.location.href='@Url.Action("ArchiveStudent", "AdminCRUD")'">
-                Студенты
+            <h2 style="text-align: center">Студенты</h2>
+            <button class="newInputCRUD" onclick="window.location.href='@Url.Action("Archive", "AdminCRUD")'">
+                Преподаватели
             </button>
         </div>
         <table class="table">
@@ -98,23 +98,23 @@
                     <th>Имя</th>
                     <th>Отчество</th>
                     <th>Электронная почта</th>
-                    <th>Роль</th>
+                    <th>Учебная группа</th>
                     <th>Восстановить</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var employee in Model.Employees)
+                @foreach (var student in Model.Students)
                 {
-                    var roleEmployee = Model.Roles.Find(n => n.IdRole == employee.RoleId).NameRole;
+                    var group = Model.StudyGroups.Find(n => n.IdStudyGroup == student.StudyGroupId).NameStudyGroup;
                     <tr>
-                        <td>@employee.IdEmployee</td>
-                        <td>@employee.SurnameEmployee</td>
-                        <td>@employee.NameEmployee</td>
-                        <td>@employee.MiddleNameEmployee</td>
-                        <td>@employee.EmailEmployee</td>
-                        <td>@roleEmployee</td>
+                        <td>@student.IdStudent</td>
+                        <td>@student.SurnameStudent</td>
+                        <td>@student.NameStudent</td>
+                        <td>@student.MiddleNameStudent</td>
+                        <td>@student.EmailStudent</td>
+                        <td>@group</td>
                         <td>
-                            <a asp-action="RecoverTeacher" asp-controller="AdminCRUD" asp-route-id="@employee.IdEmployee"><input type="image" width="50" height="50" src="../images/edit.png" /></a>
+                            <a asp-action="RecoverStudent" asp-controller="AdminCRUD" asp-route-id="@student.IdStudent"><input type="image" width="50" height="50" src="../images/edit.png" /></a>
                         </td>
                     </tr>
                 }

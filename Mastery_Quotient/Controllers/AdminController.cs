@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Http.Extensions;
 using FluentValidation;
 using static System.Net.Mime.MediaTypeNames;
 using System.Net.Http;
+using Microsoft.AspNetCore.DataProtection.KeyManagement;
 
 namespace Mastery_Quotient.Controllers
 {
@@ -25,6 +26,7 @@ namespace Mastery_Quotient.Controllers
 
         private readonly IValidator<Student> studentValidator;
 
+        EmailService emailService =  new EmailService();
 
         FirebaseService firebaseService = new FirebaseService();
 
@@ -303,6 +305,11 @@ namespace Mastery_Quotient.Controllers
 
                     if (response.IsSuccessStatusCode)
                     {
+
+                        await emailService.SendEmail(employee.EmailEmployee, "Добро пожаловать в MastQuo", $"<h2>Здравствуйте, {employee.NameEmployee} {employee.MiddleNameEmployee}</h2><p>Ваш аккаунт в системе успешно создан. Ниже приведены ваши данные для входа: <p>Электронная почта: {employee.EmailEmployee}</p><p>Пароль: {passwordUser}</p><br/><p>После первого входа в систему мы рекомендуем вам изменить пароль на более надежный и легко запоминающийся. Пароль можно изменить в вашем личном кабинете.</p>Желаем вам удачи и эффективной работы!</p><br /><br /><br /><h2> MastQuo</h2>");
+
+                   
+
                         return RedirectToAction("AdminWindowTeacher", "Admin");
                     }
                     else
@@ -684,7 +691,7 @@ namespace Mastery_Quotient.Controllers
             TempData.Remove("AuthUser");
            
 
-            return RedirectToAction("Authorization", "Home");
+            return RedirectToAction("News", "Student");
         }
 
         //Students

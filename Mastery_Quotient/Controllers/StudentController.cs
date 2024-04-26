@@ -216,7 +216,7 @@ namespace Mastery_Quotient.Controllers
             TempData.Remove("AuthUser");
 
 
-            return RedirectToAction("Authorization", "Home");
+            return RedirectToAction("News", "Student");
         }
 
         /// <summary>

@@ -16,7 +16,7 @@
 
 <body>
     <main>
-        <div class="form_new">
+        <div class="form_new" >
             <form asp-antiforgery="true" asp-action="TeacherNew" asp-controller="Admin">
                 <label  hidden>Введите ФИО</label>
                 <br />
@@ -26,15 +26,15 @@
                 <br />
                 <input class="CrudInput" type="email" required name="emailUser"
                        placeholder="Электронная почта" />
-                
-               
+
+                <br />
                 <label  hidden>Введите пароль</label>
                 <br />
                 <input class="CrudInput" type="password" required name="passwordUser" placeholder="Пароль" />
                 <br />
                 <label  hidden>Выберите роль</label>
                 <br />
-                <select class="CrudSelectMaterial" required id="roleUser" name="roleUser" placeholder="Роль">
+                <select class="CrudSelect" required id="roleUser" name="roleUser" placeholder="Роль">
                     <option selected disabled>Роль</option>
                     @foreach (var role in Model.Roles)
                     {

@@ -44,10 +44,10 @@ namespace Mastery_Quotient.Controllers
             return View();
         }
 
-       /// <summary>
-       /// Метод создания резервной копии базы данных
-       /// </summary>
-       /// <returns></returns>
+        /// <summary>
+        /// Метод создания резервной копии базы данных
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> BackUpDatabase()
         {
             try
@@ -450,7 +450,7 @@ namespace Mastery_Quotient.Controllers
                         typeMaterial = JsonConvert.DeserializeObject<TypeMaterial>(apiResponse);
                     }
                 }
-                TypeMaterialView typeMaterialView = new TypeMaterialView(new List<TypeMaterial> { typeMaterial});
+                TypeMaterialView typeMaterialView = new TypeMaterialView(new List<TypeMaterial> { typeMaterial });
                 return View(typeMaterialView);
             }
             catch (Exception ex)
@@ -696,7 +696,7 @@ namespace Mastery_Quotient.Controllers
                         courses = JsonConvert.DeserializeObject<List<Course>>(apiResponse);
                     }
                 }
-                GroupModel groupModel = new GroupModel(new List<StudyGroup> { studyGroup}, courses);
+                GroupModel groupModel = new GroupModel(new List<StudyGroup> { studyGroup }, courses);
                 return View(groupModel);
             }
             catch (Exception ex)
@@ -751,11 +751,11 @@ namespace Mastery_Quotient.Controllers
             }
         }
 
-       /// <summary>
-       /// POST запрос удаления данных о учебной группе
-       /// </summary>
-       /// <param name="IdStudyGroup"></param>
-       /// <returns></returns>
+        /// <summary>
+        /// POST запрос удаления данных о учебной группе
+        /// </summary>
+        /// <param name="IdStudyGroup"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> DeleteStudyGroup(int IdStudyGroup)
         {
@@ -987,7 +987,7 @@ namespace Mastery_Quotient.Controllers
                         courses = JsonConvert.DeserializeObject<List<Course>>(apiResponse);
                     }
                 }
-                DisciplineModelView disciplineModelView = new DisciplineModelView(new List<Discipline> { discipline}, courses);
+                DisciplineModelView disciplineModelView = new DisciplineModelView(new List<Discipline> { discipline }, courses);
                 return View(disciplineModelView);
             }
             catch (Exception ex)
@@ -1125,7 +1125,7 @@ namespace Mastery_Quotient.Controllers
             {
                 var apiUrl = configuration["AppSettings:ApiUrl"];
 
-                
+
                 List<StudyGroup> studyGroups = new List<StudyGroup>();
                 List<Course> courses = new List<Course>();
                 List<EmployeeStudyGroup> employeeStudyGroups = new List<EmployeeStudyGroup>();
@@ -1165,7 +1165,7 @@ namespace Mastery_Quotient.Controllers
                         string apiResponse = await response.Content.ReadAsStringAsync();
                         employees = JsonConvert.DeserializeObject<List<Employee>>(apiResponse);
                     }
-                   
+
 
                 }
                 TeacherStudyGroup teacherStudyGroup = new TeacherStudyGroup(studyGroups, courses, employeeStudyGroups, employees);
@@ -1178,7 +1178,7 @@ namespace Mastery_Quotient.Controllers
 
         }
 
-        
+
         /// <summary>
         /// POST запрос на добавление учебной группы сотрудника
         /// </summary>
@@ -1238,7 +1238,7 @@ namespace Mastery_Quotient.Controllers
 
                 List<StudyGroup> studyGroups = new List<StudyGroup>();
                 List<Course> courses = new List<Course>();
-                EmployeeStudyGroup employeeStudyGroups = null; 
+                EmployeeStudyGroup employeeStudyGroups = null;
                 List<Employee> employees = new List<Employee>();
 
                 using (var client = new HttpClient())
@@ -1263,7 +1263,7 @@ namespace Mastery_Quotient.Controllers
                         string apiResponse = await response.Content.ReadAsStringAsync();
                         employees = JsonConvert.DeserializeObject<List<Employee>>(apiResponse);
                     }
-                   
+
 
                 }
                 TeacherStudyGroup teacherStudyGroup = new TeacherStudyGroup(studyGroups, courses, new List<EmployeeStudyGroup> { employeeStudyGroups }, employees);
@@ -1275,13 +1275,13 @@ namespace Mastery_Quotient.Controllers
             }
         }
 
-      /// <summary>
-      /// POST запрос на изменение данных о учебной группе преподавателя
-      /// </summary>
-      /// <param name="IdEmployeeStudyGroup"></param>
-      /// <param name="StudyGroupId"></param>
-      /// <param name="EmployeeId"></param>
-      /// <returns></returns>
+        /// <summary>
+        /// POST запрос на изменение данных о учебной группе преподавателя
+        /// </summary>
+        /// <param name="IdEmployeeStudyGroup"></param>
+        /// <param name="StudyGroupId"></param>
+        /// <param name="EmployeeId"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> UpdateStudyGroupTeacher(int IdEmployeeStudyGroup, int StudyGroupId, int EmployeeId)
         {
@@ -1293,7 +1293,7 @@ namespace Mastery_Quotient.Controllers
                 employeeStudyGroup.IdEmployeeStudyGroup = IdEmployeeStudyGroup;
                 employeeStudyGroup.StudyGroupId = StudyGroupId;
                 employeeStudyGroup.EmployeeId = EmployeeId;
-                
+
 
 
                 var validationResult = await employeeStudyGroupValidator.ValidateAsync(employeeStudyGroup);
@@ -1366,7 +1366,7 @@ namespace Mastery_Quotient.Controllers
 
                 using (var client = new HttpClient())
                 {
-                   
+
                     using (var response = await client.GetAsync(apiUrl + "StudyGroups/NoDeleted"))
                     {
                         string apiResponse = await response.Content.ReadAsStringAsync();
@@ -1387,7 +1387,7 @@ namespace Mastery_Quotient.Controllers
                         string apiResponse = await response.Content.ReadAsStringAsync();
                         disciplines = JsonConvert.DeserializeObject<List<Discipline>>(apiResponse);
                     }
-                    
+
 
 
                 }
@@ -1781,5 +1781,167 @@ namespace Mastery_Quotient.Controllers
             }
         }
 
+
+        [HttpGet]
+        public async Task<IActionResult> ArchiveStudent()
+        {
+            try
+            {
+                var apiUrl = configuration["AppSettings:ApiUrl"];
+
+                List<Student> students = new List<Student>();
+                List<StudyGroup> studyGroups = new List<StudyGroup>();
+
+                using (var httpClient = new HttpClient())
+                {
+
+                    using (var response = await httpClient.GetAsync(apiUrl + "Students/Archive"))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        students = JsonConvert.DeserializeObject<List<Student>>(apiResponse);
+                    }
+
+
+                    using (var response = await httpClient.GetAsync(apiUrl + "StudyGroups/NoDeleted"))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        studyGroups = JsonConvert.DeserializeObject<List<StudyGroup>>(apiResponse);
+
+                    }
+
+                }
+
+
+
+                StudentModelView studentModelView = new StudentModelView(students, studyGroups);
+                return View(studentModelView);
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Archive()
+        {
+            try
+            {
+                var apiUrl = configuration["AppSettings:ApiUrl"];
+
+                List<Employee> employees = new List<Employee>();
+                List<Role> roles = new List<Role>();
+
+                using (var httpClient = new HttpClient())
+                {
+
+                    using (var response = await httpClient.GetAsync(apiUrl + "Employees/Archive"))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        employees = JsonConvert.DeserializeObject<List<Employee>>(apiResponse);
+                    }
+
+
+                    using (var response = await httpClient.GetAsync(apiUrl + "Roles"))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        roles = JsonConvert.DeserializeObject<List<Role>>(apiResponse);
+
+                    }
+
+                }
+
+
+
+                EmployeeModelView employeeModel = new EmployeeModelView(employees, roles);
+                return View(employeeModel);
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+       
+        public async Task<IActionResult> RecoverTeacher(int id)
+        {
+            try
+            {
+                var apiUrl = configuration["AppSettings:ApiUrl"];
+                using (var httpClient = new HttpClient())
+                {
+                    var response = await httpClient.GetAsync(apiUrl + "Employees/" + id);
+                    response.EnsureSuccessStatusCode();
+
+                    var employeeData = await response.Content.ReadAsStringAsync();
+
+                    var employee = JsonConvert.DeserializeObject<Employee>(employeeData);
+                    employee.IsDeleted = 0;
+
+                    string json = JsonConvert.SerializeObject(employee);
+
+                    var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                    response = await httpClient.PutAsync(apiUrl + "Employees/" + id, content);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return RedirectToAction("Archive", "AdminCRUD");
+                    }
+                    else
+                    {
+                        return BadRequest();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+      
+        public async Task<IActionResult> RecoverStudent(int id)
+        {
+            try
+            {
+                var apiUrl = configuration["AppSettings:ApiUrl"];
+                using (var httpClient = new HttpClient())
+                {
+                    var response = await httpClient.GetAsync(apiUrl + "Students/" + id);
+                    response.EnsureSuccessStatusCode();
+
+                    var studentData = await response.Content.ReadAsStringAsync();
+
+                    var student = JsonConvert.DeserializeObject<Student>(studentData);
+                    student.IsDeleted = 0;
+
+                    string json = JsonConvert.SerializeObject(student);
+
+                    var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                    response = await httpClient.PutAsync(apiUrl + "Students/" + id, content);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return RedirectToAction("ArchiveStudent", "AdminCRUD");
+                    }
+                    else
+                    {
+                        return BadRequest();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
     }
 }
