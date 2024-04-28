@@ -83,27 +83,33 @@
 
                 @foreach (var item in Model.Test.Where(n => n.DisciplineId == idDiscipline))
                 {
-                    @if (item.Active == 0)
+                    var studentTest = Model.StudentTests.FirstOrDefault(n => n.TestId == item.IdTest && n.StudentId == Model.Student.IdStudent);
+                    if ((studentTest == null || studentTest.Result == 0) && item.Active == 0)
                     {
-                        <div class="divTestForm">
-                            <form asp-action="OneTestStudent" asp-antiforgery="true" asp-controller="Student">
-                                <div>
-                                    <input name="testId" hidden value="@item.IdTest" />
-
-                                    <label class="labelTest" style="font-weight: bold">@item.NameTest</label>
-                                    <br />
-                                    <div class="labelTest">Дата создания: @string.Format("{0:dd.MM.yyyy}", @item.DateCreatedTest)</div>
-                                    <br />
+                        if(item.Deadline == null || item.Deadline >= DateTime.Now)
+                        {
+                            <div class="divTestForm">
+                                <form asp-action="OneTestStudent" asp-antiforgery="true" asp-controller="Student">
                                     <div>
-                                        <img class="photoEmployee" src="@photoEmployee" width="20" height="20" />
-                                        @surnameEmployee @nameEmployee @middleNameEmployee
-                                    </div>
-                                    <input value="Пройти тестирование" class="buttonTest" type="submit" />
+                                        <input name="testId" hidden value="@item.IdTest" />
 
-                                </div>
-                            </form>
-                        </div>
+                                        <label class="labelTest" style="font-weight: bold">@item.NameTest</label>
+                                        <br />
+                                        <div class="labelTest">Дата создания: @string.Format("{0:dd.MM.yyyy}", @item.DateCreatedTest)</div>
+                                        <br />
+                                        <div>
+                                            <img class="photoEmployee" src="@photoEmployee" width="20" height="20" />
+                                            @surnameEmployee @nameEmployee @middleNameEmployee
+                                        </div>
+                                        <input value="Пройти тестирование" class="buttonTest" type="submit" />
+
+                                    </div>
+                                </form>
+                            </div>
+                        }
+
                     }
+
 
 
                 }

@@ -96,8 +96,8 @@
                                 var answerContent = Model.AnswerOption.Find(n => n.IdAnswerOptions == answer.AnswerOptionsId).ContentAnswer;
 
                                 <div class="Answer">
-                                    <input type="radio" name="userAnswers[@questionIndex].SelectedAnswerId" value="@answer.AnswerOptionsId" />
-                                    @answerContent
+                                    <input type="radio" id="answer@(answer.AnswerOptionsId)" name="userAnswers[@questionIndex].SelectedAnswerId" value="@answer.AnswerOptionsId" />
+                                    <label for="answer@(answer.AnswerOptionsId)">@answerContent</label>
                                 </div>
                             }
                         </div>
@@ -113,8 +113,8 @@
                                 var answerContent = Model.AnswerOption.Find(n => n.IdAnswerOptions == answer.AnswerOptionsId).ContentAnswer;
 
                                 <div class="Answer">
-                                    <input type="checkbox" name="userAnswers[@questionIndex].SelectedAnswerIds" value="@answer.AnswerOptionsId" />
-                                    @answerContent
+                                    <input type="checkbox" id="answer@(answer.AnswerOptionsId)" name="userAnswers[@questionIndex].SelectedAnswerIds" value="@answer.AnswerOptionsId" />
+                                    <label for="answer@(answer.AnswerOptionsId)">@answerContent</label>
                                 </div>
                             }
                         </div>

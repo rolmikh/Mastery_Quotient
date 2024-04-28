@@ -1,4 +1,4 @@
-﻿@model Mastery_Quotient.Models.TestViewStudent
+﻿@model Mastery_Quotient.Models.MyTestModelView
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -32,7 +32,51 @@
 </head>
 <body>
     <main>
+
         
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Название тестирования</th>
+                    <th>Дата прохождения</th>
+                    <th>Дисциплина</th>
+                    <th>Результат</th>
+                    <th>Срок сдачи</th>
+                    <th>Мои ответы</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.StudentTest)
+                {
+                    var nameTest = Model.Tests.Find(n => n.IdTest == item.TestId).NameTest;
+                    var disciplineTest = Model.Tests.Find(n => n.IdTest == item.TestId).DisciplineId;
+                    var disciplineName = Model.Disciplines.Find(n => n.IdDiscipline == disciplineTest).NameDiscipline;
+                    var deadlineTest = Model.Tests.Find(n => n.IdTest == item.TestId).Deadline;
+                    var idTest = Model.Tests.Find(n => n.IdTest == item.TestId).IdTest;
+                    var result = Model.TestQuestions.Count(n => n.TestId == idTest);
+                    <tr>
+                        <td>@nameTest</td>
+                        <td>@item.DateCompleted</td>
+                        <td>@disciplineName</td>
+                        <td>@item.Result/@result</td>
+                        @if(deadlineTest == null)
+                        {
+                            <td>Без срока сдачи</td>
+
+                        }
+                        else
+                        {
+                            <td>@deadlineTest</td>
+                        }
+                        <td>
+                            <a asp-action="MyTestAnswer" asp-route-id="@item.TestId">Мои ответы</a>
+                        </td>
+                        
+                    </tr>
+                }
+            </tbody>
+        </table>
 
 
     </main>

@@ -43,7 +43,7 @@ namespace Mastery_Quotient.Controllers
         }
 
         /// <summary>
-        /// Загрузка представления страницы просмотра материалов
+        /// Загрузка представления страницы добавления материалов
         /// </summary>
         /// <returns></returns>
         /// 
@@ -433,7 +433,7 @@ namespace Mastery_Quotient.Controllers
                     }
                     else
                     {
-                        using (var response = await httpClient.GetAsync(apiUrl + "Materials"))
+                        using (var response = await httpClient.GetAsync(apiUrl + "Materials/All"))
                         {
                             string apiResponse = await response.Content.ReadAsStringAsync();
                             materials = JsonConvert.DeserializeObject<List<Material>>(apiResponse);
@@ -756,6 +756,45 @@ namespace Mastery_Quotient.Controllers
             catch
             {
                 return BadRequest("Ошибка удаления данных!");
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RecoverMaterial(int IdMaterial)
+        {
+            try
+            {
+                
+                var apiUrl = configuration["AppSettings:ApiUrl"];
+
+
+                using (var httpClient = new HttpClient())
+                {
+                    var response = await httpClient.GetAsync(apiUrl + "Materials/" + IdMaterial);
+                    response.EnsureSuccessStatusCode();
+                    var materialData = await response.Content.ReadAsStringAsync();
+
+                    var material = JsonConvert.DeserializeObject<Material>(materialData);
+
+                    material.IsDeleted = 0;
+                    string json = JsonConvert.SerializeObject(material);
+
+                    var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                    response = await httpClient.PutAsync(apiUrl + "Materials/" + IdMaterial, content);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return RedirectToAction("MaterialsTeacher", "Teacher");
+                    }
+                    else
+                    {
+                        return BadRequest();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest();
             }
         }
     }

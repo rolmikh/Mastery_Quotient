@@ -14,7 +14,6 @@
         </a>
 
         <ul class="navigation_ul">
-            <li class="navigation_li"><a class="navigation_a" asp-action="News" asp-controller="Admin">Новости</a></li>
             <li class="navigation_li"><a class="navigation_a" asp-action="MaterialsAdmin" asp-controller="Admin">Материалы</a></li>
             <li class="navigation_li"><a class="navigation_a" asp-action="AdminTestView" asp-controller="Admin">Тесты</a></li>
             <li class="navigation_li"><a class="navigation_a" asp-action="AdminPanel" asp-controller="AdminCRUD">Панель администратора</a></li>
@@ -34,118 +33,7 @@
 <body>
     <main>
 
-        <h2>Материалы</h2>
-
-        <div class="containerForm">
-            <form asp-antiforgery="true" asp-action="MaterialsAdmin" asp-controller="Admin">
-                <input class="searchInput" type="text" name="Search" />
-                <button class="searchImage" type="submit">
-                    <img width="40" height="40" src="../images/icons8-лупа-64.png" />
-                </button>
-            </form>
-            <form asp-antiforgery="true" asp-action="FiltrationMaterial" asp-controller="Admin">
-                <select class="CrudSelect" required id="disciplineID" name="disciplineID" placeholder="Дисциплина">
-                    <option selected disabled>Дисциплина</option>
-                    @foreach (var discipline in Model.Disciplines)
-                    {
-                        <option value="@discipline.IdDiscipline">@discipline.NameDiscipline</option>
-                    }
-                </select>
-                <select class="CrudSelect" required id="typeId" name="typeId" placeholder="Тип материала">
-                    <option selected disabled>Тип материала</option>
-                    @foreach (var type in Model.TypeMaterials)
-                    {
-                        <option value="@type.IdTypeMaterial">@type.NameTypeMaterial</option>
-                    }
-                </select>
-                <button class="InputFiltr" type="submit">Фильтрация</button>
-
-            </form>
-        </div>
-        <br />
-
-        @if (TempData["Message"] != null)
-        {
-            <div class="alert alert-success" role="alert">
-                @TempData["Message"]
-            </div>
-        }
-        <br />
-
-        <div class="formsContainer">
-            @foreach (var item in Model.Materials)
-            {
-                <div class="formMaterial">
-                    <form asp-action="FileMaterial" asp-antiforgery="true" asp-controller="admin">
-
-                        <input type="image" class="imageMaterial" width="187" height="177" src="@item.PhotoMaterial" />
-                        <label class="nameMaterial">@item.NameMaterial</label>
-                        <input value="Подробнее" class="buttonMaterial" type="submit" />
-
-                        <input hidden value="@item.FileMaterial" name="nameFile" />
-                    </form>
-                </div>
-
-            }
-        </div>
-
-        <h2>Тестирования</h2>
-        <div class="containerForm">
-            <form asp-antiforgery="true" asp-action="AdminTestView" asp-controller="Admin">
-                <input class="searchInput" type="text" name="Search" />
-                <button class="searchImage" type="submit">
-                    <img width="40" height="40" src="../images/icons8-лупа-64.png" />
-                </button>
-            </form>
-            <form asp-antiforgery="true" asp-action="FiltrationTest" asp-controller="Admin">
-                <select class="CrudSelect" required id="disciplineID" name="disciplineID" placeholder="Дисциплина">
-                    <option selected disabled>Дисциплина</option>
-                    @foreach (var discipline in Model.Disciplines)
-                    {
-                        <option value="@discipline.IdDiscipline">@discipline.NameDiscipline</option>
-                    }
-                </select>
-                <select class="CrudSelect" required id="parameterId" name="parameterId" placeholder="Параметр тестирования">
-                    <option selected disabled>Параметр тестирования</option>
-                    @foreach (var parameter in Model.TestParameters)
-                    {
-                        <option value="@parameter.IdTestParameter">@parameter.NameParameter @parameter.ValueParameter</option>
-                    }
-                </select>
-                <button class="InputFiltr" type="submit">Фильтрация</button>
-
-            </form>
-        </div>
-        <br />
-        @if (TempData["Message"] != null)
-        {
-            <div class="alert alert-success" role="alert">
-                @TempData["Message"]
-            </div>
-        }
-        <br />
-
-        <div class="formsContainer">
-            @foreach (var item in Model.Test)
-            {
-
-                <div class="divTestForm">
-                    <form asp-action="AdminOneTestView" asp-antiforgery="true" asp-controller="Admin">
-                        <div>
-                            <input name="testId" hidden value="@item.IdTest" />
-
-                            <label class="labelTest">@item.NameTest</label>
-                            <br />
-                            <label class="labelTest">Дата создания: @string.Format("{0:dd.MM.yyyy}", @item.DateCreatedTest)</label>
-                            <input value="Просмотреть тестирование" class="buttonTest" type="submit" />
-
-                        </div>
-                    </form>
-                </div>
-
-
-            }
-        </div>
+       
 
     </main>
 

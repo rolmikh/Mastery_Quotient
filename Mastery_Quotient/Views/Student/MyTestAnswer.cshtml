@@ -1,0 +1,124 @@
+﻿ @model Mastery_Quotient.Models.MyTestAnswerModelView
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="@Url.Content("~/css/mainStyle.css")">
+    <link rel="stylesheet" href="@Url.Content("~/css/navigationStyle.css")">
+    <link rel="stylesheet" href="@Url.Content("~/css/TestStyle.css")">
+    <link rel="stylesheet" href="@Url.Content("~/css/crudStyle.css")">
+    <link href="https://fonts.googleapis.com/css?family=Mulish:200,300,regular,500,600,700,800,900,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic"
+          rel="stylesheet" />
+    <title>Тестирования</title>
+    <div class="container">
+        <a asp-action="MainStudent" asp-controller="Student">
+            <img class="navigation_img" src="@Url.Content("~/images/3QpbYI-LogoMakr.png")">
+        </a>
+
+        <ul class="navigation_ul">
+            <li class="navigation_li"><a class="navigation_a" asp-action="MainStudent" asp-controller="Student">Новости</a></li>
+            <li class="navigation_li"><a class="navigation_a" asp-action="MaterialStudent" asp-controller="Student">Материалы</a></li>
+            <li class="navigation_li"><a class="navigation_a" asp-action="TestStudent" asp-controller="Student">Тесты</a></li>
+            <li class="navigation_li"><a class="navigation_a" asp-action="MyTest" asp-controller="Student">Мои тестирования</a></li>
+        </ul>
+
+        <button class="glow_button" onclick="window.location.href='@Url.Action("PersonalAccountStudent", "student")'">
+            Личный кабинет
+        </button>
+    </div>
+
+</head>
+<body>
+    <main>
+
+
+        <div class="h2form">
+
+            <h3>Название теста</h3>
+            <h3>Дата прохождения теста</h3>
+            <h3>Срок сдачи</h3>
+            <h3>Результат</h3>
+
+        </div>
+        <div class="h2form">
+            <h3>@Model.Test.NameTest</h3>
+            <h3>@Model.StudentTests.Find(n => n.TestId == Model.Test.IdTest).DateCompleted</h3>
+            <h3>@Model.Test.Deadline</h3>
+            <h3>@Model.StudentTests.Find(n => n.TestId == Model.Test.IdTest).Result из @Model.TestQuestions.Count(n => n.TestId == Model.Test.IdTest)</h3>
+
+        </div>
+
+        @foreach (var test in Model.Answers)
+        {
+
+            var questionID = Model.TestQuestions.Find(n => n.TestId == Model.Test.IdTest && n.IdTestQuestion == test.TestQuestionId).QuestionId;
+            var questionNumber = Model.Questions.Find(n => n.IdQuestion == questionID).NumberQuestion;
+            var questionName = Model.Questions.Find(n => n.IdQuestion == questionID).NameQuestion;
+            var questionTypeID = Model.Questions.Find(n => n.IdQuestion == questionID).TypeQuestionId;
+
+            <div class="formAnswer">
+                <div class="flexDiv">
+                    <div class="number">
+                        @questionNumber
+                    </div>
+                    <div class="name">
+                        @questionName
+                    </div>
+
+                </div>
+
+
+
+                @if (questionTypeID == 1)
+                {
+                    <textarea class="textareaForm" readonly placeholder="Введите ответ">@test.ContentAnswer</textarea>
+                }
+                @if (questionTypeID == 2)
+                {
+                    <div class="AnswerForm">
+                        @foreach (var answer in Model.QuestionAnswerOptions.Where(n => n.QuestionId == questionID && n.IdQuestionAnswerOptions == test.QuestionAnswerOptionsId))
+                        {
+
+                            var answerContent = Model.AnswerOptions.Find(n => n.IdAnswerOptions == answer.AnswerOptionsId).ContentAnswer;
+
+                            <div class="Answer">
+                                <input type="radio" disabled checked value="@answer.AnswerOptionsId" />
+                                @answerContent
+                            </div>
+                        }
+                    </div>
+
+                }
+                @if (questionTypeID == 3)
+                {
+                    <div class="AnswerForm">
+                        @foreach (var answer in Model.QuestionAnswerOptions.Where(n => n.QuestionId == questionID && n.IdQuestionAnswerOptions == test.QuestionAnswerOptionsId))
+                        {
+                            var answerContent = Model.AnswerOptions.Find(n => n.IdAnswerOptions == answer.AnswerOptionsId).ContentAnswer;
+
+                            <div class="Answer">
+                                <input type="checkbox" disabled checked value="@answer.AnswerOptionsId" />
+                                @answerContent
+                            </div>
+                        }
+                    </div>
+
+                }
+
+            </div>
+
+
+
+        }
+
+
+
+
+
+
+
+    </main>
+
+</body>
+</html> 

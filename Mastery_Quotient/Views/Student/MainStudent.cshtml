@@ -94,7 +94,7 @@
                 var photoEmployee = Model.Employees.Find(n => n.IdEmployee == idEmployee).PhotoEmployee;
 
 
-                @foreach (var item in Model.Materials.Where(n => n.DisciplineId == idDiscipline))
+                @foreach (var item in Model.Materials.Where(n => n.DisciplineId == idDiscipline && (n.DateCreatedMaterial.Value.Month == DateTime.Now.Month && n.DateCreatedMaterial.Value.Year == DateTime.Now.Year)).OrderByDescending(m => m.DateCreatedMaterial).Take(10))
                 {
 
                     <div class="formMaterial">
@@ -162,12 +162,12 @@
                 var photoEmployee = Model.Employees.Find(n => n.IdEmployee == idEmployee).PhotoEmployee;
 
 
-                @foreach (var item in Model.Test.Where(n => n.DisciplineId == idDiscipline))
+                @foreach (var item in Model.Test.Where(n => n.DisciplineId == idDiscipline && (n.DateCreatedTest.Value.Month == DateTime.Now.Month && n.DateCreatedTest.Value.Year == DateTime.Now.Year)).OrderByDescending(m => m.DateCreatedTest).Take(10))
                 {
                     @if (item.Active == 0)
                     {
                         <div class="divTestForm">
-                            <form asp-action="OneTestStudent" asp-antiforgery="true" asp-controller="Student">
+                            <form asp-action="TestStudent" asp-antiforgery="true" asp-controller="Student">
                             <div>
                                 <input name="testId" hidden value="@item.IdTest" />
 

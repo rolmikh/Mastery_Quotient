@@ -9,6 +9,8 @@ using System.Text;
 using FluentValidation;
 using static System.Net.Mime.MediaTypeNames;
 using Microsoft.AspNetCore.Authorization;
+using System.Net.Http;
+using System.Linq;
 
 namespace Mastery_Quotient.Controllers
 {
@@ -405,7 +407,7 @@ namespace Mastery_Quotient.Controllers
                         string apiResponse = await response.Content.ReadAsStringAsync();
                         disciplineOfTheStudyGroups = JsonConvert.DeserializeObject<List<DisciplineOfTheStudyGroup>>(apiResponse);
                     }
-                    using (var response = await httpClient.GetAsync(apiUrl + "StudentTest"))
+                    using (var response = await httpClient.GetAsync(apiUrl + "StudentTests"))
                     {
                         string apiResponse = await response.Content.ReadAsStringAsync();
                         studentTests = JsonConvert.DeserializeObject<List<StudentTest>>(apiResponse);
@@ -940,6 +942,7 @@ namespace Mastery_Quotient.Controllers
                 studentTest.TestId = testID;
                 studentTest.Result = 0;
                 studentTest.IsCompleted = 0;
+                studentTest.DateCompleted = DateTime.Now;
 
                 StringContent content = new StringContent(JsonConvert.SerializeObject(studentTest), Encoding.UTF8, "application/json");
 
@@ -1241,6 +1244,155 @@ namespace Mastery_Quotient.Controllers
             }
         }
 
-        
+        /// <summary>
+        /// Загрузка представления страницы пройденных тестирований
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IActionResult> MyTest()
+        {
+            try
+            {
+                if (!TempData.ContainsKey("AuthUser"))
+                {
+                    return RedirectToAction("Authorization", "Home");
+                }
+                var apiUrl = configuration["AppSettings:ApiUrl"];
+
+                int id = int.Parse(TempData["AuthUser"].ToString());
+                TempData.Keep("AuthUser");
+                Student student = new Student();
+                List<Discipline> disciplines = new List<Discipline>();  
+                List<Test> tests = new List<Test>();
+                List<StudentTest> studentTest = new List<StudentTest>();
+                List<TestQuestion> question = new List<TestQuestion>();
+                using (var httpClient = new HttpClient())
+                {
+                    using (var response = await httpClient.GetAsync(apiUrl + "Students/" + id))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        student = JsonConvert.DeserializeObject<Student>(apiResponse);
+                    }
+                    using (var response = await httpClient.GetAsync(apiUrl + "Disciplines/NoDeleted"))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        disciplines = JsonConvert.DeserializeObject<List<Discipline>>(apiResponse);
+                    }
+                    using (var response = await httpClient.GetAsync(apiUrl + "Tests"))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        tests = JsonConvert.DeserializeObject<List<Test>>(apiResponse);
+                    }
+                    using (var response = await httpClient.GetAsync(apiUrl + "StudentTests"))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        studentTest = JsonConvert.DeserializeObject<List<StudentTest>>(apiResponse);
+                    }
+                    using (var response = await httpClient.GetAsync(apiUrl + "TestQuestions"))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        question = JsonConvert.DeserializeObject<List<TestQuestion>>(apiResponse);
+                    }
+                }
+
+                List<StudentTest> studentTests = studentTest.Where(n => n.StudentId == student.IdStudent).ToList();
+
+                MyTestModelView myTestModelView = new MyTestModelView(student, disciplines, tests, studentTests, question);
+
+                return View(myTestModelView);
+                
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Загрузка представления страницы ответов студента на тестирование
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<IActionResult> MyTestAnswer(int id)
+        {
+            try
+            {
+                if (!TempData.ContainsKey("AuthUser"))
+                {
+                    return RedirectToAction("Authorization", "Home");
+                }
+                var apiUrl = configuration["AppSettings:ApiUrl"];
+
+                int userId = int.Parse(TempData["AuthUser"].ToString());
+                TempData.Keep("AuthUser");
+                Test test = new Test();
+                List<StudentAnswer> studentAnswers = new List<StudentAnswer>();
+                List<StudentTest> studentTest = new List<StudentTest>();
+                Student student = new Student();
+                List<Discipline> disciplines = new List<Discipline>();
+                List<TestQuestion> testQuestion = new List<TestQuestion>();
+                List<Question> questions = new List<Question>();    
+                List<AnswerOption> answerOptions = new List<AnswerOption>();
+                List<QuestionAnswerOption> questionAnswerOptions = new List<QuestionAnswerOption>();
+                using (var httpClient = new HttpClient())
+                {
+                    using (var response = await httpClient.GetAsync(apiUrl + "Tests/" + id))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        test = JsonConvert.DeserializeObject<Test>(apiResponse);
+                    }
+                    using (var response = await httpClient.GetAsync(apiUrl + "StudentAnswers"))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        studentAnswers = JsonConvert.DeserializeObject<List<StudentAnswer>>(apiResponse);
+                    }
+                    using (var response = await httpClient.GetAsync(apiUrl + "StudentTests"))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        studentTest = JsonConvert.DeserializeObject<List<StudentTest>>(apiResponse);
+                    }
+                    using (var response = await httpClient.GetAsync(apiUrl + "Students/" + userId))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        student = JsonConvert.DeserializeObject<Student>(apiResponse);
+                    }
+                    using (var response = await httpClient.GetAsync(apiUrl + "Disciplines/NoDeleted"))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        disciplines = JsonConvert.DeserializeObject<List<Discipline>>(apiResponse);
+                    }
+                    using (var response = await httpClient.GetAsync(apiUrl + "TestQuestions"))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        testQuestion = JsonConvert.DeserializeObject<List<TestQuestion>>(apiResponse);
+                    }
+                    using (var response = await httpClient.GetAsync(apiUrl + "Questions"))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        questions = JsonConvert.DeserializeObject<List<Question>>(apiResponse);
+                    }
+                    using (var response = await httpClient.GetAsync(apiUrl + "AnswerOptions"))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        answerOptions = JsonConvert.DeserializeObject<List<AnswerOption>>(apiResponse);
+                    }
+                    using (var response = await httpClient.GetAsync(apiUrl + "QuestionAnswerOptions"))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        questionAnswerOptions = JsonConvert.DeserializeObject<List<QuestionAnswerOption>>(apiResponse);
+                    }
+                }
+
+                List<StudentTest> studentTests = studentTest.Where(n => n.StudentId == student.IdStudent).ToList();
+                List<StudentAnswer> studentAnswer = studentAnswers.Where(n => n.StudentTestId == studentTests.FirstOrDefault(st => st.TestId == test.IdTest && st.StudentId == student.IdStudent)?.IdStudentTest).ToList();
+
+                MyTestAnswerModelView myTestAnswerModelView = new MyTestAnswerModelView(test, studentAnswer, studentTests, student, disciplines, testQuestion, questions, answerOptions, questionAnswerOptions);
+                return View(myTestAnswerModelView);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

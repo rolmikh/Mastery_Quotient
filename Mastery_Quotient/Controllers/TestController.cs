@@ -127,7 +127,7 @@ namespace Mastery_Quotient.Controllers
                 }
                 test.DisciplineId = disciplineTest;
                 test.EmployeeId = id;
-                test.TestParameterId = parameterTest;
+                test.TestParameterId = 1;
                 test.IsDeleted = 0;
                 test.Active = 1;
 
@@ -1048,7 +1048,7 @@ namespace Mastery_Quotient.Controllers
                 }
                 test.DisciplineId = disciplineTest;
                 test.EmployeeId = id;
-                test.TestParameterId = testParameter;
+                test.TestParameterId = 1;
                 test.IsDeleted = 0;
                 test.Active = 1;
 

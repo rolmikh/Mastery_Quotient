@@ -23,7 +23,7 @@
         <ul class="navigation_ul">
             <li class="navigation_li"><a class="navigation_a" asp-action="MaterialsTeacher" asp-controller="Teacher">Материалы</a></li>
             <li class="navigation_li"><a class="navigation_a" asp-action="TestTeacher" asp-controller="Test">Тесты</a></li>
-            <li class="navigation_li"><a class="navigation_a" asp-action="StudentTestDone" asp-controller="Test">Тестирования студентов</a></li>
+            <li class="navigation_li"><a class="navigation_a" asp-action="StudentTestCompleted" asp-controller="Test">Тестирования студентов</a></li>
         </ul>
         <ul class="navigation_ul_right">
             <li class="navigation_li_right" style="float: right">
@@ -66,7 +66,7 @@
 
             </form>
         </div>
-        <br/>
+        <br />
         @if (TempData["Message"] != null)
         {
             <div class="alert alert-success" role="alert">
@@ -77,38 +77,60 @@
         <div class="formsContainer">
             @foreach (var item in Model.Materials)
             {
-               
-                <form id="deleteForm" asp-controller="Teacher" asp-action="DeleteMaterial" method="post">
-                    <input type="hidden" value="@item.IdMaterial" name="IdMaterial" />
-                    <button class="image_button" width="50" height="50" type="button">
-                        <img>
-                    </button>
-                </form>
-                <a asp-action="UpdateMaterial" asp-controller="teacher" asp-route-id="@item.IdMaterial"><input type="image" width="50" height="50" src="../images/edit.png" /></a>
-                <div class="formMaterial">
-                    
-                    <form asp-action="FileMaterial" asp-antiforgery="true" asp-controller="admin">
+                @if (item.IsDeleted == 0)
+                {
+                    <div class="formMaterial">
+                        <form id="deleteForm" asp-controller="Teacher" asp-action="DeleteMaterial" method="post">
+                            <input type="hidden" value="@item.IdMaterial" name="IdMaterial" />
+                            <button class="image_button" width="50" height="50" type="button">
+                                <img>
+                            </button>
+                        </form>
+                        <form asp-action="FileMaterial" asp-antiforgery="true" asp-controller="admin">
 
-                        <input type="image" class="imageMaterial" width="187" height="177" src="@item.PhotoMaterial" />
-                        <label class="nameMaterial">@item.NameMaterial</label>
-                        @* <label>
-                            Опубликовано:
-                            <img class="photo" src="@photoEmployee" width="20" height="20" />
-                            @surnameEmployee @nameEmployee @middleNameEmployee
-                        </label> *@
-                        <input value="Подробнее" class="buttonMaterial" type="submit" />
+                            <input type="image" class="imageMaterial" width="187" height="177" src="@item.PhotoMaterial" />
+                            <label class="nameMaterial">@item.NameMaterial</label>
+                            <input value="Подробнее" class="buttonMaterial" type="submit" />
 
-                        <input hidden value="@item.FileMaterial" name="nameFile" />
-                    </form>
-                </div>
-
+                            <input hidden value="@item.FileMaterial" name="nameFile" />
+                        </form>
+                    </div>
+                }
             }
         </div>
+        <h1>Архивированные материалы</h1>
+        <div class="formsContainer">
+            @foreach (var item in Model.Materials)
+            {
+                @if (item.IsDeleted == 1)
+                {
+                    <div class="formMaterial">
+                        
+                        <a asp-action="UpdateMaterial" asp-controller="teacher" asp-route-id="@item.IdMaterial"><input type="image" width="50" height="50" src="../images/edit.png" /></a>
+                        <form asp-action="FileMaterial" asp-antiforgery="true" asp-controller="admin">
+
+                            <input type="image" class="imageMaterial" width="187" height="177" src="@item.PhotoMaterial" />
+                            <label class="nameMaterial">@item.NameMaterial</label>
+                            <input value="Подробнее" class="buttonMaterial" type="submit" />
+
+                            <input hidden value="@item.FileMaterial" name="nameFile" />
+                        </form>
+                        <form id="recoverForm" asp-controller="Teacher" asp-action="RecoverMaterial" method="post">
+                            <input type="hidden" value="@item.IdMaterial" name="IdMaterial" />
+                            <input type="submit" class="buttonMaterial" value="Восстановить" />
+                        </form>
+                    </div>
+                }
+            }
+        </div>
+
+       
+       
 
         <div id="myModal" class="modal">
             <div class="modal-content">
                 <span class="close">&times;</span>
-                <p>Вы уверены, что хотите удалить эту запись?</p>
+                <p>Вы уверены, что хотите архивировать эту запись?</p>
                 <form id="deleteForm" asp-controller="Teacher" asp-action="DeleteMaterial" method="post">
                     <input type="hidden" id="IdMaterial" name="IdMaterial" />
                     <button id="confirmDeleteBtnModal" class="newInput">Да</button>
@@ -122,7 +144,7 @@
             var modal = document.getElementById('myModal'); // Получаем модальное окно по его id
             var confirmDeleteBtn = document.getElementById('confirmDeleteBtnModal'); // Получаем кнопку подтверждения удаления
             var confirmBackBtn = document.getElementById('confirmBack'); // Получаем кнопку отмены
-            var idMaterialInput = document.getElementById('IdMaterial'); // Получаем скрытое поле для id 
+            var idMaterialInput = document.getElementById('IdMaterial'); // Получаем скрытое поле для id
             var closeButton = document.querySelector('.modal-content .close');
 
 

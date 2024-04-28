@@ -77,8 +77,9 @@
         <br />
         <h2>Материалы</h2>
         <div class="formsContainer">
-            @foreach (var item in Model.Materials)
+            @foreach (var item in Model.Materials.Where(n => n.DateCreatedMaterial.Value.Month == DateTime.Now.Month && n.DateCreatedMaterial.Value.Year == DateTime.Now.Year).OrderByDescending(m => m.DateCreatedMaterial).Take(10))
             {
+
                 <div class="formMaterial">
                     <form asp-action="FileMaterial" asp-antiforgery="true" asp-controller="admin">
 
@@ -89,6 +90,7 @@
                         <input hidden value="@item.FileMaterial" name="nameFile" />
                     </form>
                 </div>
+
 
             }
         </div>
@@ -124,7 +126,7 @@
         <br />
         <h2>Тестирования</h2>
         <div class="formsContainer">
-            @foreach (var item in Model.Test)
+            @foreach (var item in Model.Test.Where(n => n.DateCreatedTest.Value.Month == DateTime.Now.Month && n.DateCreatedTest.Value.Year == DateTime.Now.Year).OrderByDescending(m => m.DateCreatedTest).Take(10))
             {@if (item.Active == 0)
                 {
 
