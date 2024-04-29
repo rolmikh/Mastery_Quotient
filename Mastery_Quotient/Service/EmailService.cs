@@ -5,8 +5,6 @@ namespace Mastery_Quotient.Service
 {
     public class EmailService
     {
-       
-
         public async Task SendEmail(string email, string subject, string message)
         {
             try
@@ -26,7 +24,7 @@ namespace Mastery_Quotient.Service
                     smtp.Authenticate("isip_l.m.rozkovskaiya@mpt.ru", "wbiwkdbxwkpdwaa");
                     smtp.Send(emailMessage);
                     smtp.Disconnect(true);
-                };
+                }; 
             }
             catch(Exception e)
             {

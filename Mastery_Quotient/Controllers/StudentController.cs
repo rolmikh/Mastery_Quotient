@@ -1011,33 +1011,26 @@ namespace Mastery_Quotient.Controllers
 
                                     StringContent contentAnswerOption = new StringContent(JsonConvert.SerializeObject(studentAnswer), Encoding.UTF8, "application/json");
                                     var responseAnswerOption = await httpClient.PostAsync(apiUrl + "StudentAnswers", contentAnswerOption);
-                                
                                 }
-
                             }
                             else
                             {
                                 return BadRequest("Ошибка!");
                             }
-                            
-                            
                         }
                     }
                     else
                     {
                         return BadRequest();
 
-                    }
-
-                    return RedirectToAction("TestStudent","Student");
+                    } 
+                    return RedirectToAction("TestStudent", "Student");
                 }
 
-            }
-            catch (Exception e)
+            }catch (Exception e)
             {
                 return BadRequest($"Failed to save {e}");
             }
-            
         }
 
 

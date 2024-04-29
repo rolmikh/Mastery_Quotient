@@ -1,0 +1,166 @@
+﻿@model Mastery_Quotient.Models.TestDoneTeacherView
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/mainStyle.css">
+    <link rel="stylesheet" href="../css/navigationStyle.css">
+    <link rel="stylesheet" href="../css/TestStyle.css">
+    <link rel="stylesheet" href="../css/ModalWindowStyle.css">
+    <link rel="stylesheet" href="../css/crudStyle.css">
+    <link href="https://fonts.googleapis.com/css?family=Mulish:200,300,regular,500,600,700,800,900,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic"
+          rel="stylesheet" />
+    <title>Тестирования студентов</title>
+    <div class="container">
+        <a asp-action="MainTeacher" asp-controller="teacher">
+            <img class="navigation_img" src="../images/3QpbYI-LogoMakr.png">
+        </a>
+
+        <ul class="navigation_ul">
+            <li class="navigation_li"><a class="navigation_a" asp-action="MaterialsTeacher" asp-controller="Teacher">Материалы</a></li>
+            <li class="navigation_li"><a class="navigation_a" asp-action="TestTeacher" asp-controller="Test">Тесты</a></li>
+            <li class="navigation_li"><a class="navigation_a" asp-action="TestDone" asp-controller="Test">Тестирования студентов</a></li>
+        </ul>
+        <ul class="navigation_ul_right">
+            <li class="navigation_li_right" style="float: right">
+                <a class="navigation_a_right" asp-action="TeacherWindowMaterial" asp-controller="teacher">Создать материал</a>
+            </li>
+            <li class="navigation_li_right" style="float: right"><a class="navigation_a_right" asp-action="TeacherWindowTest" asp-controller="Test">Создать тест</a></li>
+        </ul>
+        <button class="glow_button" onclick="window.location.href='@Url.Action("PersonalAccountTeacher", "teacher")'">
+            Личный кабинет
+        </button>
+    </div>
+
+</head>
+<body>
+    <main>
+
+        <h1>Непроверенные тестирования</h1>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ФИО студента</th>
+                    <th>Электронная почта студента</th>
+                    <th>Учебная группа</th>
+                    <th>Название тестирования</th>
+                    <th>Дата прохождения</th>
+                    <th>Дисциплина</th>
+                    <th>Курс</th>
+                    <th>Срок сдачи</th>
+                    <th>Ответы студента</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.StudentsTest)
+                {
+                    if (item.Result == 0)
+                    {
+                        var surnameStudent = Model.Students.Find(n => n.IdStudent == item.StudentId).SurnameStudent;
+                        var nameStudent = Model.Students.Find(n => n.IdStudent == item.StudentId).NameStudent;
+                        var middleNameStudent = Model.Students.Find(n => n.IdStudent == item.StudentId).MiddleNameStudent;
+                        var emailStudent = Model.Students.Find(n => n.IdStudent == item.StudentId).EmailStudent;
+                        var idGroup = Model.Students.Find(n => n.IdStudent == item.StudentId).StudyGroupId;
+                        var studyGroup = Model.StudyGroups.Find(n => n.IdStudyGroup == idGroup).NameStudyGroup;
+                        var studyGroupIdCourse = Model.StudyGroups.Find(n => n.IdStudyGroup == idGroup).CourseId;
+                        var course = Model.Courses.Find(n => n.IdCourse == studyGroupIdCourse).NumberCourse;
+                        var nameTest = Model.Tests.Find(n => n.IdTest == item.TestId).NameTest;
+                        var disciplineTest = Model.Tests.Find(n => n.IdTest == item.TestId).DisciplineId;
+                        var disciplineName = Model.Disciplines.Find(n => n.IdDiscipline == disciplineTest).NameDiscipline;
+                        var deadlineTest = Model.Tests.Find(n => n.IdTest == item.TestId).Deadline;
+                        var idTest = Model.Tests.Find(n => n.IdTest == item.TestId).IdTest;
+                        <tr>
+                            <td>@surnameStudent @nameStudent @middleNameStudent</td>
+                            <td>@emailStudent</td>
+                            <td>@studyGroup</td>
+                            <td>@nameTest</td>
+                            <td>@item.DateCompleted</td>
+                            <td>@disciplineName</td>
+                            <td>@course</td>
+                            @if (deadlineTest == null)
+                            {
+                                <td>Без срока сдачи</td>
+
+                            }
+                            else
+                            {
+                                <td>@deadlineTest</td>
+                            }
+                            <td>
+                                <a asp-action="StudentOneTestComplete" asp-route-id="@item.TestId">Ответы студента</a>
+                            </td>
+
+                        </tr>
+                    }
+
+                }
+            </tbody>
+        </table>
+
+        <h1>Проверенные тестирования</h1>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ФИО студента</th>
+                    <th>Электронная почта студента</th>
+                    <th>Учебная группа</th>
+                    <th>Название тестирования</th>
+                    <th>Дата прохождения</th>
+                    <th>Дисциплина</th>
+                    <th>Курс</th>
+                    <th>Срок сдачи</th>
+                    <th>Результат</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.StudentsTest)
+                {
+                    if (item.Result != 0)
+                    {
+                        var surnameStudent = Model.Students.Find(n => n.IdStudent == item.StudentId).SurnameStudent;
+                        var nameStudent = Model.Students.Find(n => n.IdStudent == item.StudentId).NameStudent;
+                        var middleNameStudent = Model.Students.Find(n => n.IdStudent == item.StudentId).MiddleNameStudent;
+                        var emailStudent = Model.Students.Find(n => n.IdStudent == item.StudentId).EmailStudent;
+                        var idGroup = Model.Students.Find(n => n.IdStudent == item.StudentId).StudyGroupId;
+                        var studyGroup = Model.StudyGroups.Find(n => n.IdStudyGroup == idGroup).NameStudyGroup;
+                        var studyGroupIdCourse = Model.StudyGroups.Find(n => n.IdStudyGroup == idGroup).CourseId;
+                        var course = Model.Courses.Find(n => n.IdCourse == studyGroupIdCourse).NumberCourse;
+                        var nameTest = Model.Tests.Find(n => n.IdTest == item.TestId).NameTest;
+                        var disciplineTest = Model.Tests.Find(n => n.IdTest == item.TestId).DisciplineId;
+                        var disciplineName = Model.Disciplines.Find(n => n.IdDiscipline == disciplineTest).NameDiscipline;
+                        var deadlineTest = Model.Tests.Find(n => n.IdTest == item.TestId).Deadline;
+                        var idTest = Model.Tests.Find(n => n.IdTest == item.TestId).IdTest;
+                        var result = Model.TestsQuestion.Count(n => n.TestId == idTest);
+
+                        <tr>
+                            <td>@surnameStudent @nameStudent @middleNameStudent</td>
+                            <td>@emailStudent</td>
+                            <td>@studyGroup</td>
+                            <td>@nameTest</td>
+                            <td>@item.DateCompleted</td>
+                            <td>@disciplineName</td>
+                            <td>@course</td>
+                            @if (deadlineTest == null)
+                            {
+                                <td>Без срока сдачи</td>
+
+                            }
+                            else
+                            {
+                                <td>@deadlineTest</td>
+                            }
+                            <td>@item.Result/@result</td>
+
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+
+    </main>
+
+</body>
+</html>
