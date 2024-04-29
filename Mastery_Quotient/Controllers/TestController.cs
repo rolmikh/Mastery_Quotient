@@ -131,15 +131,25 @@ namespace Mastery_Quotient.Controllers
                 test.IsDeleted = 0;
                 test.Active = 1;
 
-                var validationResult = await testValidator.ValidateAsync(test);
-
-                if (!validationResult.IsValid)
+                
+                try
                 {
-                    var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                    var validationResult = await testValidator.ValidateAsync(test);
+
+                    if (!validationResult.IsValid)
+                    {
+                        var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                        TempData["ErrorValidation"] = errorMessages;
+                        return RedirectToAction("TeacherWindowTest", "Test");
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    var errorMessages = new List<string> { ex.Message };
                     TempData["ErrorValidation"] = errorMessages;
                     return RedirectToAction("TeacherWindowTest", "Test");
                 }
-
                 StringContent content = new StringContent(JsonConvert.SerializeObject(test), Encoding.UTF8, "application/json");
 
                 using (var httpClient = new HttpClient())
@@ -473,6 +483,12 @@ namespace Mastery_Quotient.Controllers
             }
         }
 
+        /// <summary>
+        /// POST запрос удаления данных о вопросе
+        /// </summary>
+        /// <param name="IdTestQuestion"></param>
+        /// <param name="IdQuestion"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> DeleteQuestion(int IdTestQuestion, int IdQuestion)
         {
@@ -553,11 +569,22 @@ namespace Mastery_Quotient.Controllers
 
                 
 
-                var validationResult = await questionValidator.ValidateAsync(question);
-
-                if (!validationResult.IsValid)
+                
+                try
                 {
-                    var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                    var validationResult = await questionValidator.ValidateAsync(question);
+
+                    if (!validationResult.IsValid)
+                    {
+                        var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                        TempData["ErrorValidation"] = errorMessages;
+                        return RedirectToAction("QuestionTest", "Test");
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    var errorMessages = new List<string> { ex.Message };
                     TempData["ErrorValidation"] = errorMessages;
                     return RedirectToAction("QuestionTest", "Test");
                 }
@@ -639,11 +666,22 @@ namespace Mastery_Quotient.Controllers
                 {
                     return BadRequest();
                 }
-                var validationResult = await questionValidator.ValidateAsync(question);
-
-                if (!validationResult.IsValid)
+                
+                try
                 {
-                    var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                    var validationResult = await questionValidator.ValidateAsync(question);
+
+                    if (!validationResult.IsValid)
+                    {
+                        var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                        TempData["ErrorValidation"] = errorMessages;
+                        return RedirectToAction("QuestionTest", "Test");
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    var errorMessages = new List<string> { ex.Message };
                     TempData["ErrorValidation"] = errorMessages;
                     return RedirectToAction("QuestionTest", "Test");
                 }
@@ -768,11 +806,22 @@ namespace Mastery_Quotient.Controllers
                 {
                     return BadRequest();
                 }
-                var validationResult = await questionValidator.ValidateAsync(question);
-
-                if (!validationResult.IsValid)
+               
+                try
                 {
-                    var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                    var validationResult = await questionValidator.ValidateAsync(question);
+
+                    if (!validationResult.IsValid)
+                    {
+                        var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                        TempData["ErrorValidation"] = errorMessages;
+                        return RedirectToAction("QuestionTest", "Test");
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    var errorMessages = new List<string> { ex.Message };
                     TempData["ErrorValidation"] = errorMessages;
                     return RedirectToAction("QuestionTest", "Test");
                 }
@@ -1012,7 +1061,10 @@ namespace Mastery_Quotient.Controllers
             }
         }
 
-        
+        /// <summary>
+        /// Загрузка представления страницы выполненных тестирований
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> TestDone()
         {
             try
@@ -1101,6 +1153,11 @@ namespace Mastery_Quotient.Controllers
 
         }
 
+        /// <summary>
+        /// Загрузка представления страницы одного пройденного тестирования
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<IActionResult> StudentOneTestComplete(int id)
         {
             try
@@ -1184,6 +1241,12 @@ namespace Mastery_Quotient.Controllers
             }
         }
 
+        /// <summary>
+        /// Проверка ответов тестирования и выставление баллов за тестирование
+        /// </summary>
+        /// <param name="Result"></param>
+        /// <param name="StudentTestID"></param>
+        /// <returns></returns>
         public async Task<IActionResult> SaveResult(int Result, int StudentTestID)
         {
             try
@@ -1265,11 +1328,23 @@ namespace Mastery_Quotient.Controllers
                 test.IsDeleted = 0;
                 test.Active = 1;
 
-                var validationResult = await testValidator.ValidateAsync(test);
+                
 
-                if (!validationResult.IsValid)
+                try
                 {
-                    var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                    var validationResult = await testValidator.ValidateAsync(test);
+
+                    if (!validationResult.IsValid)
+                    {
+                        var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                        TempData["ErrorValidation"] = errorMessages;
+                        return RedirectToAction("TestTeacher", "Test");
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    var errorMessages = new List<string> { ex.Message };
                     TempData["ErrorValidation"] = errorMessages;
                     return RedirectToAction("TestTeacher", "Test");
                 }
@@ -1290,115 +1365,8 @@ namespace Mastery_Quotient.Controllers
             }
         }
 
-        //[HttpGet]
-        //public async Task<IActionResult> UpdateTestQuestion(int id)
-        //{
-        //    try
-        //    {
+       
+        
 
-        //        if (testId != 0)
-        //        {
-        //            TempData["testID"] = testId;
-        //        }
-
-
-        //        int testID = int.Parse(TempData["testID"].ToString());
-        //        TempData.Keep("testID");
-
-
-        //        int idUser = int.Parse(TempData["AuthUser"].ToString());
-
-        //        TempData.Keep("AuthUser");
-
-        //        var apiUrl = configuration["AppSettings:ApiUrl"];
-
-        //        Test test = new Test();
-        //        List<TypeQuestion> typeQuestions = new List<TypeQuestion>();
-        //        List<TestParameter> testParameters = new List<TestParameter>();
-        //        List<Question> questions = new List<Question>();
-        //        List<TestQuestion> testQuestions = new List<TestQuestion>();
-        //        List<AnswerOption> answerOptions = new List<AnswerOption>();
-        //        List<QuestionAnswerOption> questionAnswerOptions = new List<QuestionAnswerOption>();
-        //        Employee employee = new Employee();
-        //        List<Discipline> disciplines = new List<Discipline>();
-        //        List<DisciplineEmployee> disciplineEmployees = new List<DisciplineEmployee>();
-
-
-        //        using (var httpClient = new HttpClient())
-        //        {
-        //            using (var response = await httpClient.GetAsync(apiUrl + "Tests/" + testID))
-        //            {
-        //                string apiResponse = await response.Content.ReadAsStringAsync();
-        //                test = JsonConvert.DeserializeObject<Test>(apiResponse);
-        //            }
-
-        //            using (var response = await httpClient.GetAsync(apiUrl + "TypeQuestions"))
-        //            {
-        //                string apiResponse = await response.Content.ReadAsStringAsync();
-        //                typeQuestions = JsonConvert.DeserializeObject<List<TypeQuestion>>(apiResponse);
-        //            }
-
-        //            using (var response = await httpClient.GetAsync(apiUrl + "TestParameters"))
-        //            {
-        //                string apiResponse = await response.Content.ReadAsStringAsync();
-        //                testParameters = JsonConvert.DeserializeObject<List<TestParameter>>(apiResponse);
-        //            }
-
-        //            using (var response = await httpClient.GetAsync(apiUrl + "Questions"))
-        //            {
-        //                string apiResponse = await response.Content.ReadAsStringAsync();
-        //                questions = JsonConvert.DeserializeObject<List<Question>>(apiResponse);
-        //            }
-
-        //            using (var response = await httpClient.GetAsync(apiUrl + "TestQuestions"))
-        //            {
-        //                string apiResponse = await response.Content.ReadAsStringAsync();
-        //                testQuestions = JsonConvert.DeserializeObject<List<TestQuestion>>(apiResponse);
-        //            }
-
-        //            using (var response = await httpClient.GetAsync(apiUrl + "AnswerOptions"))
-        //            {
-        //                string apiResponse = await response.Content.ReadAsStringAsync();
-        //                answerOptions = JsonConvert.DeserializeObject<List<AnswerOption>>(apiResponse);
-        //            }
-
-        //            using (var response = await httpClient.GetAsync(apiUrl + "QuestionAnswerOptions"))
-        //            {
-        //                string apiResponse = await response.Content.ReadAsStringAsync();
-        //                questionAnswerOptions = JsonConvert.DeserializeObject<List<QuestionAnswerOption>>(apiResponse);
-        //            }
-
-        //            using (var response = await httpClient.GetAsync(apiUrl + "Employees/" + idUser))
-        //            {
-        //                string apiResponse = await response.Content.ReadAsStringAsync();
-        //                employee = JsonConvert.DeserializeObject<Employee>(apiResponse);
-        //            }
-
-        //            using (var response = await httpClient.GetAsync(apiUrl + "Disciplines"))
-        //            {
-        //                string apiResponse = await response.Content.ReadAsStringAsync();
-        //                disciplines = JsonConvert.DeserializeObject<List<Discipline>>(apiResponse);
-        //            }
-
-        //            using (var response = await httpClient.GetAsync(apiUrl + "DisciplineEmployee"))
-        //            {
-        //                string apiResponse = await response.Content.ReadAsStringAsync();
-        //                disciplineEmployees = JsonConvert.DeserializeObject<List<DisciplineEmployee>>(apiResponse);
-        //            }
-        //        }
-        //        List<DisciplineEmployee> discipline = disciplineEmployees.Where(n => n.EmployeeId == employee.IdEmployee).ToList();
-        //        List<TestParameter> testsParameters = testParameters.Where(n => n.IdTestParameter == test.TestParameterId).ToList();
-        //        List<TestQuestion> testQuestionsList = testQuestions.Where(n => n.TestId == test.IdTest).ToList();
-
-        //        ViewTestModel viewTestModel = new ViewTestModel(test, typeQuestions, testsParameters, questions, testQuestionsList, answerOptions, questionAnswerOptions, employee, disciplines, discipline);
-
-        //        return View(viewTestModel);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest();
-        //    }
-        //}
-    
     }
 }

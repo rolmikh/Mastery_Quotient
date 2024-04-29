@@ -160,15 +160,25 @@ namespace Mastery_Quotient.Controllers
                 material.PhotoMaterial = fileUrlPhoto;
                 material.IsDeleted = 0;
 
-                var validationResult = await materialValidator.ValidateAsync(material);
-
-                if (!validationResult.IsValid)
+                
+                try
                 {
-                    var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                    var validationResult = await materialValidator.ValidateAsync(material);
+
+                    if (!validationResult.IsValid)
+                    {
+                        var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                        TempData["ErrorValidation"] = errorMessages;
+                        return RedirectToAction("TeacherWindowMaterial", "Teacher");
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    var errorMessages = new List<string> { ex.Message };
                     TempData["ErrorValidation"] = errorMessages;
                     return RedirectToAction("TeacherWindowMaterial", "Teacher");
                 }
-
                 StringContent content = new StringContent(JsonConvert.SerializeObject(material), Encoding.UTF8, "application/json");
 
                 using (var httpClient = new HttpClient())
@@ -267,15 +277,25 @@ namespace Mastery_Quotient.Controllers
                     employee.MiddleNameEmployee = middleNameUser;
                     employee.EmailEmployee = emailUser;
 
-                    var validationResult = await employeeValidator.ValidateAsync(employee);
-
-                    if (!validationResult.IsValid)
+                    
+                    try
                     {
-                        var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                        var validationResult = await employeeValidator.ValidateAsync(employee);
+
+                        if (!validationResult.IsValid)
+                        {
+                            var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                            TempData["ErrorValidation"] = errorMessages;
+                            return RedirectToAction("PersonalAccountTeacher", "Teacher");
+                        }
+
+                    }
+                    catch (Exception ex)
+                    {
+                        var errorMessages = new List<string> { ex.Message };
                         TempData["ErrorValidation"] = errorMessages;
                         return RedirectToAction("PersonalAccountTeacher", "Teacher");
                     }
-
                     string json = JsonConvert.SerializeObject(employee);
 
                     var content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -701,15 +721,25 @@ namespace Mastery_Quotient.Controllers
                 material.PhotoMaterial = fileUrlPhoto;
                 material.IsDeleted = 0;
 
-                var validationResult = await materialValidator.ValidateAsync(material);
-
-                if (!validationResult.IsValid)
+               
+                try
                 {
-                    var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                    var validationResult = await materialValidator.ValidateAsync(material);
+
+                    if (!validationResult.IsValid)
+                    {
+                        var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                        TempData["ErrorValidation"] = errorMessages;
+                        return RedirectToAction("TeacherWindowMaterial", "Teacher");
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    var errorMessages = new List<string> { ex.Message };
                     TempData["ErrorValidation"] = errorMessages;
                     return RedirectToAction("TeacherWindowMaterial", "Teacher");
                 }
-
                 StringContent content = new StringContent(JsonConvert.SerializeObject(material), Encoding.UTF8, "application/json");
 
                 using (var httpClient = new HttpClient())
@@ -759,6 +789,11 @@ namespace Mastery_Quotient.Controllers
             }
         }
 
+        /// <summary>
+        /// POST запрос восстановления материала
+        /// </summary>
+        /// <param name="IdMaterial"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> RecoverMaterial(int IdMaterial)
         {

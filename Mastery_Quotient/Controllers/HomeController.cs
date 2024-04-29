@@ -220,14 +220,24 @@ namespace Mastery_Quotient.Controllers
                 student.IsDeleted = StudentRegistrationModel.IsDeleted;
                 student.StudyGroupId = StudentRegistrationModel.StudyGroupId;
 
-                var validationResult = await studentValidator.ValidateAsync(student);
-
-                if (!validationResult.IsValid)
+                try
                 {
-                    var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                    var validationResult = await studentValidator.ValidateAsync(student);
+
+                    if (!validationResult.IsValid)
+                    {
+                        var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                        TempData["ErrorValidation"] = errorMessages;
+                        return RedirectToAction("Registration", "Home");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    var errorMessages = new List<string> { ex.Message };
                     TempData["ErrorValidation"] = errorMessages;
                     return RedirectToAction("Registration", "Home");
                 }
+
 
                 await emailService.SendEmail(StudentRegistrationModel.EmailStudent, "Код подтверждения MastQuo", $"{key} - ваш код подтверждения электронной почты");
 
@@ -564,6 +574,11 @@ namespace Mastery_Quotient.Controllers
             return View();
         }
 
+
+        public IActionResult PrivacyPolicy()
+        {
+            return View();
+        }
             public IActionResult Privacy()
         {
             return View();

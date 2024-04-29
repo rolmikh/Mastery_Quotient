@@ -1,0 +1,59 @@
+﻿.divLogo{
+    text-decoration: none;
+    color: white;
+    
+}
+    .divLogo h1 {
+        cursor: pointer;
+        margin: 20px;
+    }
+
+.divMap {
+    text-decoration: none;
+    color: white;
+    flex: 0.2;
+
+
+}
+
+.divForm {
+    margin: 20px;
+    text-decoration: none;
+    color: white;
+    width: 100%;
+    display: flex;
+}
+
+    .divForm a {
+        text-decoration: none;
+        color: white;
+    }
+
+
+.divMastQuo {
+    text-decoration: none;
+    color: white;
+    opacity: 0.5;
+    margin: 20px;
+    margin-left: 5px;
+}
+
+
+
+.divFormMap {
+    text-decoration: none;
+    color: white;
+    display: flex;
+    flex-direction: column;
+}
+
+.divFormMap a{
+    padding: 5px;
+}
+
+
+.divFormMap div {
+    margin: 10px;
+}
+
+

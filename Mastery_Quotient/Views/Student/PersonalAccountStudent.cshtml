@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="../css/navigationStyle.css">
     <link rel="stylesheet" href="../css/personalAccountStyle.css">
     <link rel="stylesheet" href="../css/ModalWindowStyle.css">
+    <link rel="stylesheet" href="../css/footerStyle.css">
+
     <link href="https://fonts.googleapis.com/css?family=Mulish:200,300,regular,500,600,700,800,900,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic"
           rel="stylesheet" />
     <title>Личный кабинет студента</title>
@@ -85,22 +87,22 @@
                 </form>
 
 
+                <br />
+                @if (TempData["ErrorValidation"] != null)
+                {
+                    <div class="alert alert-danger">
 
+                        @foreach (var errorMessage in (string[])TempData["ErrorValidation"])
+                        {
+                            <p>@errorMessage</p>
+                        }
+                    </div>
+                }
+                <br />
             </div>
 
         </div>
-        <br/>
-        @if (TempData["ErrorValidation"] != null)
-        {
-            <div class="alert alert-danger">
-
-                @foreach (var errorMessage in (string[])TempData["ErrorValidation"])
-                {
-                    <p>@errorMessage</p>
-                }
-            </div>
-        }
-        <br />
+        
 
         <div id="myModal" class="modal">
             <div class="modal-content">
@@ -138,6 +140,45 @@
             }
         };
     </script>
+    <footer>
+        <a asp-action="MainStudent" asp-controller="Student" class="divLogo">
+            <h1>MastQuo</h1>
+        </a>
+        <div class="divForm">
+            <div class="divMap">
+                <h3>Карта сайта</h3>
+                <div class="divFormMap">
+                    <a asp-action="MainStudent" asp-controller="Student">
+                        Новости
+                    </a>
+                    <a asp-action="MaterialStudent" asp-controller="Student">
+                        Материалы
+                    </a>
+                    <a asp-action="TestStudent" asp-controller="Student">
+                        Тесты
+                    </a>
+                    <a asp-action="MyTest" asp-controller="Student">
+                        Мои тестирования
+                    </a>
 
+                </div>
+
+            </div>
+            <div class="divMap" style="float: right">
+                <h3>Документация</h3>
+                <div class="divFormDoc">
+
+                    <a asp-action="PrivacyPolicy" asp-controller="Home">
+                        Политика конфиденциальности
+                    </a>
+                </div>
+
+            </div>
+        </div>
+        <div class="divMastQuo">
+            © MastQuo, 2024
+        </div>
+
+    </footer>
 </body>
 </html>

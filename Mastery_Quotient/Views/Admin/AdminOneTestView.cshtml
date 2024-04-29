@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="../css/navigationStyle.css">
     <link rel="stylesheet" href="../css/crudStyle.css">
     <link rel="stylesheet" href="../css/TestStyle.css">
+    <link rel="stylesheet" href="../css/footerStyle.css">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css">
@@ -121,6 +122,42 @@
  
 
     </main>
+    <footer>
+        <a asp-action="MaterialsAdmin" asp-controller="Admin" class="divLogo">
+            <h1>MastQuo</h1>
+        </a>
+        <div class="divForm">
+            <div class="divMap">
+                <h3>Карта сайта</h3>
+                <div class="divFormMap">
+                    <a asp-action="MaterialsAdmin" asp-controller="Admin">
+                        Материалы
+                    </a>
+                    <a asp-action="AdminTestView" asp-controller="Admin">
+                        Тесты
+                    </a>
+                    <a asp-action="AdminPanel" asp-controller="AdminCRUD">
+                        Панель администратора
+                    </a>
 
+                </div>
+
+            </div>
+            <div class="divMap" style="float: right">
+                <h3>Документация</h3>
+                <div class="divFormDoc">
+
+                    <a asp-action="PrivacyPolicy" asp-controller="Home">
+                        Политика конфиденциальности
+                    </a>
+                </div>
+
+            </div>
+        </div>
+        <div class="divMastQuo">
+            © MastQuo, 2024
+        </div>
+
+    </footer>
 </body>
 </html>

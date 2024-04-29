@@ -172,12 +172,20 @@ namespace Mastery_Quotient.Controllers
                 testParameter.NameParameter = nameParameter;
                 testParameter.ValueParameter = valueParameter;
                 testParameter.IsDeleted = 0;
-
-                var validationResult = await testParameterValidator.ValidateAsync(testParameter);
-
-                if (!validationResult.IsValid)
+                try
                 {
-                    var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                    var validationResult = await testParameterValidator.ValidateAsync(testParameter);
+
+                    if (!validationResult.IsValid)
+                    {
+                        var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                        TempData["ErrorValidation"] = errorMessages;
+                        return RedirectToAction("TestParameterAdminPanel", "AdminCRUD");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    var errorMessages = new List<string> { ex.Message };
                     TempData["ErrorValidation"] = errorMessages;
                     return RedirectToAction("TestParameterAdminPanel", "AdminCRUD");
                 }
@@ -260,6 +268,7 @@ namespace Mastery_Quotient.Controllers
                     TempData["ErrorValidation"] = errorMessages;
                     return RedirectToAction("TestParameterAdminPanel", "AdminCRUD");
                 }
+               
 
                 StringContent content = new StringContent(JsonConvert.SerializeObject(testParameter), Encoding.UTF8, "application/json");
 
@@ -402,11 +411,22 @@ namespace Mastery_Quotient.Controllers
                 typeMaterial.NameTypeMaterial = nameTypeMaterial;
                 typeMaterial.IsDeleted = 0;
 
-                var validationResult = await typeMaterialValidator.ValidateAsync(typeMaterial);
-
-                if (!validationResult.IsValid)
+                
+                try
                 {
-                    var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                    var validationResult = await typeMaterialValidator.ValidateAsync(typeMaterial);
+
+                    if (!validationResult.IsValid)
+                    {
+                        var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                        TempData["ErrorValidation"] = errorMessages;
+                        return RedirectToAction("TypeMaterialAdminPanel", "AdminCRUD");
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    var errorMessages = new List<string> { ex.Message };
                     TempData["ErrorValidation"] = errorMessages;
                     return RedirectToAction("TypeMaterialAdminPanel", "AdminCRUD");
                 }
@@ -477,13 +497,23 @@ namespace Mastery_Quotient.Controllers
                 typeMaterial.NameTypeMaterial = NameTypeMaterial;
                 typeMaterial.IsDeleted = 0;
 
-                var validationResult = await typeMaterialValidator.ValidateAsync(typeMaterial);
-
-                if (!validationResult.IsValid)
+                try
                 {
-                    var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                    var validationResult = await typeMaterialValidator.ValidateAsync(typeMaterial);
+
+                    if (!validationResult.IsValid)
+                    {
+                        var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                        TempData["ErrorValidation"] = errorMessages;
+                        return RedirectToAction("UpdateTypeMaterial", "AdminCRUD");
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    var errorMessages = new List<string> { ex.Message };
                     TempData["ErrorValidation"] = errorMessages;
-                    return RedirectToAction("TypeMaterialAdminPanel", "AdminCRUD");
+                    return RedirectToAction("UpdateTypeMaterial", "AdminCRUD");
                 }
 
                 StringContent content = new StringContent(JsonConvert.SerializeObject(typeMaterial), Encoding.UTF8, "application/json");
@@ -642,15 +672,25 @@ namespace Mastery_Quotient.Controllers
                 studyGroup.CourseId = courseId;
                 studyGroup.IsDeleted = 0;
 
-                var validationResult = await studyGroupValidator.ValidateAsync(studyGroup);
-
-                if (!validationResult.IsValid)
+               
+                try
                 {
-                    var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                    var validationResult = await studyGroupValidator.ValidateAsync(studyGroup);
+
+                    if (!validationResult.IsValid)
+                    {
+                        var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                        TempData["ErrorValidation"] = errorMessages;
+                        return RedirectToAction("StudyGroupAdminPanel", "AdminCRUD");
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    var errorMessages = new List<string> { ex.Message };
                     TempData["ErrorValidation"] = errorMessages;
                     return RedirectToAction("StudyGroupAdminPanel", "AdminCRUD");
                 }
-
                 StringContent content = new StringContent(JsonConvert.SerializeObject(studyGroup), Encoding.UTF8, "application/json");
 
                 using (var httpClient = new HttpClient())
@@ -726,11 +766,22 @@ namespace Mastery_Quotient.Controllers
                 studyGroup.CourseId = courseId;
                 studyGroup.IsDeleted = 0;
 
-                var validationResult = await studyGroupValidator.ValidateAsync(studyGroup);
-
-                if (!validationResult.IsValid)
+                
+                try
                 {
-                    var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                    var validationResult = await studyGroupValidator.ValidateAsync(studyGroup);
+
+                    if (!validationResult.IsValid)
+                    {
+                        var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                        TempData["ErrorValidation"] = errorMessages;
+                        return RedirectToAction("UpdateStudyGroup", "AdminCRUD");
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    var errorMessages = new List<string> { ex.Message };
                     TempData["ErrorValidation"] = errorMessages;
                     return RedirectToAction("UpdateStudyGroup", "AdminCRUD");
                 }
@@ -933,11 +984,23 @@ namespace Mastery_Quotient.Controllers
                 discipline.CourseId = courseId;
                 discipline.IsDeleted = 0;
 
-                var validationResult = await disciplineValidator.ValidateAsync(discipline);
+                
 
-                if (!validationResult.IsValid)
+                try
                 {
-                    var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                    var validationResult = await disciplineValidator.ValidateAsync(discipline);
+
+                    if (!validationResult.IsValid)
+                    {
+                        var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                        TempData["ErrorValidation"] = errorMessages;
+                        return RedirectToAction("DisciplineAdminPanel", "AdminCRUD");
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    var errorMessages = new List<string> { ex.Message };
                     TempData["ErrorValidation"] = errorMessages;
                     return RedirectToAction("DisciplineAdminPanel", "AdminCRUD");
                 }
@@ -1016,12 +1079,21 @@ namespace Mastery_Quotient.Controllers
                 discipline.CourseId = courseId;
                 discipline.IsDeleted = 0;
 
-
-                var validationResult = await disciplineValidator.ValidateAsync(discipline);
-
-                if (!validationResult.IsValid)
+                try
                 {
-                    var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                    var validationResult = await disciplineValidator.ValidateAsync(discipline);
+
+                    if (!validationResult.IsValid)
+                    {
+                        var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                        TempData["ErrorValidation"] = errorMessages;
+                        return RedirectToAction("UpdateDiscipline", "AdminCRUD");
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    var errorMessages = new List<string> { ex.Message };
                     TempData["ErrorValidation"] = errorMessages;
                     return RedirectToAction("UpdateDiscipline", "AdminCRUD");
                 }
@@ -1195,14 +1267,23 @@ namespace Mastery_Quotient.Controllers
                 EmployeeStudyGroup employeeStudyGroup = new EmployeeStudyGroup();
                 employeeStudyGroup.StudyGroupId = StudyGroupId;
                 employeeStudyGroup.EmployeeId = EmployeeId;
-
-
-
-                var validationResult = await employeeStudyGroupValidator.ValidateAsync(employeeStudyGroup);
-
-                if (!validationResult.IsValid)
+                
+                try
                 {
-                    var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                    var validationResult = await employeeStudyGroupValidator.ValidateAsync(employeeStudyGroup);
+
+                    if (!validationResult.IsValid)
+                    {
+                        var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                        TempData["ErrorValidation"] = errorMessages;
+                        return RedirectToAction("StudyGroupTeacher", "AdminCRUD");
+
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    var errorMessages = new List<string> { ex.Message };
                     TempData["ErrorValidation"] = errorMessages;
                     return RedirectToAction("StudyGroupTeacher", "AdminCRUD");
                 }
@@ -1294,17 +1375,24 @@ namespace Mastery_Quotient.Controllers
                 employeeStudyGroup.StudyGroupId = StudyGroupId;
                 employeeStudyGroup.EmployeeId = EmployeeId;
 
-
-
-                var validationResult = await employeeStudyGroupValidator.ValidateAsync(employeeStudyGroup);
-
-                if (!validationResult.IsValid)
+                try
                 {
-                    var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                    var validationResult = await employeeStudyGroupValidator.ValidateAsync(employeeStudyGroup);
+
+                    if (!validationResult.IsValid)
+                    {
+                        var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                        TempData["ErrorValidation"] = errorMessages;
+                        return RedirectToAction("UpdateStudyGroupTeacher", "AdminCRUD");
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    var errorMessages = new List<string> { ex.Message };
                     TempData["ErrorValidation"] = errorMessages;
                     return RedirectToAction("UpdateStudyGroupTeacher", "AdminCRUD");
                 }
-
                 StringContent content = new StringContent(JsonConvert.SerializeObject(employeeStudyGroup), Encoding.UTF8, "application/json");
 
                 using (var httpClient = new HttpClient())
@@ -1419,11 +1507,21 @@ namespace Mastery_Quotient.Controllers
                 disciplineStudyGroup.StudyGroupId = StudyGroupId;
                 disciplineStudyGroup.DisciplineId = DisciplineId;
 
-                var validationResult = await disciplineOfTheStudyGroupValidator.ValidateAsync(disciplineStudyGroup);
-
-                if (!validationResult.IsValid)
+                try
                 {
-                    var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                    var validationResult = await disciplineOfTheStudyGroupValidator.ValidateAsync(disciplineStudyGroup);
+
+                    if (!validationResult.IsValid)
+                    {
+                        var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                        TempData["ErrorValidation"] = errorMessages;
+                        return RedirectToAction("DisciplineStudyGroup", "AdminCRUD");
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    var errorMessages = new List<string> { ex.Message };
                     TempData["ErrorValidation"] = errorMessages;
                     return RedirectToAction("DisciplineStudyGroup", "AdminCRUD");
                 }
@@ -1517,15 +1615,25 @@ namespace Mastery_Quotient.Controllers
                 disciplineOfTheStudyGroup.DisciplineId = DisciplineId;
                 disciplineOfTheStudyGroup.StudyGroupId = StudyGroupId;
 
-                var validationResult = await disciplineOfTheStudyGroupValidator.ValidateAsync(disciplineOfTheStudyGroup);
-
-                if (!validationResult.IsValid)
+                
+                try
                 {
-                    var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                    var validationResult = await disciplineOfTheStudyGroupValidator.ValidateAsync(disciplineOfTheStudyGroup);
+
+                    if (!validationResult.IsValid)
+                    {
+                        var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                        TempData["ErrorValidation"] = errorMessages;
+                        return RedirectToAction("UpdateDisciplineStudyGroup", "AdminCRUD");
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    var errorMessages = new List<string> { ex.Message };
                     TempData["ErrorValidation"] = errorMessages;
                     return RedirectToAction("UpdateDisciplineStudyGroup", "AdminCRUD");
                 }
-
                 StringContent content = new StringContent(JsonConvert.SerializeObject(disciplineOfTheStudyGroup), Encoding.UTF8, "application/json");
 
                 using (var httpClient = new HttpClient())
@@ -1635,15 +1743,25 @@ namespace Mastery_Quotient.Controllers
                 disciplineEmployee.DisciplineId = DisciplineId;
                 disciplineEmployee.EmployeeId = EmployeeId;
 
-                var validationResult = await disciplineEmployeeValidator.ValidateAsync(disciplineEmployee);
-
-                if (!validationResult.IsValid)
+                
+                try
                 {
-                    var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                    var validationResult = await disciplineEmployeeValidator.ValidateAsync(disciplineEmployee);
+
+                    if (!validationResult.IsValid)
+                    {
+                        var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                        TempData["ErrorValidation"] = errorMessages;
+                        return RedirectToAction("DisciplineTeacher", "AdminCRUD");
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    var errorMessages = new List<string> { ex.Message };
                     TempData["ErrorValidation"] = errorMessages;
                     return RedirectToAction("DisciplineTeacher", "AdminCRUD");
                 }
-
                 StringContent content = new StringContent(JsonConvert.SerializeObject(disciplineEmployee), Encoding.UTF8, "application/json");
 
                 using (var httpClient = new HttpClient())
@@ -1729,15 +1847,25 @@ namespace Mastery_Quotient.Controllers
                 disciplineEmployee.DisciplineId = DisciplineId;
                 disciplineEmployee.EmployeeId = EmployeeId;
 
-                var validationResult = await disciplineEmployeeValidator.ValidateAsync(disciplineEmployee);
-
-                if (!validationResult.IsValid)
+                
+                try
                 {
-                    var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                    var validationResult = await disciplineEmployeeValidator.ValidateAsync(disciplineEmployee);
+
+                    if (!validationResult.IsValid)
+                    {
+                        var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                        TempData["ErrorValidation"] = errorMessages;
+                        return RedirectToAction("UpdateDisciplineTeacher", "AdminCRUD");
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    var errorMessages = new List<string> { ex.Message };
                     TempData["ErrorValidation"] = errorMessages;
                     return RedirectToAction("UpdateDisciplineTeacher", "AdminCRUD");
                 }
-
                 StringContent content = new StringContent(JsonConvert.SerializeObject(disciplineEmployee), Encoding.UTF8, "application/json");
 
                 using (var httpClient = new HttpClient())
@@ -1781,7 +1909,10 @@ namespace Mastery_Quotient.Controllers
             }
         }
 
-
+        /// <summary>
+        /// Загрузка представления страницы архива студента
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> ArchiveStudent()
         {
@@ -1824,6 +1955,10 @@ namespace Mastery_Quotient.Controllers
 
         }
 
+        /// <summary>
+        /// Загрузка представления страницы архива преподавателя
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> Archive()
         {
@@ -1866,7 +2001,11 @@ namespace Mastery_Quotient.Controllers
 
         }
 
-       
+       /// <summary>
+       /// Метод восстановления преподавателя
+       /// </summary>
+       /// <param name="id"></param>
+       /// <returns></returns>
         public async Task<IActionResult> RecoverTeacher(int id)
         {
             try
@@ -1905,7 +2044,11 @@ namespace Mastery_Quotient.Controllers
 
         }
 
-      
+      /// <summary>
+      /// Метод восстановления студента
+      /// </summary>
+      /// <param name="id"></param>
+      /// <returns></returns>
         public async Task<IActionResult> RecoverStudent(int id)
         {
             try

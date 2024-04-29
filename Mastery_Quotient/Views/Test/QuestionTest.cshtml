@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="../css/crudStyle.css">
     <link rel="stylesheet" href="../css/TestStyle.css">
     <link rel="stylesheet" href="../css/ModalWindowStyle.css">
+    <link rel="stylesheet" href="../css/footerStyle.css">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css">
@@ -154,9 +155,6 @@
                     <div class="name">
                         @questionName
                     </div>
-                    <div>
-                        <a asp-action="UpdateTestQuestion" asp-controller="Test" asp-route-id="@question.IdTestQuestion"><input type="image" width="50" height="50" src="../images/edit.png" /></a>
-                    </div>
                     <div class="test_button">
                         <form id="deleteForm" asp-controller="Test" asp-action="DeleteQuestion" method="post">
                             <input type="hidden" value="@question.IdTestQuestion" name="IdTestQuestion" />
@@ -270,6 +268,42 @@
         </script>
 
     </main>
+    <footer>
+        <a asp-action="MaterialsTeacher" asp-controller="Teacher" class="divLogo">
+            <h1>MastQuo</h1>
+        </a>
+        <div class="divForm">
+            <div class="divMap">
+                <h3>Карта сайта</h3>
+                <div class="divFormMap">
+                    <a asp-action="MaterialsTeacher" asp-controller="Teacher">
+                        Материалы
+                    </a>
+                    <a asp-action="TestTeacher" asp-controller="Test">
+                        Тесты
+                    </a>
+                    <a asp-action="TestDone" asp-controller="Test">
+                        Тестирования студентов
+                    </a>
 
+                </div>
+
+            </div>
+            <div class="divMap" style="float: right">
+                <h3>Документация</h3>
+                <div class="divFormDoc">
+
+                    <a asp-action="PrivacyPolicy" asp-controller="Home">
+                        Политика конфиденциальности
+                    </a>
+                </div>
+
+            </div>
+        </div>
+        <div class="divMastQuo">
+            © MastQuo, 2024
+        </div>
+
+    </footer>
 </body>
 </html>

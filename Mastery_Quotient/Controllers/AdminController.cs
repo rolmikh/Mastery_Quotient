@@ -294,11 +294,21 @@ namespace Mastery_Quotient.Controllers
                 employee.IsDeleted = 0;
                 employee.RoleId = roleUser;
 
-                var validationResult = await employeeValidator.ValidateAsync(employee);
-
-                if (!validationResult.IsValid)
+               
+                try
                 {
-                    var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                    var validationResult = await employeeValidator.ValidateAsync(employee);
+
+                    if (!validationResult.IsValid)
+                    {
+                        var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                        TempData["ErrorValidation"] = errorMessages;
+                        return RedirectToAction("TeacherNew", "Admin");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    var errorMessages = new List<string> { ex.Message };
                     TempData["ErrorValidation"] = errorMessages;
                     return RedirectToAction("TeacherNew", "Admin");
                 }
@@ -362,17 +372,23 @@ namespace Mastery_Quotient.Controllers
                     employee.MiddleNameEmployee = middleNameUser;
                     employee.EmailEmployee = emailUser;
                     employee.RoleId = roleUser;
-
-                    var validationResult = await employeeValidator.ValidateAsync(employee);
-
-                    if (!validationResult.IsValid)
+                    try
                     {
-                        var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                        var validationResult = await employeeValidator.ValidateAsync(employee);
+
+                        if (!validationResult.IsValid)
+                        {
+                            var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                            TempData["ErrorValidation"] = errorMessages;
+                            return RedirectToAction("UpdateTeacher", "Admin");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        var errorMessages = new List<string> { ex.Message };
                         TempData["ErrorValidation"] = errorMessages;
                         return RedirectToAction("UpdateTeacher", "Admin");
                     }
-
-
                     string json = JsonConvert.SerializeObject(employee);
 
                     var content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -595,11 +611,20 @@ namespace Mastery_Quotient.Controllers
                     employee.MiddleNameEmployee = middleNameUser;
                     employee.EmailEmployee = emailUser;
 
-                    var validationResult = await employeeValidator.ValidateAsync(employee);
-
-                    if (!validationResult.IsValid)
+                    try
                     {
-                        var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                        var validationResult = await employeeValidator.ValidateAsync(employee);
+
+                        if (!validationResult.IsValid)
+                        {
+                            var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                            TempData["ErrorValidation"] = errorMessages;
+                            return RedirectToAction("PersonalAccountAdmin", "Admin");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        var errorMessages = new List<string> { ex.Message };
                         TempData["ErrorValidation"] = errorMessages;
                         return RedirectToAction("PersonalAccountAdmin", "Admin");
                     }
@@ -895,16 +920,23 @@ namespace Mastery_Quotient.Controllers
                     student.EmailStudent = emailUser;
                     student.StudyGroupId = studyGroupUser;
 
-                    var validationResult = await studentValidator.ValidateAsync(student);
-
-                    if (!validationResult.IsValid)
+                    try
                     {
-                        var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                        var validationResult = await studentValidator.ValidateAsync(student);
+
+                        if (!validationResult.IsValid)
+                        {
+                            var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                            TempData["ErrorValidation"] = errorMessages;
+                            return RedirectToAction("UpdateStudent", "Admin");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        var errorMessages = new List<string> { ex.Message };
                         TempData["ErrorValidation"] = errorMessages;
                         return RedirectToAction("UpdateStudent", "Admin");
                     }
-
-
                     string json = JsonConvert.SerializeObject(student);
 
                     var content = new StringContent(json, Encoding.UTF8, "application/json");

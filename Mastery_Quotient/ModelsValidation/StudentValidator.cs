@@ -13,11 +13,11 @@ namespace Mastery_Quotient.ModelsValidation
                 .Matches(@"^[a-zA-Z0-9._%+-]+@mpt.ru$").WithMessage("Некорректный формат адреса электронной почты. Электронная почта должна принадлежать домену МПТ");
 
             this.RuleFor(x => x.SurnameStudent)
-                .Must(x => x.ToUpper().First() == x.First())
+                .Must(x => string.IsNullOrEmpty(x) || x.ToUpper().First() == x.First())
                 .WithMessage("Первая буква фамилии должна быть заглавной!");
 
             this.RuleFor(x => x.NameStudent)
-                .Must(x => x.ToUpper().First() == x.First())
+                .Must(x => string.IsNullOrEmpty(x) || x.ToUpper().First() == x.First())
                 .WithMessage("Первая буква имени должна быть заглавной!");
 
             this.RuleFor(x => x.MiddleNameStudent)

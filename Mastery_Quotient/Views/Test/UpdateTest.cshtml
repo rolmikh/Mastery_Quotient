@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="@Url.Content("~/css/mainStyle.css")">
     <link rel="stylesheet" href="@Url.Content("~/css/TestStyle.css")">
     <link rel="stylesheet" href="@Url.Content("~/css/crudStyle.css")">
+    <link rel="stylesheet" href="@Url.Content("~/css/footerStyle.css")">
+
     <link href="https://fonts.googleapis.com/css?family=Mulish:200,300,regular,500,600,700,800,900,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic"
           rel="stylesheet" />
 
@@ -69,7 +71,43 @@
         <br />
     </main>
 
+    <footer>
+        <a asp-action="MaterialsTeacher" asp-controller="Teacher" class="divLogo">
+            <h1>MastQuo</h1>
+        </a>
+        <div class="divForm">
+            <div class="divMap">
+                <h3>Карта сайта</h3>
+                <div class="divFormMap">
+                    <a asp-action="MaterialsTeacher" asp-controller="Teacher">
+                        Материалы
+                    </a>
+                    <a asp-action="TestTeacher" asp-controller="Test">
+                        Тесты
+                    </a>
+                    <a asp-action="TestDone" asp-controller="Test">
+                        Тестирования студентов
+                    </a>
 
+                </div>
+
+            </div>
+            <div class="divMap" style="float: right">
+                <h3>Документация</h3>
+                <div class="divFormDoc">
+
+                    <a asp-action="PrivacyPolicy" asp-controller="Home">
+                        Политика конфиденциальности
+                    </a>
+                </div>
+
+            </div>
+        </div>
+        <div class="divMastQuo">
+            © MastQuo, 2024
+        </div>
+
+    </footer>
 
 </body>
 

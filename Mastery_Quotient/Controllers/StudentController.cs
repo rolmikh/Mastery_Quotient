@@ -114,15 +114,25 @@ namespace Mastery_Quotient.Controllers
                     student.EmailStudent = emailUser;
                     student.MiddleNameStudent = middleNameUser;
 
-                    var validationResult = await studentValidator.ValidateAsync(student);
-
-                    if (!validationResult.IsValid)
+                    
+                    try
                     {
-                        var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                        var validationResult = await studentValidator.ValidateAsync(student);
+
+                        if (!validationResult.IsValid)
+                        {
+                            var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                            TempData["ErrorValidation"] = errorMessages;
+                            return RedirectToAction("PersonalAccountStudent", "Student");
+                        }
+
+                    }
+                    catch (Exception ex)
+                    {
+                        var errorMessages = new List<string> { ex.Message };
                         TempData["ErrorValidation"] = errorMessages;
                         return RedirectToAction("PersonalAccountStudent", "Student");
                     }
-
                     string json = JsonConvert.SerializeObject(student);
 
                     var content = new StringContent(json, Encoding.UTF8, "application/json");
