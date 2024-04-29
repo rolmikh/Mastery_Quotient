@@ -243,11 +243,9 @@ namespace Mastery_Quotient.Controllers
         /// <param name="nameUser"></param>
         /// <param name="middleNameUser"></param>
         /// <param name="emailUser"></param>
-        /// <param name="passwordUser"></param>
-        /// <param name="saltUser"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> PersonalAccountTeacher(string surnameUser, string nameUser, string middleNameUser, string emailUser, string passwordUser, string saltUser)
+        public async Task<IActionResult> PersonalAccountTeacher(string surnameUser, string nameUser, string middleNameUser, string emailUser)
         {
             try
             {
@@ -256,31 +254,33 @@ namespace Mastery_Quotient.Controllers
                 TempData.Keep("AuthUser");
 
                 var apiUrl = configuration["AppSettings:ApiUrl"];
-
-                Employee employee = new Employee();
-                employee.IdEmployee = id;
-                employee.SurnameEmployee = surnameUser;
-                employee.NameEmployee = nameUser;
-                employee.MiddleNameEmployee = middleNameUser;
-                employee.EmailEmployee = emailUser;
-                employee.PasswordEmployee = passwordUser;
-                employee.SaltEmployee = saltUser;
-                employee.RoleId = 2;
-                employee.IsDeleted = 0;
-
-                var validationResult = await employeeValidator.ValidateAsync(employee);
-
-                if (!validationResult.IsValid)
-                {
-                    var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
-                    TempData["ErrorValidation"] = errorMessages;
-                    return RedirectToAction("PersonalAccountTeacher", "Teacher");
-                }
                 using (var httpClient = new HttpClient())
                 {
-                    StringContent content = new StringContent(JsonConvert.SerializeObject(employee), Encoding.UTF8, "application/json");
+                    var response = await httpClient.GetAsync(apiUrl + "Employees/" + id);
+                    response.EnsureSuccessStatusCode();
 
-                    var response = await httpClient.PutAsync(apiUrl + "Employees/" + id, content);
+                    var employeeData = await response.Content.ReadAsStringAsync();
+
+                    var employee = JsonConvert.DeserializeObject<Employee>(employeeData);
+                    employee.SurnameEmployee = surnameUser;
+                    employee.NameEmployee = nameUser;
+                    employee.MiddleNameEmployee = middleNameUser;
+                    employee.EmailEmployee = emailUser;
+
+                    var validationResult = await employeeValidator.ValidateAsync(employee);
+
+                    if (!validationResult.IsValid)
+                    {
+                        var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                        TempData["ErrorValidation"] = errorMessages;
+                        return RedirectToAction("PersonalAccountTeacher", "Teacher");
+                    }
+
+                    string json = JsonConvert.SerializeObject(employee);
+
+                    var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                    response = await httpClient.PutAsync(apiUrl + "Employees/" + id, content);
 
                     if (response.IsSuccessStatusCode)
                     {

@@ -61,6 +61,11 @@ namespace Mastery_Quotient.Controllers
         {
             try
             {
+                if (!TempData.ContainsKey("AuthUser"))
+                {
+                    return RedirectToAction("Authorization", "Home");
+                }
+
                 var apiUrl = configuration["AppSettings:ApiUrl"];
 
                 List<Employee> employees = new List<Employee>();
@@ -205,6 +210,7 @@ namespace Mastery_Quotient.Controllers
         {
             try
             {
+                
                 var apiUrl = configuration["AppSettings:ApiUrl"];
 
                 List<Employee> employees = new List<Employee>();
@@ -332,44 +338,46 @@ namespace Mastery_Quotient.Controllers
         /// <param name="nameUser"></param>
         /// <param name="middleNameUser"></param>
         /// <param name="emailUser"></param>
-        /// <param name="passwordUser"></param>
-        /// <param name="saltUser"></param>
         /// <param name="roleUser"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> UpdateTeacher(int idUser,string surnameUser, string nameUser, string middleNameUser, string emailUser, string passwordUser, string saltUser,int roleUser)
+        public async Task<IActionResult> UpdateTeacher(int idUser,string surnameUser, string nameUser, string middleNameUser, string emailUser,int roleUser)
         {
             try
             {
-
+                
 
                 var apiUrl = configuration["AppSettings:ApiUrl"];
-
-                Employee employee = new Employee();
-                employee.IdEmployee = idUser;
-                employee.SurnameEmployee = surnameUser;
-                employee.NameEmployee = nameUser;
-                employee.MiddleNameEmployee = middleNameUser;
-                employee.EmailEmployee = emailUser;
-                employee.PasswordEmployee = passwordUser;
-                employee.SaltEmployee = saltUser;
-                employee.RoleId = roleUser;
-                employee.IsDeleted = 0;
-
-                var validationResult = await employeeValidator.ValidateAsync(employee);
-
-                if (!validationResult.IsValid)
-                {
-                    var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
-                    TempData["ErrorValidation"] = errorMessages;
-                    return RedirectToAction("UpdateTeacher", "Admin");
-                }
-
                 using (var httpClient = new HttpClient())
                 {
-                    StringContent content = new StringContent(JsonConvert.SerializeObject(employee), Encoding.UTF8, "application/json");
+                    var response = await httpClient.GetAsync(apiUrl + "Employees/" + idUser);
+                    response.EnsureSuccessStatusCode();
 
-                    var response = await httpClient.PutAsync(apiUrl + "Employees/" + idUser, content);
+                    var employeeTestData = await response.Content.ReadAsStringAsync();
+
+                    var employee = JsonConvert.DeserializeObject<Employee>(employeeTestData);
+
+                    employee.SurnameEmployee = surnameUser;
+                    employee.NameEmployee = nameUser;
+                    employee.MiddleNameEmployee = middleNameUser;
+                    employee.EmailEmployee = emailUser;
+                    employee.RoleId = roleUser;
+
+                    var validationResult = await employeeValidator.ValidateAsync(employee);
+
+                    if (!validationResult.IsValid)
+                    {
+                        var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                        TempData["ErrorValidation"] = errorMessages;
+                        return RedirectToAction("UpdateTeacher", "Admin");
+                    }
+
+
+                    string json = JsonConvert.SerializeObject(employee);
+
+                    var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                    response = await httpClient.PutAsync(apiUrl + "Employees/" + idUser, content);
 
                     if (response.IsSuccessStatusCode)
                     {
@@ -397,6 +405,7 @@ namespace Mastery_Quotient.Controllers
         {
             try
             {
+                
                 var apiUrl = configuration["AppSettings:ApiUrl"];
 
                 Employee employee = null;
@@ -436,6 +445,7 @@ namespace Mastery_Quotient.Controllers
         {
             try
             {
+
                 var apiUrl = configuration["AppSettings:ApiUrl"];
                 using (var httpClient = new HttpClient())
                 {
@@ -861,47 +871,45 @@ namespace Mastery_Quotient.Controllers
         /// <param name="nameUser"></param>
         /// <param name="middleNameUser"></param>
         /// <param name="emailUser"></param>
-        /// <param name="passwordUser"></param>
-        /// <param name="saltUser"></param>
         /// <param name="studyGroupUser"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> UpdateStudent(int idUser,string surnameUser, string nameUser, string middleNameUser, string emailUser, string passwordUser, string saltUser , int studyGroupUser)
+        public async Task<IActionResult> UpdateStudent(int idUser,string surnameUser, string nameUser, string middleNameUser, string emailUser , int studyGroupUser)
         {
             try
             {
 
                 var apiUrl = configuration["AppSettings:ApiUrl"];
 
-                string[] subs = nameUser.Split();
-
-                Student student = new Student();
-                student.IdStudent = idUser;
-                student.SurnameStudent = surnameUser;
-                student.NameStudent = nameUser;
-                student.MiddleNameStudent = middleNameUser;
-                student.EmailStudent = emailUser;
-                student.PasswordStudent = passwordUser;
-                student.SaltStudent = saltUser;
-                student.IsDeleted = 0;
-                student.StudyGroupId = studyGroupUser;
-
-
-                var validationResult = await studentValidator.ValidateAsync(student);
-
-                if (!validationResult.IsValid)
-                {
-                    var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
-                    TempData["ErrorValidation"] = errorMessages;
-                    return RedirectToAction("UpdateStudent", "Admin");
-                }
-
-
-                StringContent content = new StringContent(JsonConvert.SerializeObject(student), Encoding.UTF8, "application/json");
-
                 using (var httpClient = new HttpClient())
                 {
-                    var response = await httpClient.PutAsync(apiUrl + "Students/" + idUser, content);
+                    var response = await httpClient.GetAsync(apiUrl + "Students/" + idUser);
+                    response.EnsureSuccessStatusCode();
+                    var studentData = await response.Content.ReadAsStringAsync();
+
+                    var student = JsonConvert.DeserializeObject<Student>(studentData);
+
+                    student.SurnameStudent = surnameUser;
+                    student.NameStudent = nameUser;
+                    student.MiddleNameStudent = middleNameUser;
+                    student.EmailStudent = emailUser;
+                    student.StudyGroupId = studyGroupUser;
+
+                    var validationResult = await studentValidator.ValidateAsync(student);
+
+                    if (!validationResult.IsValid)
+                    {
+                        var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                        TempData["ErrorValidation"] = errorMessages;
+                        return RedirectToAction("UpdateStudent", "Admin");
+                    }
+
+
+                    string json = JsonConvert.SerializeObject(student);
+
+                    var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                    response = await httpClient.PutAsync(apiUrl + "Students/" + idUser, content);
 
                     if (response.IsSuccessStatusCode)
                     {

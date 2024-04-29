@@ -21,9 +21,6 @@
                     var roleName = Model.Roles.Find(n => n.IdRole == employee.RoleId).NameRole;
                     var roleID = Model.Roles.Find(n => n.IdRole == employee.RoleId).IdRole;
 
-                    
-                    <input type="password" hidden required name="passwordUser" value="@employee.PasswordEmployee" placeholder="Пароль" />
-                    <input type="password" hidden required name="saltUser" value="@employee.SaltEmployee" placeholder="Соль" />
                     <label hidden>Введите код</label>
                     <input type="text" required name="IdUser" class="CrudInput"  readonly hidden value="@employee.IdEmployee" placeholder="" />
                     <br />
