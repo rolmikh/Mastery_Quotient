@@ -51,7 +51,6 @@
 
             <h3>Название теста</h3>
             <h3>Дата создания теста</h3>
-            @* <h3>@Model.Discipline.Find(n => n.IdDiscipline == @Model.disciplineEmployees).NameDiscipline</h3> *@
             <h3>Преподаватель</h3>
             <h3>Срок сдачи</h3>
 
@@ -60,7 +59,6 @@
             
             <h3>@Model.Test.NameTest</h3>
             <h3>@Model.Test.DateCreatedTest</h3>
-            @* <h3>@Model.Discipline.Find(n => n.IdDiscipline == @Model.disciplineEmployees).NameDiscipline</h3> *@
             <h3>@Model.Employee.SurnameEmployee @Model.Employee.NameEmployee @Model.Employee.MiddleNameEmployee</h3>
             <h3>@Model.Test.Deadline</h3>
 
@@ -141,11 +139,11 @@
 
         @foreach (var question in Model.TestQuestion)
         {
-            var questionNumber = Model.Question.Find(n => n.IdQuestion == question.QuestionId).NumberQuestion;
-            var questionName = Model.Question.Find(n => n.IdQuestion == question.QuestionId).NameQuestion;
-            var questionTypeID = Model.Question.Find(n => n.IdQuestion == question.QuestionId).TypeQuestionId;
+            var questionNumber = Model.Question.Find(n => n.IdQuestion == question.QuestionId)?.NumberQuestion;
+            var questionName = Model.Question.Find(n => n.IdQuestion == question.QuestionId)?.NameQuestion;
+            var questionTypeID = Model.Question.Find(n => n.IdQuestion == question.QuestionId)?.TypeQuestionId;
 
-            var questionID = Model.Question.Find(n => n.IdQuestion == question.QuestionId).IdQuestion;
+            var questionID = Model.Question.Find(n => n.IdQuestion == question.QuestionId)?.IdQuestion;
            
             <div class="formAnswer">
                 <div class="flexDiv">
@@ -159,6 +157,7 @@
                         <form id="deleteForm" asp-controller="Test" asp-action="DeleteQuestion" method="post">
                             <input type="hidden" value="@question.IdTestQuestion" name="IdTestQuestion" />
                             <input type="hidden" name="IdQuestion" value="@questionID" />
+                            <input type="hidden" value="@questionTypeID" name="questionTypeID" />
                             <button class="image_button" width="50" height="50" type="button">
                                 <img>
                             </button>
@@ -176,7 +175,7 @@
                     <div class="AnswerForm">
                         @foreach (var answer in Model.QuestionAnswerOption.Where(n => n.QuestionId == questionID))
                         {
-                            var answerContent = Model.AnswerOption.Find(n => n.IdAnswerOptions == answer.AnswerOptionsId).ContentAnswer;
+                            var answerContent = Model.AnswerOption.Find(n => n.IdAnswerOptions == answer.AnswerOptionsId)?.ContentAnswer;
 
                             <div class="Answer">
                                 <input type="radio" name="AnswerOptionViewModels[@questionID].SelectedAnswer" value="@answer.AnswerOptionsId" />
@@ -191,7 +190,7 @@
                     <div class="AnswerForm">
                         @foreach (var answer in Model.QuestionAnswerOption.Where(n => n.QuestionId == questionID))
                         {
-                            var answerContent = Model.AnswerOption.Find(n => n.IdAnswerOptions == answer.AnswerOptionsId).ContentAnswer;
+                            var answerContent = Model.AnswerOption.Find(n => n.IdAnswerOptions == answer.AnswerOptionsId)?.ContentAnswer;
 
                             <div class="Answer">
                                 <input type="checkbox" name="AnswerOptionViewModels[@questionID].SelectedAnswer" value="@answer.AnswerOptionsId" />
@@ -219,7 +218,8 @@
                 <p>Вы уверены, что хотите удалить этот вопрос?</p>
                 <form id="deleteForm" asp-controller="Test" asp-action="DeleteQuestion" method="post">
                     <input type="hidden" id="IdTestQuestion" name="IdTestQuestion" />
-                    <input type="hidden" id="IdQuestion" name="IdQuestion" />
+                    <input type="hidden" id="IdQuestion" name="IdQuestion" />      
+                    <input type="hidden" id="questionTypeID" name="questionTypeID" />
                     <button id="confirmDeleteBtnModal" class="newInput">Да</button>
                     <button id="confirmBack" class="newInput">Отмена</button>
                 </form>
@@ -230,9 +230,11 @@
             var modal = document.getElementById('myModal'); // Получаем модальное окно по его id
             var confirmDeleteBtn = document.getElementById('confirmDeleteBtnModal'); // Получаем кнопку подтверждения удаления
             var confirmBackBtn = document.getElementById('confirmBack'); // Получаем кнопку отмены
-            var IdTestQuestionInput = document.getElementById('IdTestQuestion'); // Получаем скрытое поле для id студента
+            var IdTestQuestionInput = document.getElementById('IdTestQuestion'); // Получаем скрытое поле для id 
             var closeButton = document.querySelector('.modal-content .close');
-            var IdQuestionInput = document.getElementById('IdQuestion'); // Получаем скрытое поле для id студента
+            var IdQuestionInput = document.getElementById('IdQuestion'); // Получаем скрытое поле для id 
+            var questionTypeIDInput = document.getElementById('questionTypeID'); // Получаем скрытое поле для id
+
 
 
             // Добавляем обработчик события к кнопкам удаления
@@ -240,9 +242,11 @@
                 btn.addEventListener('click', function () {
                     // При нажатии кнопки удаления открываем модальное окно
                     modal.style.display = 'block';
-                    // Устанавливаем значение скрытого поля IdTestQuestionInput равным id студента из соответствующей строки таблицы
+                    // Устанавливаем значение скрытого поля равным id  из соответствующей строки 
                     IdTestQuestionInput.value = btn.closest('div').querySelector('[name="IdTestQuestion"]').value;
                     IdQuestionInput.value = btn.closest('div').querySelector('[name="IdQuestion"]').value;
+                    questionTypeIDInput.value = btn.closest('div').querySelector('[name="questionTypeID"]').value;
+
                 });
             });
 
@@ -268,6 +272,9 @@
         </script>
 
     </main>
+    <br/>
+    <br />
+    <br />
     <footer>
         <a asp-action="MaterialsTeacher" asp-controller="Teacher" class="divLogo">
             <h1>MastQuo</h1>

@@ -154,7 +154,7 @@
                 btn.addEventListener('click', function () {
                     // При нажатии кнопки удаления открываем модальное окно
                     modal.style.display = 'block';
-                    // Устанавливаем значение скрытого поля IdTestInput равным id  из соответствующей строки таблицы
+                    // Устанавливаем значение скрытого поля  равным id  из соответствующей строки таблицы
                     IdTestInput.value = btn.closest('div').querySelector('[name="IdTest"]').value;
                 });
             });
@@ -181,6 +181,9 @@
 
         </script>
     </main>
+    <br />
+    <br />
+    <br />
     <footer>
         <a asp-action="MaterialsTeacher" asp-controller="Teacher" class="divLogo">
             <h1>MastQuo</h1>

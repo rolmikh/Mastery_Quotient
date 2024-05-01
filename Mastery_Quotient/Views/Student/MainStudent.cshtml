@@ -25,12 +25,6 @@
             <li class="navigation_li"><a class="navigation_a" asp-action="TestStudent" asp-controller="Student">Тесты</a></li>
             <li class="navigation_li"><a class="navigation_a" asp-action="MyTest" asp-controller="Student">Мои тестирования</a></li>
         </ul>
-        @* <ul class="navigation_ul_right">
-        <li class="navigation_li_right" style="float: right">
-        <a class="navigation_a_right" asp-action="AdminWindowTeacher" asp-controller="admin">Преподаватели</a>
-        </li>
-        <li class="navigation_li_right" style="float: right"><a class="navigation_a_right" asp-action="AdminWindowStudent" asp-controller="admin">Студенты</a></li>
-        </ul> *@
         <button class="glow_button" onclick="window.location.href='@Url.Action("PersonalAccountStudent", "student")'">
             Личный кабинет
         </button>
@@ -40,18 +34,18 @@
 <body>
     <main>
         <div class="containerForm">
-            <form asp-antiforgery="true" asp-action="MaterialStudent" asp-controller="Student">
+            <form asp-antiforgery="true" asp-action="MaterialStudentMain" asp-controller="Student">
                 <input class="searchInput" type="text" name="Search" />
                 <button class="searchImage" type="submit">
                     <img width="40" height="40" src="../images/icons8-лупа-64.png" />
                 </button>
             </form>
-            <form asp-antiforgery="true" asp-action="FiltrationMaterialStudent" asp-controller="Student">
+            <form asp-antiforgery="true" asp-action="FiltrationMaterialStudentMain" asp-controller="Student">
                 <select class="CrudSelect" required id="disciplineID" name="disciplineID" placeholder="Дисциплина">
                     <option selected disabled>Дисциплина</option>
                     @foreach (var disciplineStudyGroup in Model.DisciplineOfTheStudyGroup)
                     {
-                        var idDiscipline = Model.Disciplines.Find(n => n.IdDiscipline == disciplineStudyGroup.DisciplineId).IdDiscipline;
+                        var idDiscipline = Model.Disciplines.Find(n => n.IdDiscipline == disciplineStudyGroup.DisciplineId)?.IdDiscipline;
                         @foreach (var discipline in Model.Disciplines.Where(n => n.IdDiscipline == idDiscipline))
                         {
                             <option value="@discipline.IdDiscipline">@discipline.NameDiscipline</option>
@@ -82,17 +76,17 @@
         <div class="formsContainer">
             @foreach (var disciplineStudyGroup in Model.DisciplineOfTheStudyGroup)
             {
-                var idDiscipline = Model.Disciplines.Find(n => n.IdDiscipline == disciplineStudyGroup.DisciplineId).IdDiscipline;
+                var idDiscipline = Model.Disciplines.Find(n => n.IdDiscipline == disciplineStudyGroup.DisciplineId)?.IdDiscipline;
 
-                var idEmployee = Model.DisciplineEmployees.Find(n => n.DisciplineId == idDiscipline).EmployeeId;
+                var idEmployee = Model.DisciplineEmployees.Find(n => n.DisciplineId == idDiscipline)?.EmployeeId;
 
-                var surnameEmployee = Model.Employees.Find(n => n.IdEmployee == idEmployee).SurnameEmployee;
+                var surnameEmployee = Model.Employees.Find(n => n.IdEmployee == idEmployee)?.SurnameEmployee;
 
-                var nameEmployee = Model.Employees.Find(n => n.IdEmployee == idEmployee).NameEmployee;
+                var nameEmployee = Model.Employees.Find(n => n.IdEmployee == idEmployee)?.NameEmployee;
 
-                var middleNameEmployee = Model.Employees.Find(n => n.IdEmployee == idEmployee).MiddleNameEmployee;
+                var middleNameEmployee = Model.Employees.Find(n => n.IdEmployee == idEmployee)?.MiddleNameEmployee;
 
-                var photoEmployee = Model.Employees.Find(n => n.IdEmployee == idEmployee).PhotoEmployee;
+                var photoEmployee = Model.Employees.Find(n => n.IdEmployee == idEmployee)?.PhotoEmployee;
 
 
                 @foreach (var item in Model.Materials.Where(n => n.DisciplineId == idDiscipline && (n.DateCreatedMaterial.Value.Month == DateTime.Now.Month && n.DateCreatedMaterial.Value.Year == DateTime.Now.Year)).OrderByDescending(m => m.DateCreatedMaterial).Take(10))
@@ -119,13 +113,13 @@
         </div>
 
         <div class="containerForm">
-            <form asp-antiforgery="true" asp-action="TestStudent" asp-controller="Student">
+            <form asp-antiforgery="true" asp-action="TestStudentMain" asp-controller="Student">
                 <input class="searchInput" type="text" name="Search" />
                 <button class="searchImage" type="submit">
                     <img width="40" height="40" src="../images/icons8-лупа-64.png" />
                 </button>
             </form>
-            <form asp-antiforgery="true" asp-action="FiltrationTestStudent" asp-controller="Student">
+            <form asp-antiforgery="true" asp-action="FiltrationTestStudentMain" asp-controller="Student">
                 <select class="CrudSelect" required id="disciplineID" name="disciplineID" placeholder="Дисциплина">
                     <option selected disabled>Дисциплина</option>
                     @foreach (var discipline in Model.Disciplines)
@@ -150,17 +144,17 @@
         <div class="formsContainer">
             @foreach (var disciplineStudyGroup in Model.DisciplineOfTheStudyGroup)
             {
-                var idDiscipline = Model.Disciplines.Find(n => n.IdDiscipline == disciplineStudyGroup.DisciplineId).IdDiscipline;
+                var idDiscipline = Model.Disciplines.Find(n => n.IdDiscipline == disciplineStudyGroup.DisciplineId)?.IdDiscipline;
 
-                var idEmployee = Model.DisciplineEmployees.Find(n => n.DisciplineId == idDiscipline).EmployeeId;
+                var idEmployee = Model.DisciplineEmployees.Find(n => n.DisciplineId == idDiscipline)?.EmployeeId;
 
-                var surnameEmployee = Model.Employees.Find(n => n.IdEmployee == idEmployee).SurnameEmployee;
+                var surnameEmployee = Model.Employees.Find(n => n.IdEmployee == idEmployee)?.SurnameEmployee;
 
-                var nameEmployee = Model.Employees.Find(n => n.IdEmployee == idEmployee).NameEmployee;
+                var nameEmployee = Model.Employees.Find(n => n.IdEmployee == idEmployee)?.NameEmployee;
 
-                var middleNameEmployee = Model.Employees.Find(n => n.IdEmployee == idEmployee).MiddleNameEmployee;
+                var middleNameEmployee = Model.Employees.Find(n => n.IdEmployee == idEmployee)?.MiddleNameEmployee;
 
-                var photoEmployee = Model.Employees.Find(n => n.IdEmployee == idEmployee).PhotoEmployee;
+                var photoEmployee = Model.Employees.Find(n => n.IdEmployee == idEmployee)?.PhotoEmployee;
 
 
                 @foreach (var item in Model.Test.Where(n => n.DisciplineId == idDiscipline && (n.DateCreatedTest.Value.Month == DateTime.Now.Month && n.DateCreatedTest.Value.Year == DateTime.Now.Year)).OrderByDescending(m => m.DateCreatedTest).Take(10))
@@ -195,7 +189,9 @@
 
 
     </main>
-
+    <br />
+    <br />
+    <br />
     <footer>
         <a asp-action="MainStudent" asp-controller="Student" class="divLogo">
             <h1>MastQuo</h1>

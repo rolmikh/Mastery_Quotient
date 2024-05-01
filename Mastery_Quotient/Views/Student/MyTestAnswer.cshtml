@@ -12,7 +12,7 @@
 
     <link href="https://fonts.googleapis.com/css?family=Mulish:200,300,regular,500,600,700,800,900,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic"
           rel="stylesheet" />
-    <title>Тестирования</title>
+    <title>Ответы на тестирования</title>
     <div class="container">
         <a asp-action="MainStudent" asp-controller="Student">
             <img class="navigation_img" src="@Url.Content("~/images/3QpbYI-LogoMakr.png")">
@@ -45,19 +45,19 @@
         </div>
         <div class="h2form">
             <h3>@Model.Test.NameTest</h3>
-            <h3>@Model.StudentTests.Find(n => n.TestId == Model.Test.IdTest).DateCompleted</h3>
+            <h3>@Model.StudentTests.Find(n => n.TestId == Model.Test.IdTest)?.DateCompleted</h3>
             <h3>@Model.Test.Deadline</h3>
-            <h3>@Model.StudentTests.Find(n => n.TestId == Model.Test.IdTest).Result из @Model.TestQuestions.Count(n => n.TestId == Model.Test.IdTest)</h3>
+            <h3>@Model.StudentTests.Find(n => n.TestId == Model.Test.IdTest)?.Result из @Model.TestQuestions.Count(n => n.TestId == Model.Test.IdTest)</h3>
 
         </div>
 
         @foreach (var test in Model.Answers)
         {
 
-            var questionID = Model.TestQuestions.Find(n => n.TestId == Model.Test.IdTest && n.IdTestQuestion == test.TestQuestionId).QuestionId;
-            var questionNumber = Model.Questions.Find(n => n.IdQuestion == questionID).NumberQuestion;
-            var questionName = Model.Questions.Find(n => n.IdQuestion == questionID).NameQuestion;
-            var questionTypeID = Model.Questions.Find(n => n.IdQuestion == questionID).TypeQuestionId;
+            var questionID = Model.TestQuestions.Find(n => n.TestId == Model.Test.IdTest && n.IdTestQuestion == test.TestQuestionId)?.QuestionId;
+            var questionNumber = Model.Questions.Find(n => n.IdQuestion == questionID)?.NumberQuestion;
+            var questionName = Model.Questions.Find(n => n.IdQuestion == questionID)?.NameQuestion;
+            var questionTypeID = Model.Questions.Find(n => n.IdQuestion == questionID)?.TypeQuestionId;
 
             <div class="formAnswer">
                 <div class="flexDiv">
@@ -82,7 +82,7 @@
                         @foreach (var answer in Model.QuestionAnswerOptions.Where(n => n.QuestionId == questionID && n.IdQuestionAnswerOptions == test.QuestionAnswerOptionsId))
                         {
 
-                            var answerContent = Model.AnswerOptions.Find(n => n.IdAnswerOptions == answer.AnswerOptionsId).ContentAnswer;
+                            var answerContent = Model.AnswerOptions.Find(n => n.IdAnswerOptions == answer.AnswerOptionsId)?.ContentAnswer;
 
                             <div class="Answer">
                                 <input type="radio" disabled checked value="@answer.AnswerOptionsId" />
@@ -97,7 +97,7 @@
                     <div class="AnswerForm">
                         @foreach (var answer in Model.QuestionAnswerOptions.Where(n => n.QuestionId == questionID && n.IdQuestionAnswerOptions == test.QuestionAnswerOptionsId))
                         {
-                            var answerContent = Model.AnswerOptions.Find(n => n.IdAnswerOptions == answer.AnswerOptionsId).ContentAnswer;
+                            var answerContent = Model.AnswerOptions.Find(n => n.IdAnswerOptions == answer.AnswerOptionsId)?.ContentAnswer;
 
                             <div class="Answer">
                                 <input type="checkbox" disabled checked value="@answer.AnswerOptionsId" />
@@ -121,6 +121,9 @@
 
 
     </main>
+    <br />
+    <br />
+    <br />
     <footer>
         <a asp-action="MainStudent" asp-controller="Student" class="divLogo">
             <h1>MastQuo</h1>

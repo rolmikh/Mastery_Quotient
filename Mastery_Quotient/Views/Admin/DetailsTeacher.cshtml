@@ -5,8 +5,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/mainStyle.css">
-    <link rel="stylesheet" href="../css/footerStyle.css">
+    <link rel="stylesheet" href="@Url.Content("~/css/mainStyle.css")">
+    <link rel="stylesheet" href="@Url.Content("~/css/footerStyle.css")">
 
     <link href="https://fonts.googleapis.com/css?family=Mulish:200,300,regular,500,600,700,800,900,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic"
           rel="stylesheet" />
@@ -22,16 +22,26 @@
         <h3>Учебные группы</h3>
         @foreach(var studyGroups in Model.employeeStudyGroups)
         {
-            var nameGroup = Model.studyGroups.Find(n => n.IdStudyGroup == studyGroups.StudyGroupId).NameStudyGroup;
+            var nameGroup = Model.studyGroups.Find(n => n.IdStudyGroup == studyGroups.StudyGroupId)?.NameStudyGroup;
 
             
             <div>@nameGroup</div>
+        }
+        <h3>Дисциплины</h3>
+        @foreach (var discipline in Model.disciplineEmployees)
+        {
+            var nameDiscipline = Model.disciplines.Find(n => n.IdDiscipline == discipline.DisciplineId)?.NameDiscipline;
+
+
+            <div>@nameDiscipline</div>
         }
        
 
     </main>
 
-
+    <br />
+    <br />
+    <br />
     <footer>
         <a asp-action="MaterialsAdmin" asp-controller="Admin" class="divLogo">
             <h1>MastQuo</h1>

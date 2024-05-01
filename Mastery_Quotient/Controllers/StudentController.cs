@@ -24,6 +24,8 @@ namespace Mastery_Quotient.Controllers
 
         FirebaseService firebaseService = new FirebaseService();
 
+        TokenService tokenService = new TokenService();
+
         public StudentController(IConfiguration configuration, ILogger<StudentController> logger, IValidator<Student> studentValidator)
         {
             this.configuration = configuration;
@@ -46,6 +48,20 @@ namespace Mastery_Quotient.Controllers
                 {
                     return RedirectToAction("Authorization", "Home");
                 }
+                var token = TokenService.token;
+
+                if (tokenService.IsTokenExpired(token))
+                {
+                    var refreshToken = await tokenService.RefreshToken(token, TokenService.role);
+                    if (refreshToken != null)
+                    {
+                        TokenService.token = refreshToken;
+                    }
+                    else
+                    {
+                        return RedirectToAction("Authorization", "Home");
+                    }
+                }
 
                 int id = int.Parse(TempData["AuthUser"].ToString());
 
@@ -58,6 +74,8 @@ namespace Mastery_Quotient.Controllers
 
                 using (var httpClient = new HttpClient())
                 {
+                    httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
                     using (var response = await httpClient.GetAsync(apiUrl + "Students/" + id))
                     {
                         string apiResponse = await response.Content.ReadAsStringAsync();
@@ -94,7 +112,20 @@ namespace Mastery_Quotient.Controllers
         {
             try
             {
+                var token = TokenService.token;
 
+                if (tokenService.IsTokenExpired(token))
+                {
+                    var refreshToken = await tokenService.RefreshToken(token, TokenService.role);
+                    if (refreshToken != null)
+                    {
+                        TokenService.token = refreshToken;
+                    }
+                    else
+                    {
+                        return RedirectToAction("Authorization", "Home");
+                    }
+                }
                 int id = int.Parse(TempData["AuthUser"].ToString());
 
                 TempData.Keep("AuthUser");
@@ -103,6 +134,8 @@ namespace Mastery_Quotient.Controllers
 
                 using (var httpClient = new HttpClient())
                 {
+                    httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
                     var response = await httpClient.GetAsync(apiUrl + "Students/" + id);
                     response.EnsureSuccessStatusCode();
                     var studentData = await response.Content.ReadAsStringAsync();
@@ -165,6 +198,20 @@ namespace Mastery_Quotient.Controllers
         {
             try
             {
+                var token = TokenService.token;
+
+                if (tokenService.IsTokenExpired(token))
+                {
+                    var refreshToken = await tokenService.RefreshToken(token, TokenService.role);
+                    if (refreshToken != null)
+                    {
+                        TokenService.token = refreshToken;
+                    }
+                    else
+                    {
+                        return RedirectToAction("Authorization", "Home");
+                    }
+                }
                 if (photo == null || photo.Length == 0)
                 {
                     return BadRequest("Файл не был загружен");
@@ -184,6 +231,8 @@ namespace Mastery_Quotient.Controllers
 
                 using (var httpClient = new HttpClient())
                 {
+                    httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
                     var response = await httpClient.GetAsync(apiUrl + "Students/" + id);
                     response.EnsureSuccessStatusCode();
                     var studentData = await response.Content.ReadAsStringAsync();
@@ -244,7 +293,20 @@ namespace Mastery_Quotient.Controllers
                 {
                     return RedirectToAction("Authorization", "Home");
                 }
+                var token = TokenService.token;
 
+                if (tokenService.IsTokenExpired(token))
+                {
+                    var refreshToken = await tokenService.RefreshToken(token, TokenService.role);
+                    if (refreshToken != null)
+                    {
+                        TokenService.token = refreshToken;
+                    }
+                    else
+                    {
+                        return RedirectToAction("Authorization", "Home");
+                    }
+                }
                 int id = int.Parse(TempData["AuthUser"].ToString());
 
                 TempData.Keep("AuthUser");
@@ -263,6 +325,8 @@ namespace Mastery_Quotient.Controllers
 
                 using (var httpClient = new HttpClient())
                 {
+                    httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
                     using (var response = await httpClient.GetAsync(apiUrl + "TypeMaterials/NoDeleted"))
                     {
                         string apiResponse = await response.Content.ReadAsStringAsync();
@@ -345,7 +409,20 @@ namespace Mastery_Quotient.Controllers
                 {
                     return RedirectToAction("Authorization", "Home");
                 }
+                var token = TokenService.token;
 
+                if (tokenService.IsTokenExpired(token))
+                {
+                    var refreshToken = await tokenService.RefreshToken(token, TokenService.role);
+                    if (refreshToken != null)
+                    {
+                        TokenService.token = refreshToken;
+                    }
+                    else
+                    {
+                        return RedirectToAction("Authorization", "Home");
+                    }
+                }
                 int id = int.Parse(TempData["AuthUser"].ToString());
 
                 TempData.Keep("AuthUser");
@@ -365,6 +442,8 @@ namespace Mastery_Quotient.Controllers
 
                 using (var httpClient = new HttpClient())
                 {
+                    httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
                     using (var response = await httpClient.GetAsync(apiUrl + "Employees/All"))
                     {
                         string apiResponse = await response.Content.ReadAsStringAsync();
@@ -450,6 +529,21 @@ namespace Mastery_Quotient.Controllers
                 {
                     return RedirectToAction("Authorization", "Home");
                 }
+
+                var token = TokenService.token;
+
+                if (tokenService.IsTokenExpired(token))
+                {
+                    var refreshToken = await tokenService.RefreshToken(token, TokenService.role);
+                    if (refreshToken != null)
+                    {
+                        TokenService.token = refreshToken;
+                    }
+                    else
+                    {
+                        return RedirectToAction("Authorization", "Home");
+                    }
+                }
                 int id = int.Parse(TempData["AuthUser"].ToString());
 
                 TempData.Keep("AuthUser");
@@ -479,6 +573,8 @@ namespace Mastery_Quotient.Controllers
 
                 using (var httpClient = new HttpClient())
                 {
+                    httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
                     using (var response = await httpClient.GetAsync(apiUrl + "Tests/" + testID))
                     {
                         string apiResponse = await response.Content.ReadAsStringAsync();
@@ -548,7 +644,7 @@ namespace Mastery_Quotient.Controllers
 
 
         /// <summary>
-        /// POST запрос поиска материалов
+        /// POST запрос поиска материалов на странице материалов
         /// </summary>
         /// <param name="Search"></param>
         /// <returns></returns>
@@ -559,6 +655,20 @@ namespace Mastery_Quotient.Controllers
             {
                 if (Search != null)
                 {
+                    var token = TokenService.token;
+
+                    if (tokenService.IsTokenExpired(token))
+                    {
+                        var refreshToken = await tokenService.RefreshToken(token, TokenService.role);
+                        if (refreshToken != null)
+                        {
+                            TokenService.token = refreshToken;
+                        }
+                        else
+                        {
+                            return RedirectToAction("Authorization", "Home");
+                        }
+                    }
                     var apiUrl = configuration["AppSettings:ApiUrl"];
                     List<Material> materials = new List<Material>();
 
@@ -566,39 +676,18 @@ namespace Mastery_Quotient.Controllers
 
                     using (var httpClient = new HttpClient())
                     {
+                        httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
                         var response = await httpClient.GetAsync(apiUrl + "Materials/Search?search=" + Search);
 
                         string apiResponse = await response.Content.ReadAsStringAsync();
                         materials = JsonConvert.DeserializeObject<List<Material>>(apiResponse);
-                        
 
                         if (materials.Count == 0)
                         {
                             TempData["Message"] = "По вашему запросу ничего не найдено";
-                            if (!TempData.ContainsKey("AuthUser"))
-                            {
-                                return RedirectToAction("News", "Student");
-                            }
-                            else if (TempData.ContainsKey("AuthUser"))
-                            {
-                                return RedirectToAction("MainStudent", "Student");
-
-                            }
+                            
                             return RedirectToAction("MaterialStudent", "Student");
-
-                        }
-
-                        if (!TempData.ContainsKey("AuthUser"))
-                        {
-                            TempData["SearchMaterial"] = JsonConvert.SerializeObject(materials);
-
-                            return RedirectToAction("News", "Student");
-                        }
-                        else if (TempData.ContainsKey("AuthUser"))
-                        {
-                            TempData["SearchMaterial"] = JsonConvert.SerializeObject(materials);
-
-                            return RedirectToAction("MainStudent", "Student");
 
                         }
 
@@ -610,17 +699,6 @@ namespace Mastery_Quotient.Controllers
                 else
                 {
                     TempData["Message"] = "По вашему запросу ничего не найдено";
-
-                    if (!TempData.ContainsKey("AuthUser"))
-                    {
-                        return RedirectToAction("News", "Student");
-                    }
-                    else if (TempData.ContainsKey("AuthUser"))
-                    {
-
-                        return RedirectToAction("MainStudent", "Student");
-
-                    }
                     return RedirectToAction("MaterialStudent", "Student");
                 }
             }
@@ -635,7 +713,124 @@ namespace Mastery_Quotient.Controllers
         }
 
         /// <summary>
-        /// POST запрос фильтрации материалов преподавателя
+        /// POST запрос поиска материалов на странице новостей
+        /// </summary>
+        /// <param name="Search"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> MaterialStudentNews(string Search)
+        {
+            try
+            {
+                if (Search != null)
+                {
+                    
+                    var apiUrl = configuration["AppSettings:ApiUrl"];
+                    List<Material> materials = new List<Material>();
+
+                    StringContent content = new StringContent(JsonConvert.SerializeObject(Search), Encoding.UTF8, "application/json");
+
+                    using (var httpClient = new HttpClient())
+                    {
+
+                        var response = await httpClient.GetAsync(apiUrl + "Materials/NoAuthSearch?search=" + Search);
+
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        materials = JsonConvert.DeserializeObject<List<Material>>(apiResponse);
+
+
+                        if (materials.Count == 0)
+                        {
+                            TempData["Message"] = "По вашему запросу ничего не найдено";
+                            return RedirectToAction("News", "Student");
+
+                        }
+                        TempData["SearchMaterial"] = JsonConvert.SerializeObject(materials);
+                        return RedirectToAction("News", "Student");
+                       
+                    }
+                }
+                else
+                {
+                    TempData["Message"] = "По вашему запросу ничего не найдено";
+                    return RedirectToAction("News", "Student");
+
+                }
+            }
+            catch
+            {
+                return BadRequest("Ошибка");
+
+            }
+        }
+
+        /// <summary>
+        /// POST запрос поиска материалов на главной странице
+        /// </summary>
+        /// <param name="Search"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> MaterialStudentMain(string Search)
+        {
+            try
+            {
+                if (Search != null)
+                {
+                    var token = TokenService.token;
+
+                    if (tokenService.IsTokenExpired(token))
+                    {
+                        var refreshToken = await tokenService.RefreshToken(token, TokenService.role);
+                        if (refreshToken != null)
+                        {
+                            TokenService.token = refreshToken;
+                        }
+                        else
+                        {
+                            return RedirectToAction("Authorization", "Home");
+                        }
+                    }
+                    var apiUrl = configuration["AppSettings:ApiUrl"];
+                    List<Material> materials = new List<Material>();
+
+                    StringContent content = new StringContent(JsonConvert.SerializeObject(Search), Encoding.UTF8, "application/json");
+
+                    using (var httpClient = new HttpClient())
+                    {
+                        httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+                        var response = await httpClient.GetAsync(apiUrl + "Materials/Search?search=" + Search);
+
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        materials = JsonConvert.DeserializeObject<List<Material>>(apiResponse);
+
+                        if (materials.Count == 0)
+                        {
+                            TempData["Message"] = "По вашему запросу ничего не найдено";
+
+                            return RedirectToAction("MainStudent", "Student");
+                        }
+
+                        TempData["SearchMaterial"] = JsonConvert.SerializeObject(materials);
+
+                        return RedirectToAction("MainStudent", "Student");
+                    }
+                }
+                else
+                {
+                    TempData["Message"] = "По вашему запросу ничего не найдено";
+                    return RedirectToAction("MainStudent", "Student");
+
+                }
+            }
+            catch
+            {
+                return BadRequest("Ошибка");
+
+            }
+        }
+        /// <summary>
+        /// POST запрос фильтрации материалов студента
         /// </summary>
         /// <param name="typeId"></param>
         /// <param name="disciplineID"></param>
@@ -647,12 +842,28 @@ namespace Mastery_Quotient.Controllers
             {
                 if (typeId != 0 || disciplineID != 0)
                 {
+                    var token = TokenService.token;
+
+                    if (tokenService.IsTokenExpired(token))
+                    {
+                        var refreshToken = await tokenService.RefreshToken(token, TokenService.role);
+                        if (refreshToken != null)
+                        {
+                            TokenService.token = refreshToken;
+                        }
+                        else
+                        {
+                            return RedirectToAction("Authorization", "Home");
+                        }
+                    }
                     var apiUrl = configuration["AppSettings:ApiUrl"];
 
                     List<Material> materials = new List<Material>();
 
                     using (var httpClient = new HttpClient())
                     {
+                        httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
                         if (typeId != 0 && disciplineID == 0)
                         {
                             using (var response = await httpClient.GetAsync(apiUrl + "Materials/Filtration?idType=" + typeId))
@@ -683,31 +894,10 @@ namespace Mastery_Quotient.Controllers
                         if (materials.Count == 0)
                         {
                             TempData["Message"] = "По вашему запросу ничего не найдено";
-                            if (!TempData.ContainsKey("AuthUser"))
-                            {
-                                return RedirectToAction("News", "Student");
-                            }
-                            else if (TempData.ContainsKey("AuthUser"))
-                            {
-                                return RedirectToAction("MainStudent", "Student");
-
-                            }
                             return RedirectToAction("MaterialStudent", "Student");
 
                         }
-                        if (!TempData.ContainsKey("AuthUser"))
-                        {
-                            TempData["FiltrationMaterial"] = JsonConvert.SerializeObject(materials);
-
-                            return RedirectToAction("News", "Student");
-                        }
-                        else if (TempData.ContainsKey("AuthUser"))
-                        {
-                            TempData["FiltrationMaterial"] = JsonConvert.SerializeObject(materials);
-
-                            return RedirectToAction("MainStudent", "Student");
-
-                        }
+                       
                         TempData["Filtration"] = JsonConvert.SerializeObject(materials);
 
                         return RedirectToAction("MaterialStudent", "Student");
@@ -717,17 +907,6 @@ namespace Mastery_Quotient.Controllers
                 else
                 {
                     TempData["Message"] = "По вашему запросу ничего не найдено";
-
-                    if (!TempData.ContainsKey("AuthUser"))
-                    {
-                        return RedirectToAction("News", "Student");
-                    }
-                    else if (TempData.ContainsKey("AuthUser"))
-                    {
-
-                        return RedirectToAction("MainStudent", "Student");
-
-                    }
                     return RedirectToAction("MaterialStudent", "Student");
                 }
             }
@@ -737,6 +916,176 @@ namespace Mastery_Quotient.Controllers
             }
         }
 
+
+        /// <summary>
+        /// POST запрос фильтрации материалов на странице новостей
+        /// </summary>
+        /// <param name="typeId"></param>
+        /// <param name="disciplineID"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> FiltrationMaterialStudentNews(int typeId, int disciplineID)
+        {
+            try
+            {
+                if (typeId != 0 || disciplineID != 0)
+                {
+                    
+                    var apiUrl = configuration["AppSettings:ApiUrl"];
+
+                    List<Material> materials = new List<Material>();
+
+                    using (var httpClient = new HttpClient())
+                    {
+
+                        if (typeId != 0 && disciplineID == 0)
+                        {
+                            using (var response = await httpClient.GetAsync(apiUrl + "Materials/NoAuthFiltration?idType=" + typeId))
+                            {
+                                var apiResponse = await response.Content.ReadAsStringAsync();
+                                materials = JsonConvert.DeserializeObject<List<Material>>(apiResponse);
+                            }
+                        }
+                        else if (typeId == 0 && disciplineID != 0)
+                        {
+                            using (var response = await httpClient.GetAsync(apiUrl + "Materials/NoAuthFiltration?idDiscipline=" + disciplineID))
+                            {
+                                var apiResponse = await response.Content.ReadAsStringAsync();
+                                materials = JsonConvert.DeserializeObject<List<Material>>(apiResponse);
+                            }
+                        }
+                        else
+                        {
+                            using (var response = await httpClient.GetAsync(apiUrl + $"Materials/NoAuthFiltration?idDiscipline={disciplineID}&idType={typeId}"))
+                            {
+                                var apiResponse = await response.Content.ReadAsStringAsync();
+                                materials = JsonConvert.DeserializeObject<List<Material>>(apiResponse);
+                            }
+
+                        }
+
+
+                        if (materials.Count == 0)
+                        {
+                            TempData["Message"] = "По вашему запросу ничего не найдено";
+                            return RedirectToAction("News", "Student");
+
+
+                        }
+                        TempData["FiltrationMaterial"] = JsonConvert.SerializeObject(materials);
+
+                        return RedirectToAction("News", "Student");
+
+
+                    }
+                }
+                else
+                {
+                    TempData["Message"] = "По вашему запросу ничего не найдено";
+
+                    return RedirectToAction("News", "Student");
+
+                }
+            }
+            catch
+            {
+                return BadRequest("Ошибка");
+            }
+        }
+
+        /// <summary>
+        /// POST запрос фильтрации материалов на главной странице
+        /// </summary>
+        /// <param name="typeId"></param>
+        /// <param name="disciplineID"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> FiltrationMaterialStudentMain(int typeId, int disciplineID)
+        {
+            try
+            {
+                if (typeId != 0 || disciplineID != 0)
+                {
+                    var token = TokenService.token;
+
+                    if (tokenService.IsTokenExpired(token))
+                    {
+                        var refreshToken = await tokenService.RefreshToken(token, TokenService.role);
+                        if (refreshToken != null)
+                        {
+                            TokenService.token = refreshToken;
+                        }
+                        else
+                        {
+                            return RedirectToAction("Authorization", "Home");
+                        }
+                    }
+                    var apiUrl = configuration["AppSettings:ApiUrl"];
+
+                    List<Material> materials = new List<Material>();
+
+                    using (var httpClient = new HttpClient())
+                    {
+                        httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+                        if (typeId != 0 && disciplineID == 0)
+                        {
+                            using (var response = await httpClient.GetAsync(apiUrl + "Materials/Filtration?idType=" + typeId))
+                            {
+                                var apiResponse = await response.Content.ReadAsStringAsync();
+                                materials = JsonConvert.DeserializeObject<List<Material>>(apiResponse);
+                            }
+                        }
+                        else if (typeId == 0 && disciplineID != 0)
+                        {
+                            using (var response = await httpClient.GetAsync(apiUrl + "Materials/Filtration?idDiscipline=" + disciplineID))
+                            {
+                                var apiResponse = await response.Content.ReadAsStringAsync();
+                                materials = JsonConvert.DeserializeObject<List<Material>>(apiResponse);
+                            }
+                        }
+                        else
+                        {
+                            using (var response = await httpClient.GetAsync(apiUrl + $"Materials/Filtration?idDiscipline={disciplineID}&idType={typeId}"))
+                            {
+                                var apiResponse = await response.Content.ReadAsStringAsync();
+                                materials = JsonConvert.DeserializeObject<List<Material>>(apiResponse);
+                            }
+
+                        }
+
+
+                        if (materials.Count == 0)
+                        {
+                            TempData["Message"] = "По вашему запросу ничего не найдено";
+                            return RedirectToAction("MainStudent", "Student");
+
+
+
+                        }
+
+                        TempData["FiltrationMaterial"] = JsonConvert.SerializeObject(materials);
+
+                        return RedirectToAction("MainStudent", "Student");
+
+
+
+                    }
+                }
+                else
+                {
+                    TempData["Message"] = "По вашему запросу ничего не найдено";
+
+                    return RedirectToAction("MainStudent", "Student");
+
+
+                }
+            }
+            catch
+            {
+                return BadRequest("Ошибка");
+            }
+        }
 
         /// <summary>
         /// POST запрос поиска тестирования
@@ -750,6 +1099,7 @@ namespace Mastery_Quotient.Controllers
             {
                 if (Search != null)
                 {
+                   
                     var apiUrl = configuration["AppSettings:ApiUrl"];
                     List<Test> tests = new List<Test>();
 
@@ -757,6 +1107,7 @@ namespace Mastery_Quotient.Controllers
 
                     using (var httpClient = new HttpClient())
                     {
+
                         var response = await httpClient.GetAsync(apiUrl + "Tests/Search?search=" + Search);
 
                         string apiResponse = await response.Content.ReadAsStringAsync();
@@ -769,12 +1120,11 @@ namespace Mastery_Quotient.Controllers
                             {
                                 return RedirectToAction("News", "Student");
                             }
-                            else if (TempData.ContainsKey("AuthUser"))
+                            else
                             {
-                                return RedirectToAction("MainStudent", "Student");
+                                return RedirectToAction("TestStudent", "Student");
 
                             }
-                            return RedirectToAction("TestStudent", "Student");
 
                         }
 
@@ -784,15 +1134,13 @@ namespace Mastery_Quotient.Controllers
 
                             return RedirectToAction("News", "Student");
                         }
-                        else if (TempData.ContainsKey("AuthUser"))
+                        else
                         {
-                            TempData["SearchTest"] = JsonConvert.SerializeObject(tests);
+                            TempData["Search"] = JsonConvert.SerializeObject(tests);
 
-                            return RedirectToAction("MainStudent", "Student");
+                            return RedirectToAction("TestStudent", "Student");
                         }
-                        TempData["Search"] = JsonConvert.SerializeObject(tests);
-
-                        return RedirectToAction("TestStudent", "Student");
+                        
                     }
                 }
                 else
@@ -803,13 +1151,12 @@ namespace Mastery_Quotient.Controllers
                     {
                         return RedirectToAction("News", "Student");
                     }
-                    else if (TempData.ContainsKey("AuthUser"))
+                    else
                     {
 
-                        return RedirectToAction("MainStudent", "Student");
+                        return RedirectToAction("TestStudent", "Student");
 
                     }
-                    return RedirectToAction("TestStudent", "Student");
                 }
             }
             catch
@@ -835,12 +1182,14 @@ namespace Mastery_Quotient.Controllers
             {
                 if (parameterId != 0 || disciplineID != 0)
                 {
+                    
                     var apiUrl = configuration["AppSettings:ApiUrl"];
 
                     List<Test> tests = new List<Test>();
 
                     using (var httpClient = new HttpClient())
                     {
+
                         if (parameterId != 0 && disciplineID == 0)
                         {
                             using (var response = await httpClient.GetAsync(apiUrl + "Tests/Filtration?idParameter=" + parameterId))
@@ -925,6 +1274,162 @@ namespace Mastery_Quotient.Controllers
             }
         }
 
+
+        /// <summary>
+        /// POST запрос поиска тестирований на главной странице
+        /// </summary>
+        /// <param name="Search"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> TestStudentMain(string Search)
+        {
+            try
+            {
+                if (Search != null)
+                {
+                    var token = TokenService.token;
+
+                    if (tokenService.IsTokenExpired(token))
+                    {
+                        var refreshToken = await tokenService.RefreshToken(token, TokenService.role);
+                        if (refreshToken != null)
+                        {
+                            TokenService.token = refreshToken;
+                        }
+                        else
+                        {
+                            return RedirectToAction("Authorization", "Home");
+                        }
+                    }
+                    var apiUrl = configuration["AppSettings:ApiUrl"];
+                    List<Test> tests = new List<Test>();
+
+                    StringContent content = new StringContent(JsonConvert.SerializeObject(Search), Encoding.UTF8, "application/json");
+
+                    using (var httpClient = new HttpClient())
+                    {
+                        httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+                        var response = await httpClient.GetAsync(apiUrl + "Tests/Search?search=" + Search);
+
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        tests = JsonConvert.DeserializeObject<List<Test>>(apiResponse);
+
+                        if (tests.Count == 0)
+                        {
+                            TempData["Message"] = "По вашему запросу ничего не найдено";
+
+                            return RedirectToAction("MainStudent", "Student");
+
+
+                        }
+                        TempData["SearchTest"] = JsonConvert.SerializeObject(tests);
+
+                        return RedirectToAction("MainStudent", "Student");
+
+                    }
+                }
+                else
+                {
+                    TempData["Message"] = "По вашему запросу ничего не найдено";
+                    return RedirectToAction("MainStudent", "Student");
+
+                }
+            }
+            catch
+            {
+                return BadRequest("Ошибка");
+
+            }
+
+
+
+        }
+
+        /// <summary>
+        /// POST запрос фильтрации тестирований
+        /// </summary>
+        /// <param name="parameterId"></param>
+        /// <param name="disciplineID"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> FiltrationTestStudentMain(int parameterId, int disciplineID)
+        {
+            try
+            {
+                if (parameterId != 0 || disciplineID != 0)
+                {
+                    var token = TokenService.token;
+
+                    if (tokenService.IsTokenExpired(token))
+                    {
+                        var refreshToken = await tokenService.RefreshToken(token, TokenService.role);
+                        if (refreshToken != null)
+                        {
+                            TokenService.token = refreshToken;
+                        }
+                        else
+                        {
+                            return RedirectToAction("Authorization", "Home");
+                        }
+                    }
+                    var apiUrl = configuration["AppSettings:ApiUrl"];
+
+                    List<Test> tests = new List<Test>();
+
+                    using (var httpClient = new HttpClient())
+                    {
+                        httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+                        if (parameterId != 0 && disciplineID == 0)
+                        {
+                            using (var response = await httpClient.GetAsync(apiUrl + "Tests/Filtration?idParameter=" + parameterId))
+                            {
+                                var apiResponse = await response.Content.ReadAsStringAsync();
+                                tests = JsonConvert.DeserializeObject<List<Test>>(apiResponse);
+                            }
+                        }
+                        else if (parameterId == 0 && disciplineID != 0)
+                        {
+                            using (var response = await httpClient.GetAsync(apiUrl + "Tests/Filtration?idDiscipline=" + disciplineID))
+                            {
+                                var apiResponse = await response.Content.ReadAsStringAsync();
+                                tests = JsonConvert.DeserializeObject<List<Test>>(apiResponse);
+                            }
+                        }
+                        else
+                        {
+                            using (var response = await httpClient.GetAsync(apiUrl + $"Tests/Filtration?idDiscipline={disciplineID}&idParameter={parameterId}"))
+                            {
+                                var apiResponse = await response.Content.ReadAsStringAsync();
+                                tests = JsonConvert.DeserializeObject<List<Test>>(apiResponse);
+                            }
+
+                        }
+
+                        if (tests.Count == 0)
+                        {
+                            TempData["Message"] = "По вашему запросу ничего не найдено";
+                            return RedirectToAction("MainStudent", "Student");
+                        }
+
+
+                        TempData["FiltrationTest"] = JsonConvert.SerializeObject(tests);
+                        return RedirectToAction("MainStudent", "Student");
+                    }
+                }
+                else
+                {
+                    TempData["Message"] = "По вашему запросу ничего не найдено";
+                    return RedirectToAction("MainStudent", "Student");
+                }
+            }
+            catch
+            {
+                return BadRequest("Ошибка");
+            }
+        }
+
         /// <summary>
         /// POST запрос сохранения результатов тестирования
         /// </summary>
@@ -935,6 +1440,20 @@ namespace Mastery_Quotient.Controllers
         {
             try
             {
+                var token = TokenService.token;
+
+                if (tokenService.IsTokenExpired(token))
+                {
+                    var refreshToken = await tokenService.RefreshToken(token, TokenService.role);
+                    if (refreshToken != null)
+                    {
+                        TokenService.token = refreshToken;
+                    }
+                    else
+                    {
+                        return RedirectToAction("Authorization", "Home");
+                    }
+                }
                 int testID = int.Parse(TempData["testID"].ToString());
                 TempData.Keep("testID");
 
@@ -958,6 +1477,8 @@ namespace Mastery_Quotient.Controllers
 
                 using (var httpClient = new HttpClient())
                 {
+                    httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
 
                     var response = await httpClient.PostAsync(apiUrl + "StudentTests", content);
 
@@ -1053,6 +1574,20 @@ namespace Mastery_Quotient.Controllers
         {
             try
             {
+                var token = TokenService.token;
+
+                if (tokenService.IsTokenExpired(token))
+                {
+                    var refreshToken = await tokenService.RefreshToken(token, TokenService.role);
+                    if (refreshToken != null)
+                    {
+                        TokenService.token = refreshToken;
+                    }
+                    else
+                    {
+                        return RedirectToAction("Authorization", "Home");
+                    }
+                }
                 var apiUrl = configuration["AppSettings:ApiUrl"];
 
                 int id = int.Parse(TempData["AuthUser"].ToString());
@@ -1069,6 +1604,8 @@ namespace Mastery_Quotient.Controllers
                 List<TypeMaterial> typeMaterials = new List<TypeMaterial>();
                 using (var httpClient = new HttpClient())
                 {
+                    httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
                     using (var response = await httpClient.GetAsync(apiUrl + "Employees/All"))
                     {
                         string apiResponse = await response.Content.ReadAsStringAsync();
@@ -1169,34 +1706,17 @@ namespace Mastery_Quotient.Controllers
                 var apiUrl = configuration["AppSettings:ApiUrl"];
 
 
-                List<Employee> employees = new List<Employee>();
                 List<Discipline> disciplines = new List<Discipline>();
-                List<DisciplineEmployee> disciplineEmployees = new List<DisciplineEmployee>();
-                List<TestParameter> testParameters = new List<TestParameter>();
                 List<Test> tests = new List<Test>();
                 List<Material> materials = new List<Material>();
                 List<TypeMaterial> typeMaterials = new List<TypeMaterial>();
                 using (var httpClient = new HttpClient())
                 {
-                    using (var response = await httpClient.GetAsync(apiUrl + "Employees/All"))
-                    {
-                        string apiResponse = await response.Content.ReadAsStringAsync();
-                        employees = JsonConvert.DeserializeObject<List<Employee>>(apiResponse);
-                    }
+                    
                     using (var response = await httpClient.GetAsync(apiUrl + "Disciplines/NoDeleted"))
                     {
                         string apiResponse = await response.Content.ReadAsStringAsync();
                         disciplines = JsonConvert.DeserializeObject<List<Discipline>>(apiResponse);
-                    }
-                    using (var response = await httpClient.GetAsync(apiUrl + "DisciplineEmployee"))
-                    {
-                        string apiResponse = await response.Content.ReadAsStringAsync();
-                        disciplineEmployees = JsonConvert.DeserializeObject<List<DisciplineEmployee>>(apiResponse);
-                    }
-                    using (var response = await httpClient.GetAsync(apiUrl + "TestParameters/NoDeleted"))
-                    {
-                        string apiResponse = await response.Content.ReadAsStringAsync();
-                        testParameters = JsonConvert.DeserializeObject<List<TestParameter>>(apiResponse);
                     }
                     if (TempData.ContainsKey("SearchTest"))
                     {
@@ -1224,7 +1744,7 @@ namespace Mastery_Quotient.Controllers
                     }
                     else
                     {
-                        using (var response = await httpClient.GetAsync(apiUrl + "Materials"))
+                        using (var response = await httpClient.GetAsync(apiUrl + "Materials/NoAuth"))
                         {
                             string apiResponse = await response.Content.ReadAsStringAsync();
                             materials = JsonConvert.DeserializeObject<List<Material>>(apiResponse);
@@ -1237,7 +1757,7 @@ namespace Mastery_Quotient.Controllers
                     }
                 }
 
-                NewsModel newsModel = new NewsModel(employees, disciplines, disciplineEmployees, testParameters, tests, null, null, null, materials, typeMaterials);
+                NewsModel newsModel = new NewsModel(null, disciplines, null, null, tests, null, null, null, materials, typeMaterials);
                 return View(newsModel);
 
             }
@@ -1259,6 +1779,20 @@ namespace Mastery_Quotient.Controllers
                 {
                     return RedirectToAction("Authorization", "Home");
                 }
+                var token = TokenService.token;
+
+                if (tokenService.IsTokenExpired(token))
+                {
+                    var refreshToken = await tokenService.RefreshToken(token, TokenService.role);
+                    if (refreshToken != null)
+                    {
+                        TokenService.token = refreshToken;
+                    }
+                    else
+                    {
+                        return RedirectToAction("Authorization", "Home");
+                    }
+                }
                 var apiUrl = configuration["AppSettings:ApiUrl"];
 
                 int id = int.Parse(TempData["AuthUser"].ToString());
@@ -1270,6 +1804,8 @@ namespace Mastery_Quotient.Controllers
                 List<TestQuestion> question = new List<TestQuestion>();
                 using (var httpClient = new HttpClient())
                 {
+                    httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
                     using (var response = await httpClient.GetAsync(apiUrl + "Students/" + id))
                     {
                         string apiResponse = await response.Content.ReadAsStringAsync();
@@ -1324,6 +1860,20 @@ namespace Mastery_Quotient.Controllers
                 {
                     return RedirectToAction("Authorization", "Home");
                 }
+                var token = TokenService.token;
+
+                if (tokenService.IsTokenExpired(token))
+                {
+                    var refreshToken = await tokenService.RefreshToken(token, TokenService.role);
+                    if (refreshToken != null)
+                    {
+                        TokenService.token = refreshToken;
+                    }
+                    else
+                    {
+                        return RedirectToAction("Authorization", "Home");
+                    }
+                }
                 var apiUrl = configuration["AppSettings:ApiUrl"];
 
                 int userId = int.Parse(TempData["AuthUser"].ToString());
@@ -1339,6 +1889,8 @@ namespace Mastery_Quotient.Controllers
                 List<QuestionAnswerOption> questionAnswerOptions = new List<QuestionAnswerOption>();
                 using (var httpClient = new HttpClient())
                 {
+                    httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
                     using (var response = await httpClient.GetAsync(apiUrl + "Tests/" + id))
                     {
                         string apiResponse = await response.Content.ReadAsStringAsync();

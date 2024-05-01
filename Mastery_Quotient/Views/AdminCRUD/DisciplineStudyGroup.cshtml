@@ -48,6 +48,9 @@
         <button class="newInputCRUD" onclick="window.location.href='@Url.Action("TypeMaterialAdminPanel", "AdminCRUD")'">
             Типы материалов
         </button>
+        <button class="newInputCRUD" onclick="window.location.href='@Url.Action("BackUpDatabase", "AdminCRUD")'">
+            Создать резервную копию базы данных
+        </button>
     </div>
 
     <div class="containerFormCRUD">
@@ -66,31 +69,7 @@
         </button>
     </div>
     <div class="containerForm">
-         @* <form asp-antiforgery="true" asp-action="SearchStudyGroupEmployee" asp-controller="AdminCRUD">
-
-        <input class="searchInput" type="text" name="Search" />
-        <button class="searchImage" type="submit">
-        <img width="40" height="40" src="../images/icons8-лупа-64.png" />
-        </button>
-        </form> 
-        <form asp-antiforgery="true" asp-action="FiltrationDiscipline" asp-controller="AdminCRUD">
-        <select class="CrudSelect" required id="courseId" name="courseId" placeholder="Курс">
-        <option selected disabled>Курс</option>
-        @foreach (var course in Model.Courses)
-        {
-        <option value="@course.IdCourse">@course.NumberCourse</option>
-        }
-        </select>
-        <select class="CrudSelect" required id="courseId" name="courseId" placeholder="Курс">
-        <option selected disabled>Курс</option>
-        @foreach (var course in Model.Courses)
-        {
-        <option value="@course.IdCourse">@course.NumberCourse</option>
-        }
-        </select>
-        <button class="InputFiltr" type="submit">Фильтрация</button>
-
-        </form>  *@
+         
 
     </div>
     <main>
@@ -119,9 +98,9 @@
                 @foreach(var items in Model.DisciplineOfTheStudyGroups)
                 {
                     
-                        var nameStudyGroup = Model.StudyGroups.Find(n => n.IdStudyGroup == items.StudyGroupId).NameStudyGroup;
-                        var nameDiscipline = Model.Disciplines.Find(n => n.IdDiscipline == items.DisciplineId).NameDiscipline;
-                        var course = Model.Courses.Find(n => n.IdCourse == Model.StudyGroups.Find(n => n.IdStudyGroup == items.StudyGroupId).CourseId).NumberCourse;
+                        var nameStudyGroup = Model.StudyGroups.Find(n => n.IdStudyGroup == items.StudyGroupId)?.NameStudyGroup;
+                        var nameDiscipline = Model.Disciplines.Find(n => n.IdDiscipline == items.DisciplineId)?.NameDiscipline;
+                        var course = Model.Courses.Find(n => n.IdCourse == Model.StudyGroups.Find(n => n.IdStudyGroup == items.StudyGroupId).CourseId)?.NumberCourse;
                        <tr>
                             <td>@items.IdDisciplineOfTheStudyGroup</td>
                             <td>@nameStudyGroup</td>
@@ -158,7 +137,7 @@
                     <option selected disabled>Дисциплина</option>
                     @foreach (var discipline in Model.Disciplines)
                     {
-                        var course = Model.Courses.Find(n => n.IdCourse == discipline.CourseId).NumberCourse;
+                        var course = Model.Courses.Find(n => n.IdCourse == discipline.CourseId)?.NumberCourse;
                         <option value="@discipline.IdDiscipline">@discipline.NameDiscipline @course курс</option>
                     }
                 </select>

@@ -20,8 +20,8 @@
             <form asp-antiforgery="true" asp-action="UpdateMaterial" asp-controller="teacher" enctype="multipart/form-data">
                  @foreach (var material in Model.Materials)
                 {
-                    var typeMaterialName = Model.TypeMaterials.Find(n => n.IdTypeMaterial == material.TypeMaterialId).NameTypeMaterial;
-                    var disciplineNameUpdate = Model.Disciplines.Find(n => n.IdDiscipline == material.DisciplineId).NameDiscipline;
+                    var typeMaterialName = Model.TypeMaterials.Find(n => n.IdTypeMaterial == material.TypeMaterialId)?.NameTypeMaterial;
+                    var disciplineNameUpdate = Model.Disciplines.Find(n => n.IdDiscipline == material.DisciplineId)?.NameDiscipline;
 
 
                     <input name="IdMaterial" class="CrudInput" hidden readonly placeholder="Код материала" value="@material.IdMaterial" />
@@ -46,8 +46,8 @@
 
                         @foreach (var discipline in Model.DisciplineEmployees)
                         {
-                            var disciplinesID = Model.Disciplines.Find(n => n.IdDiscipline == discipline.DisciplineId).IdDiscipline;
-                            var disciplinesName = Model.Disciplines.Find(n => n.IdDiscipline == discipline.DisciplineId).NameDiscipline;
+                            var disciplinesID = Model.Disciplines.Find(n => n.IdDiscipline == discipline.DisciplineId)?.IdDiscipline;
+                            var disciplinesName = Model.Disciplines.Find(n => n.IdDiscipline == discipline.DisciplineId)?.NameDiscipline;
 
                             <option value="@disciplinesID">@disciplinesName</option>
                         }
@@ -75,7 +75,9 @@
 
     </main>
 
-
+    <br />
+    <br />
+    <br />
     <footer>
         <a asp-action="MaterialsTeacher" asp-controller="Teacher" class="divLogo">
             <h1>MastQuo</h1>

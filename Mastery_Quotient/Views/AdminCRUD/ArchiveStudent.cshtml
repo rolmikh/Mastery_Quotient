@@ -84,7 +84,7 @@
         <br />
         <br />
         <div class="containerFormCRUD">
-            <h2 style="text-align: center">Студенты</h2>
+            <h2 >Студенты</h2>
             <button class="newInputCRUD" onclick="window.location.href='@Url.Action("Archive", "AdminCRUD")'">
                 Преподаватели
             </button>
@@ -104,7 +104,7 @@
             <tbody>
                 @foreach (var student in Model.Students)
                 {
-                    var group = Model.StudyGroups.Find(n => n.IdStudyGroup == student.StudyGroupId).NameStudyGroup;
+                    var group = Model.StudyGroups.Find(n => n.IdStudyGroup == student.StudyGroupId)?.NameStudyGroup;
                     <tr>
                         <td>@student.IdStudent</td>
                         <td>@student.SurnameStudent</td>

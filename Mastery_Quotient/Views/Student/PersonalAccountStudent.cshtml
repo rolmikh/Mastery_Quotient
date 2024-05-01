@@ -24,12 +24,6 @@
             <li class="navigation_li"><a class="navigation_a" asp-action="TestStudent" asp-controller="Student">Тесты</a></li>
             <li class="navigation_li"><a class="navigation_a" asp-action="MyTest" asp-controller="Student">Мои тестирования</a></li>
         </ul>
-       @*  <ul class="navigation_ul_right">
-            <li class="navigation_li_right" style="float: right">
-                <a class="navigation_a_right" asp-action="AdminWindowTeacher" asp-controller="admin">Преподаватели</a>
-            </li>
-            <li class="navigation_li_right" style="float: right"><a class="navigation_a_right" asp-action="AdminWindowStudent" asp-controller="admin">Студенты</a></li>
-        </ul> *@
         <button class="glow_button" onclick="window.location.href='@Url.Action("PersonalAccountStudent", "student")'">
             Личный кабинет
         </button>
@@ -140,6 +134,9 @@
             }
         };
     </script>
+    <br />
+    <br />
+    <br />
     <footer>
         <a asp-action="MainStudent" asp-controller="Student" class="divLogo">
             <h1>MastQuo</h1>

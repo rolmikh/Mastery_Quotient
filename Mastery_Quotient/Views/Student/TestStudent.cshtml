@@ -25,12 +25,6 @@
             <li class="navigation_li"><a class="navigation_a" asp-action="TestStudent" asp-controller="Student">Тесты</a></li>
             <li class="navigation_li"><a class="navigation_a" asp-action="MyTest" asp-controller="Student">Мои тестирования</a></li>
         </ul>
-        @*   <ul class="navigation_ul_right">
-        <li class="navigation_li_right" style="float: right">
-        <a class="navigation_a_right" asp-action="AdminWindowTeacher" asp-controller="admin">Преподаватели</a>
-        </li>
-        <li class="navigation_li_right" style="float: right"><a class="navigation_a_right" asp-action="AdminWindowStudent" asp-controller="admin">Студенты</a></li>
-        </ul> *@
         <button class="glow_button" onclick="window.location.href='@Url.Action("PersonalAccountStudent", "student")'">
             Личный кабинет
         </button>
@@ -68,27 +62,25 @@
         <br />
 
         <div class="formsContainer">
-            @foreach (var disciplineStudyGroup in Model.DisciplineOfTheStudyGroup)
+            @foreach (var item in Model.Test)
             {
-                var idDiscipline = Model.Disciplines.Find(n => n.IdDiscipline == disciplineStudyGroup.DisciplineId).IdDiscipline;
-
-                var idEmployee = Model.DisciplineEmployees.Find(n => n.DisciplineId == idDiscipline).EmployeeId;
-
-                var surnameEmployee = Model.Employees.Find(n => n.IdEmployee == idEmployee).SurnameEmployee;
-
-                var nameEmployee = Model.Employees.Find(n => n.IdEmployee == idEmployee).NameEmployee;
-
-                var middleNameEmployee = Model.Employees.Find(n => n.IdEmployee == idEmployee).MiddleNameEmployee;
-
-                var photoEmployee = Model.Employees.Find(n => n.IdEmployee == idEmployee).PhotoEmployee;
-
-
-                @foreach (var item in Model.Test.Where(n => n.DisciplineId == idDiscipline))
+                var studentTest = Model.StudentTests.FirstOrDefault(n => n.TestId == item.IdTest && n.StudentId == Model.Student.IdStudent);
+                if ((studentTest == null || studentTest.Result == 0) && item.Active == 0)
                 {
-                    var studentTest = Model.StudentTests.FirstOrDefault(n => n.TestId == item.IdTest && n.StudentId == Model.Student.IdStudent);
-                    if ((studentTest == null || studentTest.Result == 0) && item.Active == 0)
+                    var disciplineId = Model.DisciplineEmployees.Find(n => n.EmployeeId == item.EmployeeId)?.DisciplineId;
+                    var disciplineName = Model.Disciplines.Find(n => n.IdDiscipline == disciplineId)?.NameDiscipline;
+                    var idEmployee = Model.DisciplineEmployees.Find(n => n.DisciplineId == disciplineId)?.EmployeeId;
+
+                    var surnameEmployee = Model.Employees.Find(n => n.IdEmployee == idEmployee)?.SurnameEmployee;
+
+                    var nameEmployee = Model.Employees.Find(n => n.IdEmployee == idEmployee)?.NameEmployee;
+
+                    var middleNameEmployee = Model.Employees.Find(n => n.IdEmployee == idEmployee)?.MiddleNameEmployee;
+
+                    var photoEmployee = Model.Employees.Find(n => n.IdEmployee == idEmployee)?.PhotoEmployee;
+                    if (Model.DisciplineOfTheStudyGroup.Any(n => n.DisciplineId == disciplineId))
                     {
-                        if(item.Deadline == null || item.Deadline >= DateTime.Now)
+                        if (item.Deadline == null || item.Deadline >= DateTime.Now)
                         {
                             <div class="divTestForm">
                                 <form asp-action="OneTestStudent" asp-antiforgery="true" asp-controller="Student">
@@ -120,6 +112,9 @@
 
 
     </main>
+    <br />
+    <br />
+    <br />
     <footer>
         <a asp-action="MainStudent" asp-controller="Student" class="divLogo">
             <h1>MastQuo</h1>

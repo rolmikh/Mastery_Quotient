@@ -25,9 +25,9 @@
                 @foreach (var test in Model.Test)
                 {
 
-                    var parameterName = Model.TestParameters.Find(n => n.IdTestParameter == test.TestParameterId).NameParameter;
-                    var parameterValue = Model.TestParameters.Find(n => n.IdTestParameter == test.TestParameterId).ValueParameter;
-                    var disciplineNameUpdate = Model.Disciplines.Find(n => n.IdDiscipline == test.DisciplineId).NameDiscipline;
+                    var parameterName = Model.TestParameters.Find(n => n.IdTestParameter == test.TestParameterId)?.NameParameter;
+                    var parameterValue = Model.TestParameters.Find(n => n.IdTestParameter == test.TestParameterId)?.ValueParameter;
+                    var disciplineNameUpdate = Model.Disciplines.Find(n => n.IdDiscipline == test.DisciplineId)?.NameDiscipline;
 
                     <input name="IdTest" class="CrudInput" hidden readonly placeholder="Код тестирования" value="@test.IdTest" />
                     <input name="NameTest" type="text" class="CrudInput" placeholder="Название тестирования" value="@test.NameTest" />
@@ -46,8 +46,8 @@
 
                         @foreach (var discipline in Model.DisciplineEmployees)
                         {
-                            var disciplinesID = Model.Disciplines.Find(n => n.IdDiscipline == discipline.DisciplineId).IdDiscipline;
-                            var disciplinesName = Model.Disciplines.Find(n => n.IdDiscipline == discipline.DisciplineId).NameDiscipline;
+                            var disciplinesID = Model.Disciplines.Find(n => n.IdDiscipline == discipline.DisciplineId)?.IdDiscipline;
+                            var disciplinesName = Model.Disciplines.Find(n => n.IdDiscipline == discipline.DisciplineId)?.NameDiscipline;
 
                             <option value="@disciplinesID">@disciplinesName</option>
                         }
@@ -70,7 +70,9 @@
         }
         <br />
     </main>
-
+    <br />
+    <br />
+    <br />
     <footer>
         <a asp-action="MaterialsTeacher" asp-controller="Teacher" class="divLogo">
             <h1>MastQuo</h1>

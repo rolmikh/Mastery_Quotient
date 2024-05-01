@@ -47,7 +47,6 @@
 
             <h3>Название теста</h3>
             <h3>Дата создания теста</h3>
-            @* <h3>@Model.Discipline.Find(n => n.IdDiscipline == @Model.disciplineEmployees).NameDiscipline</h3> *@
             <h3>Преподаватель</h3>
             <h3>Срок сдачи</h3>
 
@@ -56,7 +55,6 @@
 
             <h3>@Model.Test.NameTest</h3>
             <h3>@Model.Test.DateCreatedTest</h3>
-            @* <h3>@Model.Discipline.Find(n => n.IdDiscipline == @Model.disciplineEmployees).NameDiscipline</h3> *@
             <h3>@Model.Employee.SurnameEmployee @Model.Employee.NameEmployee @Model.Employee.MiddleNameEmployee</h3>
             <h3>@Model.Test.Deadline</h3>
 
@@ -64,11 +62,11 @@
 
         @foreach (var question in Model.TestQuestion)
         {
-            var questionNumber = Model.Question.Find(n => n.IdQuestion == question.QuestionId).NumberQuestion;
-            var questionName = Model.Question.Find(n => n.IdQuestion == question.QuestionId).NameQuestion;
-            var questionTypeID = Model.Question.Find(n => n.IdQuestion == question.QuestionId).TypeQuestionId;
+            var questionNumber = Model.Question.Find(n => n.IdQuestion == question.QuestionId)?.NumberQuestion;
+            var questionName = Model.Question.Find(n => n.IdQuestion == question.QuestionId)?.NameQuestion;
+            var questionTypeID = Model.Question.Find(n => n.IdQuestion == question.QuestionId)?.TypeQuestionId;
 
-            var questionID = Model.Question.Find(n => n.IdQuestion == question.QuestionId).IdQuestion;
+            var questionID = Model.Question.Find(n => n.IdQuestion == question.QuestionId)?.IdQuestion;
 
             <div class="formAnswer">
                 <div class="flexDiv">
@@ -91,7 +89,7 @@
                     <div class="AnswerForm">
                         @foreach (var answer in Model.QuestionAnswerOption.Where(n => n.QuestionId == questionID))
                         {
-                            var answerContent = Model.AnswerOption.Find(n => n.IdAnswerOptions == answer.AnswerOptionsId).ContentAnswer;
+                            var answerContent = Model.AnswerOption.Find(n => n.IdAnswerOptions == answer.AnswerOptionsId)?.ContentAnswer;
 
                             <div class="Answer">
                                 <input type="radio" name="AnswerOptionViewModels[@questionID].SelectedAnswer" value="@answer.AnswerOptionsId" />
@@ -106,7 +104,7 @@
                     <div class="AnswerForm">
                         @foreach (var answer in Model.QuestionAnswerOption.Where(n => n.QuestionId == questionID))
                         {
-                            var answerContent = Model.AnswerOption.Find(n => n.IdAnswerOptions == answer.AnswerOptionsId).ContentAnswer;
+                            var answerContent = Model.AnswerOption.Find(n => n.IdAnswerOptions == answer.AnswerOptionsId)?.ContentAnswer;
 
                             <div class="Answer">
                                 <input type="checkbox" name="AnswerOptionViewModels[@questionID].SelectedAnswer" value="@answer.AnswerOptionsId" />
@@ -122,6 +120,9 @@
  
 
     </main>
+    <br />
+    <br />
+    <br />
     <footer>
         <a asp-action="MaterialsAdmin" asp-controller="Admin" class="divLogo">
             <h1>MastQuo</h1>

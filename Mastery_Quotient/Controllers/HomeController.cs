@@ -28,6 +28,8 @@ namespace Mastery_Quotient.Controllers
 
         EmailService emailService = new EmailService();
 
+        TokenService tokenService = new TokenService();
+
         public HomeController(IConfiguration configuration, ILogger<HomeController> logger, IValidator<Student> studentValidator)
         {
             this.configuration = configuration;
@@ -88,29 +90,32 @@ namespace Mastery_Quotient.Controllers
                     if (responseStudent.IsSuccessStatusCode)
                     {
                         string apiResponseStudent = await responseStudent.Content.ReadAsStringAsync();
-                        var students = JsonConvert.DeserializeObject<Student>(apiResponseStudent);
 
-                        await Authenticate(students.EmailStudent);
-                        TempData["AuthUser"] = students.IdStudent;
-                        //await GoogleDriveService.InitializeDriveServiceAsync(emailUser, passwordUser);
+                        JObject responseJson = JObject.Parse(apiResponseStudent);
+                        TokenService.token = (string)responseJson["access_token"];
+                        await Authenticate((string)responseJson["username"]);
+                        TempData["AuthUser"] = (int)responseJson["id"];
 
                         return RedirectToAction("MainStudent", "Student");
                     }
                     else if (responseEmployee.IsSuccessStatusCode)
                     {
                         string apiResponseEmployee = await responseEmployee.Content.ReadAsStringAsync();
-                        var employees = JsonConvert.DeserializeObject<Employee>(apiResponseEmployee);
 
-                        await Authenticate(employees.EmailEmployee);
-                        TempData["AuthUser"] = employees.IdEmployee;
-                        //await GoogleDriveService.InitializeDriveServiceAsync(emailUser, passwordUser);
+                        JObject responseJson = JObject.Parse(apiResponseEmployee);
+                        TokenService.token = (string)responseJson["access_token"];
+                        await Authenticate((string)responseJson["username"]);
+
+                        TempData["AuthUser"] = (int)responseJson["id"];
+
+                        TokenService.role = (string)responseJson["role"];
 
 
-                        if (employees.RoleId == 1)
+                        if (TokenService.role == "Преподаватель")
                         {
                             return RedirectToAction("MaterialsTeacher", "Teacher");
                         }
-                        else if (employees.RoleId == 2)
+                        else if (TokenService.role == "Администратор")
                         {
                             return RedirectToAction("MaterialsAdmin", "Admin");
                         }
@@ -364,12 +369,11 @@ namespace Mastery_Quotient.Controllers
             {
                 var response = await httpClient.GetAsync(apiUrl + "Students/GetEmail?email=" + email);
 
-                response.EnsureSuccessStatusCode();
 
                 var studentData = await response.Content.ReadAsStringAsync();
 
-                var student = JsonConvert.DeserializeObject<Student>(studentData);
-                if (student.Equals(0))
+                
+                if (studentData == "По вашему запросу ничего не найдено!")
                 {
                     Employee employees = new Employee();
 
@@ -377,23 +381,23 @@ namespace Mastery_Quotient.Controllers
                     {
                         var responseEmployee = await httpClientEmployee.GetAsync(apiUrl + "Employees/GetEmail?email=" + email);
 
-                        response.EnsureSuccessStatusCode();
 
-                        var employeeData = await response.Content.ReadAsStringAsync();
+                        var employeeData = await responseEmployee.Content.ReadAsStringAsync();
 
-                        var employee = JsonConvert.DeserializeObject<Employee>(employeeData);
-
-                        if (employee.Equals(0))
+                       
+                        if (employeeData == "По вашему запросу ничего не найдено!")
                         {
                             TempData["Error"] = "Такого пользователя не существует";
                             return RedirectToAction("ResetPasswordEmail", "Home");
 
                         }
-
+                        var employeePart = employeeData.Split(" ");
+                        var employeeEmail = employeePart[0];
+                        var employeeID = int.Parse(employeePart[1]);
                         UserPasswordReset userPasswordResetEmployee = new UserPasswordReset();
 
-                        userPasswordResetEmployee.id = employee.IdEmployee.Value;
-                        userPasswordResetEmployee.email = employee.EmailEmployee;
+                        userPasswordResetEmployee.id = employeeID;
+                        userPasswordResetEmployee.email = employeeEmail;
 
                         StringContent contentNew = new StringContent(JsonConvert.SerializeObject(userPasswordResetEmployee), Encoding.UTF8, "application/json");
 
@@ -423,11 +427,13 @@ namespace Mastery_Quotient.Controllers
                     }
 
                 }
-
+                var studentPart = studentData.Split(" ");
+                var studentEmail = studentPart[0];
+                var studentID = int.Parse(studentPart[1]);
                 UserPasswordReset userPasswordReset = new UserPasswordReset();
 
-                userPasswordReset.id = student.IdStudent.Value;
-                userPasswordReset.email = student.EmailStudent;
+                userPasswordReset.id = studentID;
+                userPasswordReset.email = studentEmail;
 
                 StringContent contentStudent = new StringContent(JsonConvert.SerializeObject(userPasswordReset), Encoding.UTF8, "application/json");
 

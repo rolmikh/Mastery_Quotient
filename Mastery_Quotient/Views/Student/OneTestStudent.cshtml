@@ -25,12 +25,6 @@
             <li class="navigation_li"><a class="navigation_a" asp-action="TestStudent" asp-controller="Student">Тесты</a></li>
             <li class="navigation_li"><a class="navigation_a" asp-action="MyTest" asp-controller="Student">Мои тестирования</a></li>
         </ul>
-        @*   <ul class="navigation_ul_right">
-        <li class="navigation_li_right" style="float: right">
-        <a class="navigation_a_right" asp-action="AdminWindowTeacher" asp-controller="admin">Преподаватели</a>
-        </li>
-        <li class="navigation_li_right" style="float: right"><a class="navigation_a_right" asp-action="AdminWindowStudent" asp-controller="admin">Студенты</a></li>
-        </ul> *@
         <button class="glow_button" onclick="window.location.href='@Url.Action("PersonalAccountStudent", "student")'">
             Личный кабинет
         </button>
@@ -43,7 +37,6 @@
 
             <h3>Название теста</h3>
             <h3>Дата создания теста</h3>
-            @* <h3>@Model.Discipline.Find(n => n.IdDiscipline == @Model.disciplineEmployees).NameDiscipline</h3> *@
             <h3>Преподаватель</h3>
             <h3>Срок сдачи</h3>
 
@@ -52,7 +45,6 @@
 
             <h3>@Model.Test.NameTest</h3>
             <h3>@Model.Test.DateCreatedTest</h3>
-            @* <h3>@Model.Discipline.Find(n => n.IdDiscipline == @Model.disciplineEmployees).NameDiscipline</h3> *@
             <h3>@Model.Employee.SurnameEmployee @Model.Employee.NameEmployee @Model.Employee.MiddleNameEmployee</h3>
             <h3>@Model.Test.Deadline</h3>
 
@@ -64,11 +56,11 @@
             @foreach (var question in Model.TestQuestion)
             {
 
-                var questionNumber = Model.Question.Find(n => n.IdQuestion == question.QuestionId).NumberQuestion;
-                var questionName = Model.Question.Find(n => n.IdQuestion == question.QuestionId).NameQuestion;
-                var questionTypeID = Model.Question.Find(n => n.IdQuestion == question.QuestionId).TypeQuestionId;
+                var questionNumber = Model.Question.Find(n => n.IdQuestion == question.QuestionId)?.NumberQuestion;
+                var questionName = Model.Question.Find(n => n.IdQuestion == question.QuestionId)?.NameQuestion;
+                var questionTypeID = Model.Question.Find(n => n.IdQuestion == question.QuestionId)?.TypeQuestionId;
 
-                var questionID = Model.Question.Find(n => n.IdQuestion == question.QuestionId).IdQuestion;
+                var questionID = Model.Question.Find(n => n.IdQuestion == question.QuestionId)?.IdQuestion;
 
                 <div class="formAnswer">
                     <div class="flexDiv">
@@ -95,7 +87,7 @@
                         <div class="AnswerForm">
                             @foreach (var answer in Model.QuestionAnswerOption.Where(n => n.QuestionId == questionID))
                             {
-                                var answerContent = Model.AnswerOption.Find(n => n.IdAnswerOptions == answer.AnswerOptionsId).ContentAnswer;
+                                var answerContent = Model.AnswerOption.Find(n => n.IdAnswerOptions == answer.AnswerOptionsId)?.ContentAnswer;
 
                                 <div class="Answer">
                                     <input type="radio" id="answer@(answer.AnswerOptionsId)" name="userAnswers[@questionIndex].SelectedAnswerId" value="@answer.AnswerOptionsId" />
@@ -112,7 +104,7 @@
                         <div class="AnswerForm">
                             @foreach (var answer in Model.QuestionAnswerOption.Where(n => n.QuestionId == questionID))
                             {
-                                var answerContent = Model.AnswerOption.Find(n => n.IdAnswerOptions == answer.AnswerOptionsId).ContentAnswer;
+                                var answerContent = Model.AnswerOption.Find(n => n.IdAnswerOptions == answer.AnswerOptionsId)?.ContentAnswer;
 
                                 <div class="Answer">
                                     <input type="checkbox" id="answer@(answer.AnswerOptionsId)" name="userAnswers[@questionIndex].SelectedAnswerIds" value="@answer.AnswerOptionsId" />
@@ -138,6 +130,9 @@
 
 
     </main>
+    <br />
+    <br />
+    <br />
     <footer>
         <a asp-action="MainStudent" asp-controller="Student" class="divLogo">
             <h1>MastQuo</h1>

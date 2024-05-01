@@ -20,7 +20,7 @@
                 @foreach (var student in Model.Students)
                 {
 
-                    var studyGroupName = Model.StudyGroups.Find(n => n.IdStudyGroup == student.StudyGroupId).NameStudyGroup;
+                    var studyGroupName = Model.StudyGroups.Find(n => n.IdStudyGroup == student.StudyGroupId)?.NameStudyGroup;
                     <label hidden>Введите код</label>
                     <input type="text" required name="idUser" class="CrudInput" hidden value="@student.IdStudent" placeholder="Код" />
                     <br />
@@ -74,7 +74,9 @@
 
 
     </main>
-
+    <br />
+    <br />
+    <br />
     <footer>
         <a asp-action="MaterialsAdmin" asp-controller="Admin" class="divLogo">
             <h1>MastQuo</h1>

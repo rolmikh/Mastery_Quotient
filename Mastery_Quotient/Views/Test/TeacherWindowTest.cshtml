@@ -47,8 +47,8 @@
                     <option selected disabled>Дисциплина</option>
                     @foreach (var discipline in Model.DisciplineEmployees)
                     {
-                        var disciplinesID = Model.Disciplines.Find(n => n.IdDiscipline == discipline.DisciplineId).IdDiscipline;
-                        var disciplinesName = Model.Disciplines.Find(n => n.IdDiscipline == discipline.DisciplineId).NameDiscipline;
+                        var disciplinesID = Model.Disciplines.Find(n => n.IdDiscipline == discipline.DisciplineId)?.IdDiscipline;
+                        var disciplinesName = Model.Disciplines.Find(n => n.IdDiscipline == discipline.DisciplineId)?.NameDiscipline;
 
                         <option value="@disciplinesID">@disciplinesName</option>
                     }
@@ -83,6 +83,9 @@
 
 
     </main>
+    <br />
+    <br />
+    <br />
     <footer>
         <a asp-action="MaterialsTeacher" asp-controller="Teacher" class="divLogo">
             <h1>MastQuo</h1>

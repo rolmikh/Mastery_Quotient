@@ -48,6 +48,9 @@
         <button class="newInputCRUD" onclick="window.location.href='@Url.Action("TypeMaterialAdminPanel", "AdminCRUD")'">
             Типы материалов
         </button>
+        <button class="newInputCRUD" onclick="window.location.href='@Url.Action("BackUpDatabase", "AdminCRUD")'">
+            Создать резервную копию базы данных
+        </button>
     </div>
     <div class="containerFormCRUD">
 
@@ -110,7 +113,7 @@
             <tbody>
                 @foreach (var items in Model.Disciplines)
                 {
-                    var course = Model.Courses.Find(n => n.IdCourse == items.CourseId).NumberCourse;
+                    var course = Model.Courses.Find(n => n.IdCourse == items.CourseId)?.NumberCourse;
 
                     <tr>
                         <td>@items.IdDiscipline</td>

@@ -56,23 +56,23 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.StudentsTest)
+                @foreach (var item in Model.StudentsTest.Where(n => Model.Tests.Any(t => t.EmployeeId == Model.Employee.IdEmployee && t.IdTest == n.TestId)))
                 {
                     if (item.Result == 0)
                     {
-                        var surnameStudent = Model.Students.Find(n => n.IdStudent == item.StudentId).SurnameStudent;
-                        var nameStudent = Model.Students.Find(n => n.IdStudent == item.StudentId).NameStudent;
-                        var middleNameStudent = Model.Students.Find(n => n.IdStudent == item.StudentId).MiddleNameStudent;
-                        var emailStudent = Model.Students.Find(n => n.IdStudent == item.StudentId).EmailStudent;
-                        var idGroup = Model.Students.Find(n => n.IdStudent == item.StudentId).StudyGroupId;
-                        var studyGroup = Model.StudyGroups.Find(n => n.IdStudyGroup == idGroup).NameStudyGroup;
-                        var studyGroupIdCourse = Model.StudyGroups.Find(n => n.IdStudyGroup == idGroup).CourseId;
-                        var course = Model.Courses.Find(n => n.IdCourse == studyGroupIdCourse).NumberCourse;
-                        var nameTest = Model.Tests.Find(n => n.IdTest == item.TestId).NameTest;
-                        var disciplineTest = Model.Tests.Find(n => n.IdTest == item.TestId).DisciplineId;
-                        var disciplineName = Model.Disciplines.Find(n => n.IdDiscipline == disciplineTest).NameDiscipline;
-                        var deadlineTest = Model.Tests.Find(n => n.IdTest == item.TestId).Deadline;
-                        var idTest = Model.Tests.Find(n => n.IdTest == item.TestId).IdTest;
+                        var surnameStudent = Model.Students.Find(n => n.IdStudent == item.StudentId)?.SurnameStudent;
+                        var nameStudent = Model.Students.Find(n => n.IdStudent == item.StudentId)?.NameStudent;
+                        var middleNameStudent = Model.Students.Find(n => n.IdStudent == item.StudentId)?.MiddleNameStudent;
+                        var emailStudent = Model.Students.Find(n => n.IdStudent == item.StudentId)?.EmailStudent;
+                        var idGroup = Model.Students.Find(n => n.IdStudent == item.StudentId)?.StudyGroupId;
+                        var studyGroup = Model.StudyGroups.Find(n => n.IdStudyGroup == idGroup)?.NameStudyGroup;
+                        var studyGroupIdCourse = Model.StudyGroups.Find(n => n.IdStudyGroup == idGroup)?.CourseId;
+                        var course = Model.Courses.Find(n => n.IdCourse == studyGroupIdCourse)?.NumberCourse;
+                        var nameTest = Model.Tests.Find(n => n.IdTest == item.TestId)?.NameTest;
+                        var disciplineTest = Model.Tests.Find(n => n.IdTest == item.TestId)?.DisciplineId;
+                        var disciplineName = Model.Disciplines.Find(n => n.IdDiscipline == disciplineTest)?.NameDiscipline;
+                        var deadlineTest = Model.Tests.Find(n => n.IdTest == item.TestId)?.Deadline;
+                        var idTest = Model.Tests.Find(n => n.IdTest == item.TestId)?.IdTest;
                         <tr>
                             <td>@surnameStudent @nameStudent @middleNameStudent</td>
                             <td>@emailStudent</td>
@@ -118,23 +118,23 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.StudentsTest)
+                @foreach (var item in Model.StudentsTest.Where(n => Model.Tests.Any(t => t.EmployeeId == Model.Employee.IdEmployee && t.IdTest == n.TestId)))
                 {
                     if (item.Result != 0)
                     {
-                        var surnameStudent = Model.Students.Find(n => n.IdStudent == item.StudentId).SurnameStudent;
-                        var nameStudent = Model.Students.Find(n => n.IdStudent == item.StudentId).NameStudent;
-                        var middleNameStudent = Model.Students.Find(n => n.IdStudent == item.StudentId).MiddleNameStudent;
-                        var emailStudent = Model.Students.Find(n => n.IdStudent == item.StudentId).EmailStudent;
-                        var idGroup = Model.Students.Find(n => n.IdStudent == item.StudentId).StudyGroupId;
-                        var studyGroup = Model.StudyGroups.Find(n => n.IdStudyGroup == idGroup).NameStudyGroup;
-                        var studyGroupIdCourse = Model.StudyGroups.Find(n => n.IdStudyGroup == idGroup).CourseId;
-                        var course = Model.Courses.Find(n => n.IdCourse == studyGroupIdCourse).NumberCourse;
-                        var nameTest = Model.Tests.Find(n => n.IdTest == item.TestId).NameTest;
-                        var disciplineTest = Model.Tests.Find(n => n.IdTest == item.TestId).DisciplineId;
-                        var disciplineName = Model.Disciplines.Find(n => n.IdDiscipline == disciplineTest).NameDiscipline;
-                        var deadlineTest = Model.Tests.Find(n => n.IdTest == item.TestId).Deadline;
-                        var idTest = Model.Tests.Find(n => n.IdTest == item.TestId).IdTest;
+                        var surnameStudent = Model.Students.Find(n => n.IdStudent == item.StudentId)?.SurnameStudent;
+                        var nameStudent = Model.Students.Find(n => n.IdStudent == item.StudentId)?.NameStudent;
+                        var middleNameStudent = Model.Students.Find(n => n.IdStudent == item.StudentId)?.MiddleNameStudent;
+                        var emailStudent = Model.Students.Find(n => n.IdStudent == item.StudentId)?.EmailStudent;
+                        var idGroup = Model.Students.Find(n => n.IdStudent == item.StudentId)?.StudyGroupId;
+                        var studyGroup = Model.StudyGroups.Find(n => n.IdStudyGroup == idGroup)?.NameStudyGroup;
+                        var studyGroupIdCourse = Model.StudyGroups.Find(n => n.IdStudyGroup == idGroup)?.CourseId;
+                        var course = Model.Courses.Find(n => n.IdCourse == studyGroupIdCourse)?.NumberCourse;
+                        var nameTest = Model.Tests.Find(n => n.IdTest == item.TestId)?.NameTest;
+                        var disciplineTest = Model.Tests.Find(n => n.IdTest == item.TestId)?.DisciplineId;
+                        var disciplineName = Model.Disciplines.Find(n => n.IdDiscipline == disciplineTest)?.NameDiscipline;
+                        var deadlineTest = Model.Tests.Find(n => n.IdTest == item.TestId)?.Deadline;
+                        var idTest = Model.Tests.Find(n => n.IdTest == item.TestId)?.IdTest;
                         var result = Model.TestsQuestion.Count(n => n.TestId == idTest);
 
                         <tr>
@@ -163,6 +163,9 @@
         </table>
 
     </main>
+    <br />
+    <br />
+    <br />
     <footer>
         <a asp-action="MaterialsTeacher" asp-controller="Teacher" class="divLogo">
             <h1>MastQuo</h1>

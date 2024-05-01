@@ -22,6 +22,8 @@ namespace Mastery_Quotient.Controllers
 
         private readonly IValidator<AnswerOption> answerOptionValidator;
 
+        TokenService tokenService = new TokenService();
+
         public TestController(ILogger<TestController> logger, IConfiguration configuration, IValidator<Test> testValidator, IValidator<Question> questionValidator, IValidator<AnswerOption> answerOptionValidator)
         {
             _logger = logger;
@@ -44,6 +46,20 @@ namespace Mastery_Quotient.Controllers
 
             try
             {
+                var token = TokenService.token;
+
+                if (tokenService.IsTokenExpired(token))
+                {
+                    var refreshToken = await tokenService.RefreshToken(token, TokenService.role);
+                    if (refreshToken != null)
+                    {
+                        TokenService.token = refreshToken;
+                    }
+                    else
+                    {
+                        return RedirectToAction("Authorization", "Home");
+                    }
+                }
                 int id = int.Parse(TempData["AuthUser"].ToString());
 
                 TempData.Keep("AuthUser");
@@ -57,6 +73,8 @@ namespace Mastery_Quotient.Controllers
 
                 using (var httpClient = new HttpClient())
                 {
+                    httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
                     using (var response = await httpClient.GetAsync(apiUrl + "Employees/" + id))
                     {
                         string apiResponse = await response.Content.ReadAsStringAsync();
@@ -107,6 +125,20 @@ namespace Mastery_Quotient.Controllers
         {
             try
             {
+                var token = TokenService.token;
+
+                if (tokenService.IsTokenExpired(token))
+                {
+                    var refreshToken = await tokenService.RefreshToken(token, TokenService.role);
+                    if (refreshToken != null)
+                    {
+                        TokenService.token = refreshToken;
+                    }
+                    else
+                    {
+                        return RedirectToAction("Authorization", "Home");
+                    }
+                }
                 var apiUrl = configuration["AppSettings:ApiUrl"];
 
                 int id = int.Parse(TempData["AuthUser"].ToString());
@@ -154,6 +186,8 @@ namespace Mastery_Quotient.Controllers
 
                 using (var httpClient = new HttpClient())
                 {
+                    httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
                     var response = await httpClient.PostAsync(apiUrl + "Tests", content);
 
                     if (response.IsSuccessStatusCode)
@@ -182,6 +216,20 @@ namespace Mastery_Quotient.Controllers
         {
             try
             {
+                var token = TokenService.token;
+
+                if (tokenService.IsTokenExpired(token))
+                {
+                    var refreshToken = await tokenService.RefreshToken(token, TokenService.role);
+                    if (refreshToken != null)
+                    {
+                        TokenService.token = refreshToken;
+                    }
+                    else
+                    {
+                        return RedirectToAction("Authorization", "Home");
+                    }
+                }
                 int id = int.Parse(TempData["AuthUser"].ToString());
 
                 TempData.Keep("AuthUser");
@@ -196,6 +244,8 @@ namespace Mastery_Quotient.Controllers
 
                 using (var httpClient = new HttpClient())
                 {
+                    httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
                     using (var response = await httpClient.GetAsync(apiUrl + "Employees/" + id))
                     {
                         string apiResponse = await response.Content.ReadAsStringAsync();
@@ -260,6 +310,20 @@ namespace Mastery_Quotient.Controllers
             {
                 if (Search != null)
                 {
+                    var token = TokenService.token;
+
+                    if (tokenService.IsTokenExpired(token))
+                    {
+                        var refreshToken = await tokenService.RefreshToken(token, TokenService.role);
+                        if (refreshToken != null)
+                        {
+                            TokenService.token = refreshToken;
+                        }
+                        else
+                        {
+                            return RedirectToAction("Authorization", "Home");
+                        }
+                    }
                     var apiUrl = configuration["AppSettings:ApiUrl"];
                     List<Test> tests = new List<Test>();
 
@@ -267,6 +331,8 @@ namespace Mastery_Quotient.Controllers
 
                     using (var httpClient = new HttpClient())
                     {
+                        httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
                         var response = await httpClient.GetAsync(apiUrl + "Tests/Search?search=" + Search);
 
                         string apiResponse = await response.Content.ReadAsStringAsync();
@@ -316,7 +382,20 @@ namespace Mastery_Quotient.Controllers
                 {
                     TempData["testID"] = testId;
                 }
+                var token = TokenService.token;
 
+                if (tokenService.IsTokenExpired(token))
+                {
+                    var refreshToken = await tokenService.RefreshToken(token, TokenService.role);
+                    if (refreshToken != null)
+                    {
+                        TokenService.token = refreshToken;
+                    }
+                    else
+                    {
+                        return RedirectToAction("Authorization", "Home");
+                    }
+                }
 
                 int testID = int.Parse(TempData["testID"].ToString());
                 TempData.Keep("testID");
@@ -342,6 +421,8 @@ namespace Mastery_Quotient.Controllers
 
                 using (var httpClient = new HttpClient())
                 {
+                    httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
                     using (var response = await httpClient.GetAsync(apiUrl + "Tests/" + testID))
                     {
                         string apiResponse = await response.Content.ReadAsStringAsync();
@@ -420,12 +501,28 @@ namespace Mastery_Quotient.Controllers
         {
             try
             {
+                var token = TokenService.token;
+
+                if (tokenService.IsTokenExpired(token))
+                {
+                    var refreshToken = await tokenService.RefreshToken(token, TokenService.role);
+                    if (refreshToken != null)
+                    {
+                        TokenService.token = refreshToken;
+                    }
+                    else
+                    {
+                        return RedirectToAction("Authorization", "Home");
+                    }
+                }
                 int testID = int.Parse(TempData["testID"].ToString());
                 TempData.Keep("testID");
                 var apiUrl = configuration["AppSettings:ApiUrl"];
 
                 using (var httpClient = new HttpClient())
                 {
+                    httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
                     var response = await httpClient.GetAsync(apiUrl + "Tests/" + testID);
                     response.EnsureSuccessStatusCode();
                     var TestData = await response.Content.ReadAsStringAsync();
@@ -466,9 +563,25 @@ namespace Mastery_Quotient.Controllers
         {
             try
             {
+                var token = TokenService.token;
+
+                if (tokenService.IsTokenExpired(token))
+                {
+                    var refreshToken = await tokenService.RefreshToken(token, TokenService.role);
+                    if (refreshToken != null)
+                    {
+                        TokenService.token = refreshToken;
+                    }
+                    else
+                    {
+                        return RedirectToAction("Authorization", "Home");
+                    }
+                }
                 var apiUrl = configuration["AppSettings:ApiUrl"];
                 using (var httpClient = new HttpClient())
                 {
+                    httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
                     using (var response = await httpClient.DeleteAsync(apiUrl + "Tests/" + IdTest))
                     {
                         string apiResponse = await response.Content.ReadAsStringAsync();
@@ -490,47 +603,95 @@ namespace Mastery_Quotient.Controllers
         /// <param name="IdQuestion"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> DeleteQuestion(int IdTestQuestion, int IdQuestion)
+        public async Task<IActionResult> DeleteQuestion(int IdTestQuestion, int IdQuestion, int questionTypeID)
         {
             try
             {
+                var token = TokenService.token;
+
+                if (tokenService.IsTokenExpired(token))
+                {
+                    var refreshToken = await tokenService.RefreshToken(token, TokenService.role);
+                    if (refreshToken != null)
+                    {
+                        TokenService.token = refreshToken;
+                    }
+                    else
+                    {
+                        return RedirectToAction("Authorization", "Home");
+                    }
+                }
                 var apiUrl = configuration["AppSettings:ApiUrl"];
                 List<QuestionAnswerOption?> options = new List<QuestionAnswerOption?>();
                 using (var httpClient = new HttpClient())
                 {
-                    
-                   
-                    using (var response = await httpClient.GetAsync(apiUrl + "QuestionAnswerOptions/Filtration?idQuestion=" + IdQuestion))
+                    httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+                    if (questionTypeID == 2 || questionTypeID == 3)
                     {
-                        string apiResponse = await response.Content.ReadAsStringAsync();
-                        options = JsonConvert.DeserializeObject<List<QuestionAnswerOption>>(apiResponse);
+                        using (var response = await httpClient.DeleteAsync(apiUrl + "TestQuestions/" + IdTestQuestion))
+                        {
+                            string apiResponse = await response.Content.ReadAsStringAsync();
+                            if (response.IsSuccessStatusCode)
+                            {
+                                using (var responseQuestion = await httpClient.DeleteAsync(apiUrl + "Questions/" + IdQuestion))
+                                {
+                                    string apiResponseQuestion = await responseQuestion.Content.ReadAsStringAsync();
+                                }
+                                using (var responseSearch = await httpClient.GetAsync(apiUrl + "QuestionAnswerOptions/Filtration?idQuestion=" + IdQuestion))
+                                {
+                                    string apiResponseSearch = await responseSearch.Content.ReadAsStringAsync();
+                                    options = JsonConvert.DeserializeObject<List<QuestionAnswerOption>>(apiResponseSearch);
+                                }
+                                List<int?> answerOptions = options.Select(n => n.AnswerOptionsId).ToList();
+
+                                List<int?> optionsDelete = options.Select(n => n.IdQuestionAnswerOptions).ToList();
+
+                                foreach (int answerQuestionId in optionsDelete)
+                                {
+                                    using (var responseAnswerQuestion = await httpClient.DeleteAsync(apiUrl + "QuestionAnswerOptions/" + answerQuestionId))
+                                    {
+                                        string apiResponseAnswerQuestion = await responseAnswerQuestion.Content.ReadAsStringAsync();
+                                    }
+                                }
+                                foreach (int answerId in answerOptions)
+                                {
+                                    using (var responseAnswer = await httpClient.DeleteAsync(apiUrl + "AnswerOptions/" + answerId))
+                                    {
+                                        string apiResponseAnswer = await response.Content.ReadAsStringAsync();
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                TempData["MessageValidation"] = "Нельзя удалить вопрос так как студент в настоящее время проходит тестирование!";
+
+                                return RedirectToAction("QuestionTest", "Test");
+
+                            }
+                        }
+                        
+                        
                     }
-                    List<int?> answerOptions = options.Select(n => n.AnswerOptionsId).ToList();
-
-                    List<int?> optionsDelete = options.Select(n => n.IdQuestionAnswerOptions).ToList();
-
-                    foreach (int answerQuestionId in optionsDelete)
+                    else if(questionTypeID ==  1)
                     {
-                        using (var response = await httpClient.DeleteAsync(apiUrl + "QuestionAnswerOptions/" + answerQuestionId))
+                        using (var response = await httpClient.DeleteAsync(apiUrl + "TestQuestions/" + IdTestQuestion))
+                        {
+                            string apiResponse = await response.Content.ReadAsStringAsync();
+                        }
+                        using (var response = await httpClient.DeleteAsync(apiUrl + "Questions/" + IdQuestion))
                         {
                             string apiResponse = await response.Content.ReadAsStringAsync();
                         }
                     }
-                    foreach (int answerId in answerOptions)
+                    else
                     {
-                        using (var response = await httpClient.DeleteAsync(apiUrl + "AnswerOptions/" + answerId))
-                        {
-                            string apiResponse = await response.Content.ReadAsStringAsync();
-                        }
+                        TempData["MessageValidation"] = "Нельзя удалить вопрос так как студент в настоящее время проходит тестирование!";
+
+                        return RedirectToAction("QuestionTest", "Test");
+
                     }
-                    using (var response = await httpClient.DeleteAsync(apiUrl + "TestQuestions/" + IdTestQuestion))
-                    {
-                        string apiResponse = await response.Content.ReadAsStringAsync();
-                    }
-                    using (var response = await httpClient.DeleteAsync(apiUrl + "Questions/" + IdQuestion))
-                    {
-                        string apiResponse = await response.Content.ReadAsStringAsync();
-                    }
+
+
                 }
 
                 return RedirectToAction("QuestionTest", "Test");
@@ -554,6 +715,20 @@ namespace Mastery_Quotient.Controllers
         {
             try
             {
+                var token = TokenService.token;
+
+                if (tokenService.IsTokenExpired(token))
+                {
+                    var refreshToken = await tokenService.RefreshToken(token, TokenService.role);
+                    if (refreshToken != null)
+                    {
+                        TokenService.token = refreshToken;
+                    }
+                    else
+                    {
+                        return RedirectToAction("Authorization", "Home");
+                    }
+                }
                 var apiUrl = configuration["AppSettings:ApiUrl"];
 
                 
@@ -593,6 +768,8 @@ namespace Mastery_Quotient.Controllers
 
                 using (var httpClient = new HttpClient())
                 {
+                    httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
                     var response = await httpClient.PostAsync(apiUrl + "Questions", content);
 
                     if (response.IsSuccessStatusCode)
@@ -646,6 +823,20 @@ namespace Mastery_Quotient.Controllers
         {
             try
             {
+                var token = TokenService.token;
+
+                if (tokenService.IsTokenExpired(token))
+                {
+                    var refreshToken = await tokenService.RefreshToken(token, TokenService.role);
+                    if (refreshToken != null)
+                    {
+                        TokenService.token = refreshToken;
+                    }
+                    else
+                    {
+                        return RedirectToAction("Authorization", "Home");
+                    }
+                }
                 int i = 1;
                 var apiUrl = configuration["AppSettings:ApiUrl"];
                 if (model.AnswerOptionViewModels == null)
@@ -690,6 +881,8 @@ namespace Mastery_Quotient.Controllers
 
                 using (var httpClient = new HttpClient())
                 {
+                    httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
                     var response = await httpClient.PostAsync(apiUrl + "Questions", content);
 
                     if (response.IsSuccessStatusCode)
@@ -715,7 +908,7 @@ namespace Mastery_Quotient.Controllers
 
                             if (!validationResultTwo.IsValid)
                             {
-                                var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                                var errorMessages = validationResultTwo.Errors.Select(error => error.ErrorMessage).ToList();
                                 TempData["ErrorValidation"] = errorMessages;
                                 return RedirectToAction("QuestionTest", "Test");
                             }
@@ -786,6 +979,20 @@ namespace Mastery_Quotient.Controllers
         {
             try
             {
+                var token = TokenService.token;
+
+                if (tokenService.IsTokenExpired(token))
+                {
+                    var refreshToken = await tokenService.RefreshToken(token, TokenService.role);
+                    if (refreshToken != null)
+                    {
+                        TokenService.token = refreshToken;
+                    }
+                    else
+                    {
+                        return RedirectToAction("Authorization", "Home");
+                    }
+                }
                 int i = 1;
                 var apiUrl = configuration["AppSettings:ApiUrl"];
                 if (model.AnswerOptionViewModels == null)
@@ -829,6 +1036,8 @@ namespace Mastery_Quotient.Controllers
 
                 using (var httpClient = new HttpClient())
                 {
+                    httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
                     var response = await httpClient.PostAsync(apiUrl + "Questions", content);
 
                     if (response.IsSuccessStatusCode)
@@ -856,7 +1065,7 @@ namespace Mastery_Quotient.Controllers
 
                             if (!validationResultTwo.IsValid)
                             {
-                                var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                                var errorMessages = validationResultTwo.Errors.Select(error => error.ErrorMessage).ToList();
                                 TempData["ErrorValidation"] = errorMessages;
                                 return RedirectToAction("QuestionTest", "Test");
                             }
@@ -937,12 +1146,28 @@ namespace Mastery_Quotient.Controllers
             {
                 if (parameterId != 0 || disciplineID != 0)
                 {
+                    var token = TokenService.token;
+
+                    if (tokenService.IsTokenExpired(token))
+                    {
+                        var refreshToken = await tokenService.RefreshToken(token, TokenService.role);
+                        if (refreshToken != null)
+                        {
+                            TokenService.token = refreshToken;
+                        }
+                        else
+                        {
+                            return RedirectToAction("Authorization", "Home");
+                        }
+                    }
                     var apiUrl = configuration["AppSettings:ApiUrl"];
 
                     List<Test> tests = new List<Test>();
 
                     using (var httpClient = new HttpClient())
                     {
+                        httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
                         if (parameterId != 0 && disciplineID == 0)
                         {
                             using (var response = await httpClient.GetAsync(apiUrl + "Tests/Filtration?idParameter=" + parameterId))
@@ -1004,6 +1229,20 @@ namespace Mastery_Quotient.Controllers
         {
             try
             {
+                var token = TokenService.token;
+
+                if (tokenService.IsTokenExpired(token))
+                {
+                    var refreshToken = await tokenService.RefreshToken(token, TokenService.role);
+                    if (refreshToken != null)
+                    {
+                        TokenService.token = refreshToken;
+                    }
+                    else
+                    {
+                        return RedirectToAction("Authorization", "Home");
+                    }
+                }
                 int idEmployee = int.Parse(TempData["AuthUser"].ToString());
 
                 TempData.Keep("AuthUser");
@@ -1018,6 +1257,8 @@ namespace Mastery_Quotient.Controllers
 
                 using (var httpClient = new HttpClient())
                 {
+                    httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
                     using (var response = await httpClient.GetAsync(apiUrl + "Employees/" + idEmployee))
                     {
                         string apiResponse = await response.Content.ReadAsStringAsync();
@@ -1069,6 +1310,20 @@ namespace Mastery_Quotient.Controllers
         {
             try
             {
+                var token = TokenService.token;
+
+                if (tokenService.IsTokenExpired(token))
+                {
+                    var refreshToken = await tokenService.RefreshToken(token, TokenService.role);
+                    if (refreshToken != null)
+                    {
+                        TokenService.token = refreshToken;
+                    }
+                    else
+                    {
+                        return RedirectToAction("Authorization", "Home");
+                    }
+                }
                 int idEmployee = int.Parse(TempData["AuthUser"].ToString());
 
                 TempData.Keep("AuthUser");
@@ -1088,6 +1343,8 @@ namespace Mastery_Quotient.Controllers
 
                 using (var httpClient = new HttpClient())
                 {
+                    httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
                     using (var response = await httpClient.GetAsync(apiUrl + "Students"))
                     {
                         string apiResponse = await response.Content.ReadAsStringAsync();
@@ -1166,6 +1423,20 @@ namespace Mastery_Quotient.Controllers
                 {
                     return RedirectToAction("Authorization", "Home");
                 }
+                var token = TokenService.token;
+
+                if (tokenService.IsTokenExpired(token))
+                {
+                    var refreshToken = await tokenService.RefreshToken(token, TokenService.role);
+                    if (refreshToken != null)
+                    {
+                        TokenService.token = refreshToken;
+                    }
+                    else
+                    {
+                        return RedirectToAction("Authorization", "Home");
+                    }
+                }
                 var apiUrl = configuration["AppSettings:ApiUrl"];
 
                 int userId = int.Parse(TempData["AuthUser"].ToString());
@@ -1181,6 +1452,8 @@ namespace Mastery_Quotient.Controllers
                 List<QuestionAnswerOption> questionAnswerOptions = new List<QuestionAnswerOption>();
                 using (var httpClient = new HttpClient())
                 {
+                    httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
                     using (var response = await httpClient.GetAsync(apiUrl + "Tests/" + id))
                     {
                         string apiResponse = await response.Content.ReadAsStringAsync();
@@ -1251,6 +1524,20 @@ namespace Mastery_Quotient.Controllers
         {
             try
             {
+                var token = TokenService.token;
+
+                if (tokenService.IsTokenExpired(token))
+                {
+                    var refreshToken = await tokenService.RefreshToken(token, TokenService.role);
+                    if (refreshToken != null)
+                    {
+                        TokenService.token = refreshToken;
+                    }
+                    else
+                    {
+                        return RedirectToAction("Authorization", "Home");
+                    }
+                }
                 int id = int.Parse(TempData["AuthUser"].ToString());
 
                 TempData.Keep("AuthUser");
@@ -1258,6 +1545,8 @@ namespace Mastery_Quotient.Controllers
                 var apiUrl = configuration["AppSettings:ApiUrl"];
                 using (var httpClient = new HttpClient())
                 {
+                    httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
                     var response = await httpClient.GetAsync(apiUrl + "StudentTests/" + StudentTestID);
                     response.EnsureSuccessStatusCode();
 
@@ -1303,6 +1592,20 @@ namespace Mastery_Quotient.Controllers
         {
             try
             {
+                var token = TokenService.token;
+
+                if (tokenService.IsTokenExpired(token))
+                {
+                    var refreshToken = await tokenService.RefreshToken(token, TokenService.role);
+                    if (refreshToken != null)
+                    {
+                        TokenService.token = refreshToken;
+                    }
+                    else
+                    {
+                        return RedirectToAction("Authorization", "Home");
+                    }
+                }
                 var apiUrl = configuration["AppSettings:ApiUrl"];
 
                 int id = int.Parse(TempData["AuthUser"].ToString());
@@ -1353,6 +1656,8 @@ namespace Mastery_Quotient.Controllers
 
                 using (var httpClient = new HttpClient())
                 {
+                    httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
                     var response = await httpClient.PutAsync(apiUrl + "Tests/" + IdTest, content);
 
                     return RedirectToAction("TestTeacher", "Test");

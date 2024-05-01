@@ -18,19 +18,19 @@
             <form asp-antiforgery="true" asp-action="UpdateDisciplineTeacher" asp-controller="AdminCRUD">
                 @foreach (var item in Model.DisciplineEmployees)
                 {
-                    var employeeSurname = Model.Employees.Find(n => n.IdEmployee == item.EmployeeId).SurnameEmployee;
-                    var employeeName = Model.Employees.Find(n => n.IdEmployee == item.EmployeeId).NameEmployee;
-                    var employeeMiddleName = Model.Employees.Find(n => n.IdEmployee == item.EmployeeId).MiddleNameEmployee;
-                    var employeeID = Model.Employees.Find(n => n.IdEmployee == item.EmployeeId).IdEmployee;
-                    var IdDiscipline = Model.Disciplines.Find(n => n.IdDiscipline == item.DisciplineId).IdDiscipline;
-                    var nameDiscipline = Model.Disciplines.Find(n => n.IdDiscipline == item.DisciplineId).NameDiscipline;
+                    var employeeSurname = Model.Employees.Find(n => n.IdEmployee == item.EmployeeId)?.SurnameEmployee;
+                    var employeeName = Model.Employees.Find(n => n.IdEmployee == item.EmployeeId)?.NameEmployee;
+                    var employeeMiddleName = Model.Employees.Find(n => n.IdEmployee == item.EmployeeId)?.MiddleNameEmployee;
+                    var employeeID = Model.Employees.Find(n => n.IdEmployee == item.EmployeeId)?.IdEmployee;
+                    var IdDiscipline = Model.Disciplines.Find(n => n.IdDiscipline == item.DisciplineId)?.IdDiscipline;
+                    var nameDiscipline = Model.Disciplines.Find(n => n.IdDiscipline == item.DisciplineId)?.NameDiscipline;
                     <input class="CrudInputAdmin" type="text" readonly required name="IdDisciplineEmployee" value="@item.IdDisciplineEmployee" placeholder="Код дисциплины преподавателя" />
                    
                     <select class="CrudSelectAdmin" required id="DisciplineId" name="DisciplineId" placeholder="Дисциплина">
                         <option value="@IdDiscipline">@nameDiscipline</option>
                         @foreach (var discipline in Model.Disciplines)
                         {
-                            var course = Model.Courses.Find(n => n.IdCourse == discipline.CourseId).NumberCourse;
+                            var course = Model.Courses.Find(n => n.IdCourse == discipline.CourseId)?.NumberCourse;
                             <option value="@discipline.IdDiscipline">@discipline.NameDiscipline @course курс</option>
                         }
                     </select>

@@ -97,7 +97,7 @@
             <tbody>
                 @foreach(var employee in Model.Employees)
                 {
-                    var roleEmployee = Model.Roles.Find(n => n.IdRole == employee.RoleId).NameRole;
+                    var roleEmployee = Model.Roles.Find(n => n.IdRole == employee.RoleId)?.NameRole;
                     <tr>
                         <td>@employee.IdEmployee</td>
                         <td>@employee.SurnameEmployee</td>
@@ -117,7 +117,6 @@
                                 <button class="image_button" width="50" height="50" type="button">
                                     <img >
                                 </button>
-                                @* <input type="image"  width="50" height="50" src="../images/delete.png" /> *@
                             </form>
                         </td>
                     </tr>
@@ -179,6 +178,9 @@
 
 
     </main>
+    <br />
+    <br />
+    <br />
     <footer>
         <a asp-action="MaterialsAdmin" asp-controller="Admin" class="divLogo">
             <h1>MastQuo</h1>

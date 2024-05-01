@@ -48,10 +48,10 @@
         @for (int i = 0; i < Model.Answers.Count; i++)
         {
             var test = Model.Answers[i];
-            var questionID = Model.TestQuestions.Find(n => n.TestId == Model.Test.IdTest && n.IdTestQuestion == test.TestQuestionId).QuestionId;
-            var questionNumber = Model.Questions.Find(n => n.IdQuestion == questionID).NumberQuestion;
-            var questionName = Model.Questions.Find(n => n.IdQuestion == questionID).NameQuestion;
-            var questionTypeID = Model.Questions.Find(n => n.IdQuestion == questionID).TypeQuestionId;
+            var questionID = Model.TestQuestions.Find(n => n.TestId == Model.Test.IdTest && n.IdTestQuestion == test.TestQuestionId)?.QuestionId;
+            var questionNumber = Model.Questions.Find(n => n.IdQuestion == questionID)?.NumberQuestion;
+            var questionName = Model.Questions.Find(n => n.IdQuestion == questionID)?.NameQuestion;
+            var questionTypeID = Model.Questions.Find(n => n.IdQuestion == questionID)?.TypeQuestionId;
 
             <div class="formAnswer">
                 <div class="flexDiv">
@@ -73,7 +73,7 @@
                     <div class="AnswerForm">
                         @foreach (var answer in Model.QuestionAnswerOptions.Where(n => n.QuestionId == questionID && n.IdQuestionAnswerOptions == test.QuestionAnswerOptionsId))
                         {
-                            var answerContent = Model.AnswerOptions.Find(n => n.IdAnswerOptions == answer.AnswerOptionsId).ContentAnswer;
+                            var answerContent = Model.AnswerOptions.Find(n => n.IdAnswerOptions == answer.AnswerOptionsId)?.ContentAnswer;
                             <div class="Answer">
                                 <input type="radio" disabled checked value="@answer.AnswerOptionsId" />
                                 @answerContent
@@ -87,7 +87,7 @@
                     <div class="AnswerForm">
                         @foreach (var answer in Model.QuestionAnswerOptions.Where(n => n.QuestionId == questionID && n.IdQuestionAnswerOptions == test.QuestionAnswerOptionsId))
                         {
-                            var answerContent = Model.AnswerOptions.Find(n => n.IdAnswerOptions == answer.AnswerOptionsId).ContentAnswer;
+                            var answerContent = Model.AnswerOptions.Find(n => n.IdAnswerOptions == answer.AnswerOptionsId)?.ContentAnswer;
                             <div class="Answer">
                                 <input type="checkbox" disabled checked value="@answer.AnswerOptionsId" />
                                 @answerContent
@@ -103,7 +103,7 @@
                 <h3>Результат: <span id="result" name="Result">0</span> из @Model.TestQuestions.Count(n => n.TestId == Model.Test.IdTest)</h3>
             </div>
             <input type="hidden" name="Result" id="result-input" value="0" />
-            <input type="hidden" name="StudentTestID" value="@Model.StudentTests.Find(n => n.TestId == Model.Test.IdTest).IdStudentTest"/>
+            <input type="hidden" name="StudentTestID" value="@Model.StudentTests.Find(n => n.TestId == Model.Test.IdTest)?.IdStudentTest"/>
             <input type="submit" class="buttonTest" value="Сохранить результаты"></input>
         </form>
         
@@ -162,8 +162,10 @@
 
         </script>
     </main>
-   
-        
+
+    <br />
+    <br />
+    <br />
     <footer>
         <a asp-action="MaterialsTeacher" asp-controller="Teacher" class="divLogo">
             <h1>MastQuo</h1>

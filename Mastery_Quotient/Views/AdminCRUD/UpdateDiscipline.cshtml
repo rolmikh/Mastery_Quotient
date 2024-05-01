@@ -19,8 +19,8 @@
                 @foreach (var item in Model.Disciplines)
                 {
 
-                    var courseId = Model.Courses.Find(n => n.IdCourse == item.CourseId).IdCourse;
-                    var courseNumber = Model.Courses.Find(n => n.IdCourse == item.CourseId).NumberCourse;
+                    var courseId = Model.Courses.Find(n => n.IdCourse == item.CourseId)?.IdCourse;
+                    var courseNumber = Model.Courses.Find(n => n.IdCourse == item.CourseId)?.NumberCourse;
 
 
 

@@ -19,8 +19,8 @@
             <form asp-antiforgery="true" asp-action="UpdateTeacher" asp-controller="Admin">
                 @foreach (var employee in Model.Employees)
                 {
-                    var roleName = Model.Roles.Find(n => n.IdRole == employee.RoleId).NameRole;
-                    var roleID = Model.Roles.Find(n => n.IdRole == employee.RoleId).IdRole;
+                    var roleName = Model.Roles.Find(n => n.IdRole == employee.RoleId)?.NameRole;
+                    var roleID = Model.Roles.Find(n => n.IdRole == employee.RoleId)?.IdRole;
 
                     <label hidden>Введите код</label>
                     <input type="text" required name="IdUser" class="CrudInput"  readonly hidden value="@employee.IdEmployee" placeholder="" />
@@ -76,7 +76,9 @@
 
     </main>
 
-
+    <br />
+    <br />
+    <br />
     <footer>
         <a asp-action="MaterialsAdmin" asp-controller="Admin" class="divLogo">
             <h1>MastQuo</h1>

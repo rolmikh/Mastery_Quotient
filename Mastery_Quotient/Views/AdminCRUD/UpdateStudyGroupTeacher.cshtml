@@ -18,12 +18,12 @@
             <form asp-antiforgery="true" asp-action="UpdateStudyGroupTeacher" asp-controller="AdminCRUD">
                 @foreach (var item in Model.EmployeeStudyGroups)
                 {
-                    var IDStudyGroup = Model.StudyGroups.Find(n => n.IdStudyGroup == item.StudyGroupId).IdStudyGroup;
-                    var nameStudyGroup = Model.StudyGroups.Find(n => n.IdStudyGroup == item.StudyGroupId).NameStudyGroup;
-                    var employeeSurname = Model.Employees.Find(n => n.IdEmployee == item.EmployeeId).SurnameEmployee;
-                    var employeeName = Model.Employees.Find(n => n.IdEmployee == item.EmployeeId).NameEmployee;
-                    var employeeMiddleName = Model.Employees.Find(n => n.IdEmployee == item.EmployeeId).MiddleNameEmployee;
-                    var employeeID = Model.Employees.Find(n => n.IdEmployee == item.EmployeeId).IdEmployee;
+                    var IDStudyGroup = Model.StudyGroups.Find(n => n.IdStudyGroup == item.StudyGroupId)?.IdStudyGroup;
+                    var nameStudyGroup = Model.StudyGroups.Find(n => n.IdStudyGroup == item.StudyGroupId)?.NameStudyGroup;
+                    var employeeSurname = Model.Employees.Find(n => n.IdEmployee == item.EmployeeId)?.SurnameEmployee;
+                    var employeeName = Model.Employees.Find(n => n.IdEmployee == item.EmployeeId)?.NameEmployee;
+                    var employeeMiddleName = Model.Employees.Find(n => n.IdEmployee == item.EmployeeId)?.MiddleNameEmployee;
+                    var employeeID = Model.Employees.Find(n => n.IdEmployee == item.EmployeeId)?.IdEmployee;
                     <input class="CrudInputAdmin" type="text" readonly required name="IdEmployeeStudyGroup" value="@item.IdEmployeeStudyGroup" placeholder="Код учебной группы преподавателя" />
 
                     <select class="CrudSelectAdmin" required id="StudyGroupId" name="StudyGroupId" placeholder="Учебная группа">

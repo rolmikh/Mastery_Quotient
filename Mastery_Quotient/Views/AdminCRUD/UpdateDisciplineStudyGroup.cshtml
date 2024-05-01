@@ -18,10 +18,10 @@
             <form asp-antiforgery="true" asp-action="UpdateDisciplineStudyGroup" asp-controller="AdminCRUD">
                 @foreach(var item in Model.DisciplineOfTheStudyGroups)
                 {
-                    var IDStudyGroup = Model.StudyGroups.Find(n => n.IdStudyGroup == item.StudyGroupId).IdStudyGroup;
-                    var nameStudyGroup = Model.StudyGroups.Find(n => n.IdStudyGroup == item.StudyGroupId).NameStudyGroup;
-                    var IdDiscipline = Model.Disciplines.Find(n => n.IdDiscipline == item.DisciplineId).IdDiscipline;
-                    var nameDiscipline = Model.Disciplines.Find(n => n.IdDiscipline == item.DisciplineId).NameDiscipline;
+                    var IDStudyGroup = Model.StudyGroups.Find(n => n.IdStudyGroup == item.StudyGroupId)?.IdStudyGroup;
+                    var nameStudyGroup = Model.StudyGroups.Find(n => n.IdStudyGroup == item.StudyGroupId)?.NameStudyGroup;
+                    var IdDiscipline = Model.Disciplines.Find(n => n.IdDiscipline == item.DisciplineId)?.IdDiscipline;
+                    var nameDiscipline = Model.Disciplines.Find(n => n.IdDiscipline == item.DisciplineId)?.NameDiscipline;
                     <input class="CrudInputAdmin" type="text" readonly required name="IdDisciplineOfTheStudyGroup" value="@item.IdDisciplineOfTheStudyGroup" placeholder="Код учебной группы преподавателя" />
                     <select class="CrudSelectAdmin" required id="StudyGroupId" name="StudyGroupId" placeholder="Учебная группа">
                         <option value="@IDStudyGroup">@nameStudyGroup</option>
@@ -34,7 +34,7 @@
                         <option value="@IdDiscipline">@nameDiscipline</option>
                         @foreach (var discipline in Model.Disciplines)
                         {
-                            var course = Model.Courses.Find(n => n.IdCourse == discipline.CourseId).NumberCourse;
+                            var course = Model.Courses.Find(n => n.IdCourse == discipline.CourseId)?.NumberCourse;
                             <option value="@discipline.IdDiscipline">@discipline.NameDiscipline @course курс</option>
                         }
                     </select>

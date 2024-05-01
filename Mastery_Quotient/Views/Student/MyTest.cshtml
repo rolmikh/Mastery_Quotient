@@ -13,7 +13,7 @@
 
     <link href="https://fonts.googleapis.com/css?family=Mulish:200,300,regular,500,600,700,800,900,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic"
           rel="stylesheet" />
-    <title>Тестирования</title>
+    <title>Результаты тестирования</title>
     <div class="container">
         <a asp-action="MainStudent" asp-controller="Student">
             <img class="navigation_img" src="../images/3QpbYI-LogoMakr.png">
@@ -51,11 +51,11 @@
             <tbody>
                 @foreach (var item in Model.StudentTest)
                 {
-                    var nameTest = Model.Tests.Find(n => n.IdTest == item.TestId).NameTest;
-                    var disciplineTest = Model.Tests.Find(n => n.IdTest == item.TestId).DisciplineId;
-                    var disciplineName = Model.Disciplines.Find(n => n.IdDiscipline == disciplineTest).NameDiscipline;
-                    var deadlineTest = Model.Tests.Find(n => n.IdTest == item.TestId).Deadline;
-                    var idTest = Model.Tests.Find(n => n.IdTest == item.TestId).IdTest;
+                    var nameTest = Model.Tests.Find(n => n.IdTest == item.TestId)?.NameTest;
+                    var disciplineTest = Model.Tests.Find(n => n.IdTest == item.TestId)?.DisciplineId;
+                    var disciplineName = Model.Disciplines.Find(n => n.IdDiscipline == disciplineTest)?.NameDiscipline;
+                    var deadlineTest = Model.Tests.Find(n => n.IdTest == item.TestId)?.Deadline;
+                    var idTest = Model.Tests.Find(n => n.IdTest == item.TestId)?.IdTest;
                     var result = Model.TestQuestions.Count(n => n.TestId == idTest);
                     <tr>
                         <td>@nameTest</td>
@@ -82,6 +82,9 @@
 
 
     </main>
+    <br />
+    <br />
+    <br />
     <footer>
         <a asp-action="MainStudent" asp-controller="Student" class="divLogo">
             <h1>MastQuo</h1>
