@@ -59,7 +59,10 @@
             <h3>@Model.Test.Deadline</h3>
 
         </div>
-
+        <hr /> 
+        <br />
+        <br />
+        <br />
         @foreach (var question in Model.TestQuestion)
         {
             var questionNumber = Model.Question.Find(n => n.IdQuestion == question.QuestionId)?.NumberQuestion;
@@ -92,8 +95,8 @@
                             var answerContent = Model.AnswerOption.Find(n => n.IdAnswerOptions == answer.AnswerOptionsId)?.ContentAnswer;
 
                             <div class="Answer">
-                                <input type="radio" name="AnswerOptionViewModels[@questionID].SelectedAnswer" value="@answer.AnswerOptionsId" />
-                                @answerContent
+                                <input type="radio" id="answer@(answer.AnswerOptionsId)" name="AnswerOptionViewModels[@questionID].SelectedAnswer" value="@answer.AnswerOptionsId" />
+                                <label for="answer@(answer.AnswerOptionsId)">@answerContent</label>
                             </div>
                         }
                     </div>
@@ -107,8 +110,8 @@
                             var answerContent = Model.AnswerOption.Find(n => n.IdAnswerOptions == answer.AnswerOptionsId)?.ContentAnswer;
 
                             <div class="Answer">
-                                <input type="checkbox" name="AnswerOptionViewModels[@questionID].SelectedAnswer" value="@answer.AnswerOptionsId" />
-                                @answerContent
+                                <input type="checkbox" id="answer@(answer.AnswerOptionsId)" name="AnswerOptionViewModels[@questionID].SelectedAnswer" value="@answer.AnswerOptionsId" />
+                                <label for="answer@(answer.AnswerOptionsId)">@answerContent</label>
                             </div>
                         }
                     </div>

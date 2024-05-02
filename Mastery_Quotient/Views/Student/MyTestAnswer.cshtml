@@ -50,7 +50,10 @@
             <h3>@Model.StudentTests.Find(n => n.TestId == Model.Test.IdTest)?.Result из @Model.TestQuestions.Count(n => n.TestId == Model.Test.IdTest)</h3>
 
         </div>
-
+        <hr />
+        <br />
+        <br />
+        <br />
         @foreach (var test in Model.Answers)
         {
 

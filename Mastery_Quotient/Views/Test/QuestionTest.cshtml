@@ -63,6 +63,11 @@
             <h3>@Model.Test.Deadline</h3>
 
         </div>
+
+        <hr />
+        <br />
+        <br />
+        <br />
         @if (@Model.Test.Active == 1)
         {
             <div class="slider">
@@ -178,8 +183,8 @@
                             var answerContent = Model.AnswerOption.Find(n => n.IdAnswerOptions == answer.AnswerOptionsId)?.ContentAnswer;
 
                             <div class="Answer">
-                                <input type="radio" name="AnswerOptionViewModels[@questionID].SelectedAnswer" value="@answer.AnswerOptionsId" />
-                                @answerContent
+                                <input type="radio" id="answer@(answer.AnswerOptionsId)" name="AnswerOptionViewModels[@questionID].SelectedAnswer" value="@answer.AnswerOptionsId" />
+                                <label for="answer@(answer.AnswerOptionsId)">@answerContent</label>
                             </div>
                         }
                     </div>
@@ -193,8 +198,8 @@
                             var answerContent = Model.AnswerOption.Find(n => n.IdAnswerOptions == answer.AnswerOptionsId)?.ContentAnswer;
 
                             <div class="Answer">
-                                <input type="checkbox" name="AnswerOptionViewModels[@questionID].SelectedAnswer" value="@answer.AnswerOptionsId" />
-                                @answerContent
+                                <input type="checkbox" id="answer@(answer.AnswerOptionsId)"  name="AnswerOptionViewModels[@questionID].SelectedAnswer" value="@answer.AnswerOptionsId" />
+                                <label for="answer@(answer.AnswerOptionsId)">@answerContent</label>
                             </div>
                         }
                     </div>

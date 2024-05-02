@@ -81,15 +81,18 @@
                 @if (item.IsDeleted == 0)
                 {
                     <div class="formMaterial">
-                        <form id="deleteForm" asp-controller="Teacher" asp-action="DeleteMaterial" method="post">
-                            <input type="hidden" value="@item.IdMaterial" name="IdMaterial" />
-                            <button class="image_button" width="50" height="50" type="button">
-                                <img>
-                            </button>
-                        </form>
+                        <div class="materialDelete">
+                            <form id="deleteForm" asp-controller="Teacher" asp-action="DeleteMaterial" method="post">
+                                <input type="hidden" value="@item.IdMaterial" name="IdMaterial" />
+                                <button class="image_button" width="50" height="50" type="button">
+                                    <img>
+                                </button>
+                            </form>
+                        </div>
+                        
                         <form asp-action="FileMaterial" asp-antiforgery="true" asp-controller="admin">
 
-                            <input type="image" class="imageMaterial" width="187" height="177" src="@item.PhotoMaterial" />
+                            <input type="image" class="imageMaterialTeacher" width="187" height="177" src="@item.PhotoMaterial" />
                             <label class="nameMaterial">@item.NameMaterial</label>
                             <input value="Подробнее" class="buttonMaterial" type="submit" />
 
@@ -106,11 +109,11 @@
                 @if (item.IsDeleted == 1)
                 {
                     <div class="formMaterial">
-                        
-                        <a asp-action="UpdateMaterial" asp-controller="teacher" asp-route-id="@item.IdMaterial"><input type="image" width="50" height="50" src="../images/edit.png" /></a>
+                        <div class="materialDelete">
+                            <a asp-action="UpdateMaterial" asp-controller="teacher" asp-route-id="@item.IdMaterial"><input type="image" width="50" height="50" src="../images/edit.png" /></a>
+                        </div>
                         <form asp-action="FileMaterial" asp-antiforgery="true" asp-controller="admin">
 
-                            <input type="image" class="imageMaterial" width="187" height="177" src="@item.PhotoMaterial" />
                             <label class="nameMaterial">@item.NameMaterial</label>
                             <input value="Подробнее" class="buttonMaterial" type="submit" />
 

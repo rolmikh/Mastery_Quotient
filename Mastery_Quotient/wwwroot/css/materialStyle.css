@@ -18,6 +18,12 @@
     width: 100%;
 }
 
+.materialDelete {
+    float: right;
+    margin-right:10px;
+    margin-top: 2px;
+}
+
 
 .buttonMaterial {
     text-decoration: none;
@@ -49,8 +55,7 @@
     height: 64px;
     letter-spacing: 0.2px;
     margin-top: 20px;
-
-
+    word-wrap: break-word;
 }
 
 .imageMaterial {
@@ -61,6 +66,15 @@
     align-items: center;
     justify-content: center;
     margin-top: 25px;
+}
+
+.imageMaterialTeacher {
+    width: 187px;
+    height: 177px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .formsContainer {

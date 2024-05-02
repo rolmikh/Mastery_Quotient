@@ -69,12 +69,15 @@
                     
                     
                     <div class="divTestForm">
-                        <form id="deleteForm" asp-controller="Test" asp-action="DeleteTest" method="post">
-                            <input type="hidden" value="@item.IdTest" name="IdTest" />
-                            <button class="image_button" width="50" height="50" type="button">
-                                <img>
-                            </button>
-                        </form>
+                        <div class="testDelete">
+
+                            <form id="deleteForm" asp-controller="Test" asp-action="DeleteTest" method="post">
+                                <input type="hidden" value="@item.IdTest" name="IdTest" />
+                                <button class="image_button" width="50" height="50" type="button">
+                                    <img>
+                                </button>
+                            </form>
+                        </div>
                         <form asp-action="QuestionTest" asp-antiforgery="true" asp-controller="Test">
                             <div>
                                 
@@ -102,13 +105,19 @@
 
 
                     <div class="divTestForm">
-                        <a asp-action="UpdateTest" asp-controller="Test" asp-route-id="@item.IdTest"><input type="image" width="50" height="50" src="../images/edit.png" /></a>
+                        <div class="testDelete">
 
+                            <a asp-action="UpdateTest" asp-controller="Test" asp-route-id="@item.IdTest"><input type="image" width="50" height="50" src="../images/edit.png" /></a>
+                        </div>
                         <form asp-action="QuestionTest" asp-antiforgery="true" asp-controller="Test">
                             <div>
                                 <input name="testId" hidden value="@item.IdTest" />
-                                <label class="labelTest">@item.NameTest</label>
+                                <label class="labelTest" style="font-weight: bold">@item.NameTest</label>
                                 <br/>
+                                <br/>
+                                <br/>
+                                <br/>
+
                                 <label class="labelTest">Дата создания: @string.Format("{0:dd.MM.yyyy}", @item.DateCreatedTest)</label>
                                 <input value="Добавить вопрос" class="buttonTest" type="submit" />
 
