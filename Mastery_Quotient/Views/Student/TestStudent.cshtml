@@ -65,7 +65,7 @@
             @foreach (var item in Model.Test)
             {
                 var studentTest = Model.StudentTests.FirstOrDefault(n => n.TestId == item.IdTest && n.StudentId == Model.Student.IdStudent);
-                if ((studentTest == null || studentTest.Result == 0) && item.Active == 0)
+                if (studentTest == null && item.Active == 0)
                 {
                     var disciplineId = Model.DisciplineEmployees.Find(n => n.EmployeeId == item.EmployeeId)?.DisciplineId;
                     var disciplineName = Model.Disciplines.Find(n => n.IdDiscipline == disciplineId)?.NameDiscipline;
@@ -111,7 +111,57 @@
                 }
             }
         </div>
+        <h2></h2>
+        <div class="formsContainer">
+            @foreach (var item in Model.Test)
+            {
+                var studentTest = Model.StudentTests.FirstOrDefault(n => n.TestId == item.IdTest && n.StudentId == Model.Student.IdStudent)?.IsCompleted;
+                if (studentTest == 1 && item.Active == 0)
+                {
+                    var disciplineId = Model.DisciplineEmployees.Find(n => n.EmployeeId == item.EmployeeId)?.DisciplineId;
+                    var disciplineName = Model.Disciplines.Find(n => n.IdDiscipline == disciplineId)?.NameDiscipline;
+                    var idEmployee = Model.DisciplineEmployees.Find(n => n.DisciplineId == disciplineId)?.EmployeeId;
 
+                    var surnameEmployee = Model.Employees.Find(n => n.IdEmployee == idEmployee)?.SurnameEmployee;
+
+                    var nameEmployee = Model.Employees.Find(n => n.IdEmployee == idEmployee)?.NameEmployee;
+
+                    var middleNameEmployee = Model.Employees.Find(n => n.IdEmployee == idEmployee)?.MiddleNameEmployee;
+
+                    var photoEmployee = Model.Employees.Find(n => n.IdEmployee == idEmployee)?.PhotoEmployee;
+                    if (Model.DisciplineOfTheStudyGroup.Any(n => n.DisciplineId == disciplineId))
+                    {
+                        if (item.Deadline == null || item.Deadline >= DateTime.Now)
+                        {
+                            <div class="divTestForm">
+                                <form asp-action="OneTestStudent" asp-antiforgery="true" asp-controller="Student">
+                                    <div>
+                                        <br />
+                                        <br />
+                                        <input name="testId" hidden value="@item.IdTest" />
+
+                                        <label class="labelTest" style="font-weight: bold">@item.NameTest</label>
+                                        <br />
+                                        <div class="labelTest">Дата создания: @string.Format("{0:dd.MM.yyyy}", @item.DateCreatedTest)</div>
+                                        <br />
+                                        <div>
+                                            <img class="photoEmployee" src="@photoEmployee" width="20" height="20" />
+                                            @surnameEmployee @nameEmployee @middleNameEmployee
+                                        </div>
+                                        <input value="Повторить попытку" class="buttonTest" type="submit" />
+
+                                    </div>
+                                </form>
+                            </div>
+                        }
+
+                    }
+
+
+
+                }
+            }
+        </div>
 
     </main>
     <br />

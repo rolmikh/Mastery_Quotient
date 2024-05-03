@@ -53,13 +53,16 @@
                     <th>Курс</th>
                     <th>Срок сдачи</th>
                     <th>Ответы студента</th>
+                    <th>Результат</th>
+                    <th>Вернуть тестирование</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in Model.StudentsTest.Where(n => Model.Tests.Any(t => t.EmployeeId == Model.Employee.IdEmployee && t.IdTest == n.TestId)))
                 {
-                    if (item.Result == 0)
+                    if (item.Result == 0 && item.IsCompleted == 0)
                     {
+                        var photoStudent = Model.Students.Find(n => n.IdStudent == item.StudentId)?.PhotoStudent;
                         var surnameStudent = Model.Students.Find(n => n.IdStudent == item.StudentId)?.SurnameStudent;
                         var nameStudent = Model.Students.Find(n => n.IdStudent == item.StudentId)?.NameStudent;
                         var middleNameStudent = Model.Students.Find(n => n.IdStudent == item.StudentId)?.MiddleNameStudent;
@@ -73,8 +76,9 @@
                         var disciplineName = Model.Disciplines.Find(n => n.IdDiscipline == disciplineTest)?.NameDiscipline;
                         var deadlineTest = Model.Tests.Find(n => n.IdTest == item.TestId)?.Deadline;
                         var idTest = Model.Tests.Find(n => n.IdTest == item.TestId)?.IdTest;
+                        var result = Model.TestsQuestion.Count(n => n.TestId == idTest);
                         <tr>
-                            <td>@surnameStudent @nameStudent @middleNameStudent</td>
+                            <td><img class="photoEmployee" src="@photoStudent" width="20" height="20" /> @surnameStudent @nameStudent @middleNameStudent</td>
                             <td>@emailStudent</td>
                             <td>@studyGroup</td>
                             <td>@nameTest</td>
@@ -92,6 +96,80 @@
                             }
                             <td>
                                 <a asp-action="StudentOneTestComplete" asp-route-id="@item.TestId">Ответы студента</a>
+                            </td>
+                            <td>@item.Result/@result</td>
+                            <td>
+                                <a asp-action="StudentOneTestNoComplete" asp-route-id="@item.IdStudentTest">Вернуть тестирование</a>
+                            </td>
+
+                        </tr>
+                    }
+
+                }
+            </tbody>
+        </table>
+
+        <h1>Повторные тестирования</h1>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ФИО студента</th>
+                    <th>Электронная почта студента</th>
+                    <th>Учебная группа</th>
+                    <th>Название тестирования</th>
+                    <th>Дата прохождения</th>
+                    <th>Дисциплина</th>
+                    <th>Курс</th>
+                    <th>Срок сдачи</th>
+                    <th>Ответы студента</th>
+                    <th>Результат</th>
+                    <th>Вернуть тестирование</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.StudentsTest.Where(n => Model.Tests.Any(t => t.EmployeeId == Model.Employee.IdEmployee && t.IdTest == n.TestId)))
+                {
+                    if (item.Result == 0 && item.IsCompleted == 1)
+                    {
+                        var photoStudent = Model.Students.Find(n => n.IdStudent == item.StudentId)?.PhotoStudent;
+                        var surnameStudent = Model.Students.Find(n => n.IdStudent == item.StudentId)?.SurnameStudent;
+                        var nameStudent = Model.Students.Find(n => n.IdStudent == item.StudentId)?.NameStudent;
+                        var middleNameStudent = Model.Students.Find(n => n.IdStudent == item.StudentId)?.MiddleNameStudent;
+                        var emailStudent = Model.Students.Find(n => n.IdStudent == item.StudentId)?.EmailStudent;
+                        var idGroup = Model.Students.Find(n => n.IdStudent == item.StudentId)?.StudyGroupId;
+                        var studyGroup = Model.StudyGroups.Find(n => n.IdStudyGroup == idGroup)?.NameStudyGroup;
+                        var studyGroupIdCourse = Model.StudyGroups.Find(n => n.IdStudyGroup == idGroup)?.CourseId;
+                        var course = Model.Courses.Find(n => n.IdCourse == studyGroupIdCourse)?.NumberCourse;
+                        var nameTest = Model.Tests.Find(n => n.IdTest == item.TestId)?.NameTest;
+                        var disciplineTest = Model.Tests.Find(n => n.IdTest == item.TestId)?.DisciplineId;
+                        var disciplineName = Model.Disciplines.Find(n => n.IdDiscipline == disciplineTest)?.NameDiscipline;
+                        var deadlineTest = Model.Tests.Find(n => n.IdTest == item.TestId)?.Deadline;
+                        var idTest = Model.Tests.Find(n => n.IdTest == item.TestId)?.IdTest;
+                        var result = Model.TestsQuestion.Count(n => n.TestId == idTest);
+                        <tr>
+                            <td><img class="photoEmployee" src="@photoStudent" width="20" height="20" /> @surnameStudent @nameStudent @middleNameStudent</td>
+                            <td>@emailStudent</td>
+                            <td>@studyGroup</td>
+                            <td>@nameTest</td>
+                            <td>@item.DateCompleted</td>
+                            <td>@disciplineName</td>
+                            <td>@course</td>
+                            @if (deadlineTest == null)
+                            {
+                                <td>Без срока сдачи</td>
+
+                            }
+                            else
+                            {
+                                <td>@deadlineTest</td>
+                            }
+                            <td>
+                                <a asp-action="StudentOneTestComplete" asp-route-id="@item.TestId">Ответы студента</a>
+                            </td>
+                            <td>@item.Result/@result</td>
+                            <td>
+                                <a asp-action="StudentOneTestNoComplete" asp-route-id="@item.IdStudentTest">Вернуть тестирование</a>
                             </td>
 
                         </tr>
@@ -122,6 +200,8 @@
                 {
                     if (item.Result != 0)
                     {
+                        var photoStudent = Model.Students.Find(n => n.IdStudent == item.StudentId)?.PhotoStudent;
+
                         var surnameStudent = Model.Students.Find(n => n.IdStudent == item.StudentId)?.SurnameStudent;
                         var nameStudent = Model.Students.Find(n => n.IdStudent == item.StudentId)?.NameStudent;
                         var middleNameStudent = Model.Students.Find(n => n.IdStudent == item.StudentId)?.MiddleNameStudent;
@@ -138,7 +218,7 @@
                         var result = Model.TestsQuestion.Count(n => n.TestId == idTest);
 
                         <tr>
-                            <td>@surnameStudent @nameStudent @middleNameStudent</td>
+                            <td><img class="photoEmployee" src="@photoStudent" width="20" height="20" /> @surnameStudent @nameStudent @middleNameStudent</td>
                             <td>@emailStudent</td>
                             <td>@studyGroup</td>
                             <td>@nameTest</td>

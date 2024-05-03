@@ -52,7 +52,7 @@ namespace Mastery_Quotient.Controllers
 
                 if (tokenService.IsTokenExpired(token))
                 {
-                    var refreshToken = await tokenService.RefreshToken(token, TokenService.role);
+                    var refreshToken = await tokenService.RefreshToken(token, "Студент");
                     if (refreshToken != null)
                     {
                         TokenService.token = refreshToken;
@@ -116,7 +116,7 @@ namespace Mastery_Quotient.Controllers
 
                 if (tokenService.IsTokenExpired(token))
                 {
-                    var refreshToken = await tokenService.RefreshToken(token, TokenService.role);
+                    var refreshToken = await tokenService.RefreshToken(token, "Студент");
                     if (refreshToken != null)
                     {
                         TokenService.token = refreshToken;
@@ -202,7 +202,7 @@ namespace Mastery_Quotient.Controllers
 
                 if (tokenService.IsTokenExpired(token))
                 {
-                    var refreshToken = await tokenService.RefreshToken(token, TokenService.role);
+                    var refreshToken = await tokenService.RefreshToken(token, "Студент");
                     if (refreshToken != null)
                     {
                         TokenService.token = refreshToken;
@@ -297,7 +297,7 @@ namespace Mastery_Quotient.Controllers
 
                 if (tokenService.IsTokenExpired(token))
                 {
-                    var refreshToken = await tokenService.RefreshToken(token, TokenService.role);
+                    var refreshToken = await tokenService.RefreshToken(token, "Студент");
                     if (refreshToken != null)
                     {
                         TokenService.token = refreshToken;
@@ -413,7 +413,7 @@ namespace Mastery_Quotient.Controllers
 
                 if (tokenService.IsTokenExpired(token))
                 {
-                    var refreshToken = await tokenService.RefreshToken(token, TokenService.role);
+                    var refreshToken = await tokenService.RefreshToken(token, "Студент");
                     if (refreshToken != null)
                     {
                         TokenService.token = refreshToken;
@@ -534,7 +534,7 @@ namespace Mastery_Quotient.Controllers
 
                 if (tokenService.IsTokenExpired(token))
                 {
-                    var refreshToken = await tokenService.RefreshToken(token, TokenService.role);
+                    var refreshToken = await tokenService.RefreshToken(token, "Студент");
                     if (refreshToken != null)
                     {
                         TokenService.token = refreshToken;
@@ -659,7 +659,7 @@ namespace Mastery_Quotient.Controllers
 
                     if (tokenService.IsTokenExpired(token))
                     {
-                        var refreshToken = await tokenService.RefreshToken(token, TokenService.role);
+                        var refreshToken = await tokenService.RefreshToken(token, "Студент");
                         if (refreshToken != null)
                         {
                             TokenService.token = refreshToken;
@@ -780,7 +780,7 @@ namespace Mastery_Quotient.Controllers
 
                     if (tokenService.IsTokenExpired(token))
                     {
-                        var refreshToken = await tokenService.RefreshToken(token, TokenService.role);
+                        var refreshToken = await tokenService.RefreshToken(token, "Студент");
                         if (refreshToken != null)
                         {
                             TokenService.token = refreshToken;
@@ -846,7 +846,7 @@ namespace Mastery_Quotient.Controllers
 
                     if (tokenService.IsTokenExpired(token))
                     {
-                        var refreshToken = await tokenService.RefreshToken(token, TokenService.role);
+                        var refreshToken = await tokenService.RefreshToken(token, "Студент");
                         if (refreshToken != null)
                         {
                             TokenService.token = refreshToken;
@@ -1010,7 +1010,7 @@ namespace Mastery_Quotient.Controllers
 
                     if (tokenService.IsTokenExpired(token))
                     {
-                        var refreshToken = await tokenService.RefreshToken(token, TokenService.role);
+                        var refreshToken = await tokenService.RefreshToken(token, "Студент");
                         if (refreshToken != null)
                         {
                             TokenService.token = refreshToken;
@@ -1291,7 +1291,7 @@ namespace Mastery_Quotient.Controllers
 
                     if (tokenService.IsTokenExpired(token))
                     {
-                        var refreshToken = await tokenService.RefreshToken(token, TokenService.role);
+                        var refreshToken = await tokenService.RefreshToken(token, "Студент");
                         if (refreshToken != null)
                         {
                             TokenService.token = refreshToken;
@@ -1363,7 +1363,7 @@ namespace Mastery_Quotient.Controllers
 
                     if (tokenService.IsTokenExpired(token))
                     {
-                        var refreshToken = await tokenService.RefreshToken(token, TokenService.role);
+                        var refreshToken = await tokenService.RefreshToken(token, "Студент");
                         if (refreshToken != null)
                         {
                             TokenService.token = refreshToken;
@@ -1444,7 +1444,7 @@ namespace Mastery_Quotient.Controllers
 
                 if (tokenService.IsTokenExpired(token))
                 {
-                    var refreshToken = await tokenService.RefreshToken(token, TokenService.role);
+                    var refreshToken = await tokenService.RefreshToken(token, "Студент");
                     if (refreshToken != null)
                     {
                         TokenService.token = refreshToken;
@@ -1578,7 +1578,7 @@ namespace Mastery_Quotient.Controllers
 
                 if (tokenService.IsTokenExpired(token))
                 {
-                    var refreshToken = await tokenService.RefreshToken(token, TokenService.role);
+                    var refreshToken = await tokenService.RefreshToken(token, "Студент");
                     if (refreshToken != null)
                     {
                         TokenService.token = refreshToken;
@@ -1783,7 +1783,7 @@ namespace Mastery_Quotient.Controllers
 
                 if (tokenService.IsTokenExpired(token))
                 {
-                    var refreshToken = await tokenService.RefreshToken(token, TokenService.role);
+                    var refreshToken = await tokenService.RefreshToken(token, "Студент");
                     if (refreshToken != null)
                     {
                         TokenService.token = refreshToken;
@@ -1864,7 +1864,7 @@ namespace Mastery_Quotient.Controllers
 
                 if (tokenService.IsTokenExpired(token))
                 {
-                    var refreshToken = await tokenService.RefreshToken(token, TokenService.role);
+                    var refreshToken = await tokenService.RefreshToken(token, "Студент");
                     if (refreshToken != null)
                     {
                         TokenService.token = refreshToken;

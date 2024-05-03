@@ -314,7 +314,7 @@ namespace Mastery_Quotient.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
             
 
@@ -347,7 +347,7 @@ namespace Mastery_Quotient.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
             
         }
@@ -557,7 +557,8 @@ namespace Mastery_Quotient.Controllers
 
                     if (response.IsSuccessStatusCode)
                     {
-                        return Ok("Пароль успешно изменен!");
+                        TempData["NewPassword"] = "Пароль успешно изменен!";
+                        return RedirectToAction("Authorization", "Home");
                     }
                     else
                     {

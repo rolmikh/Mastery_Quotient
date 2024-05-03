@@ -52,6 +52,12 @@
                             @TempData["Message"]
                         </div>
                     }
+                    @if (TempData["NewPassword"] != null)
+                    {
+                        <div class="alert alert-success" role="alert">
+                            @TempData["NewPassword"]
+                        </div>
+                    }
                 </div>
             </div>
 

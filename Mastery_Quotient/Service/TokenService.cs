@@ -27,7 +27,7 @@ namespace Mastery_Quotient.Service
             {
                 request = new HttpRequestMessage(HttpMethod.Post, apiUrl + "Students/refresh_token?access_token=" + access_token);
             }
-            else
+            else if(role == "Преподаватель" || role == "Администратор")
             {
                 request = new HttpRequestMessage(HttpMethod.Post, apiUrl + "Employees/refresh_token?access_token=" + access_token);
 
