@@ -51,9 +51,13 @@
             <form asp-antiforgery="true" asp-action="FiltrationMaterial" asp-controller="Teacher">
                 <select class="CrudSelect" required id="disciplineID" name="disciplineID" placeholder="Дисциплина">
                     <option selected disabled>Дисциплина</option>
-                    @foreach (var discipline in Model.Disciplines)
+                    @foreach (var discipline in Model.DisciplineEmployees)
                     {
-                        <option value="@discipline.IdDiscipline">@discipline.NameDiscipline</option>
+                        var disciplinesID = Model.Disciplines.Find(n => n.IdDiscipline == discipline.DisciplineId)?.IdDiscipline;
+                        var disciplinesName = Model.Disciplines.Find(n => n.IdDiscipline == discipline.DisciplineId)?.NameDiscipline;
+                        var course = Model.Disciplines.Find(n => n.IdDiscipline == discipline.DisciplineId)?.CourseId;
+
+                        <option value="@disciplinesID">@disciplinesName @course курс</option>
                     }
                 </select>
                 <select class="CrudSelect" required id="typeId" name="typeId" placeholder="Тип материала">

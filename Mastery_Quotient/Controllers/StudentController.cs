@@ -1223,12 +1223,11 @@ namespace Mastery_Quotient.Controllers
                             {
                                 return RedirectToAction("News", "Student");
                             }
-                            else if(TempData.ContainsKey("AuthUser"))
+                            else 
                             {
-                                return RedirectToAction("MainStudent", "Student");
+                                return RedirectToAction("TestStudent", "Student");
 
                             }
-                            return RedirectToAction("TestStudent", "Student");
 
                         }
 
@@ -1238,16 +1237,13 @@ namespace Mastery_Quotient.Controllers
 
                             return RedirectToAction("News", "Student");
                         }
-                        else if (TempData.ContainsKey("AuthUser"))
+                        else
                         {
-                            TempData["FiltrationTest"] = JsonConvert.SerializeObject(tests);
+                            TempData["Filtration"] = JsonConvert.SerializeObject(tests);
 
-                            return RedirectToAction("MainStudent", "Student");
-
+                            return RedirectToAction("TestStudent", "Student");
                         }
-                        TempData["Filtration"] = JsonConvert.SerializeObject(tests);
-
-                        return RedirectToAction("TestStudent", "Student");
+                        
 
                     }
                 }
@@ -1259,13 +1255,11 @@ namespace Mastery_Quotient.Controllers
                     {
                         return RedirectToAction("News", "Student");
                     }
-                    else if (TempData.ContainsKey("AuthUser"))
+                    else
                     {
-
-                        return RedirectToAction("MainStudent", "Student");
+                        return RedirectToAction("TestStudent", "Student");
 
                     }
-                    return RedirectToAction("TestStudent", "Student");
                 }
             }
             catch
@@ -1602,6 +1596,7 @@ namespace Mastery_Quotient.Controllers
                 List<Test> tests = new List<Test>();
                 List<Material> materials = new List<Material>();
                 List<TypeMaterial> typeMaterials = new List<TypeMaterial>();
+                List<Course> courses = new List<Course>();
                 using (var httpClient = new HttpClient())
                 {
                     httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
@@ -1679,12 +1674,18 @@ namespace Mastery_Quotient.Controllers
                         string apiResponse = await response.Content.ReadAsStringAsync();
                         disciplineOfTheStudyGroups = JsonConvert.DeserializeObject<List<DisciplineOfTheStudyGroup>>(apiResponse);
                     }
+
+                    using (var response = await httpClient.GetAsync(apiUrl + "Courses"))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        courses = JsonConvert.DeserializeObject<List<Course>>(apiResponse);
+                    }
                 }
 
                     
                     
                     StudyGroup studyGroup = studyGroups.Find(n => n.IdStudyGroup == student.StudyGroupId);
-                    NewsModel newsModel = new NewsModel(employees, disciplines, disciplineEmployees, testParameters, tests, student, disciplineOfTheStudyGroups, studyGroup, materials, typeMaterials);
+                    NewsModel newsModel = new NewsModel(employees, disciplines, disciplineEmployees, testParameters, tests, student, disciplineOfTheStudyGroups, studyGroup, materials, typeMaterials, courses);
                     return View(newsModel);
             }
             catch (Exception ex)
@@ -1710,6 +1711,8 @@ namespace Mastery_Quotient.Controllers
                 List<Test> tests = new List<Test>();
                 List<Material> materials = new List<Material>();
                 List<TypeMaterial> typeMaterials = new List<TypeMaterial>();
+                List<Course> courses = new List<Course>();
+
                 using (var httpClient = new HttpClient())
                 {
                     
@@ -1755,9 +1758,14 @@ namespace Mastery_Quotient.Controllers
                         string apiResponse = await response.Content.ReadAsStringAsync();
                         typeMaterials = JsonConvert.DeserializeObject<List<TypeMaterial>>(apiResponse);
                     }
+                    using (var response = await httpClient.GetAsync(apiUrl + "Courses"))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        courses = JsonConvert.DeserializeObject<List<Course>>(apiResponse);
+                    }
                 }
 
-                NewsModel newsModel = new NewsModel(null, disciplines, null, null, tests, null, null, null, materials, typeMaterials);
+                NewsModel newsModel = new NewsModel(null, disciplines, null, null, tests, null, null, null, materials, typeMaterials, courses);
                 return View(newsModel);
 
             }

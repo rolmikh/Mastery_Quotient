@@ -131,14 +131,18 @@
                     <option selected disabled>Учебная группа</option>
                     @foreach (var studyGroup in Model.StudyGroups)
                     {
-                        <option value="@studyGroup.IdStudyGroup">@studyGroup.NameStudyGroup</option>
+                        if(studyGroup.IsDeleted == 0)
+                        {
+                            <option value="@studyGroup.IdStudyGroup">@studyGroup.NameStudyGroup</option>
+
+                        }
                     }
                 </select>
                 <select class="CrudSelectAdmin" required id="EmployeeId" name="EmployeeId" placeholder="Преподаватель">
                     <option selected disabled>Преподаватель</option>
                     @foreach (var teacher in Model.Employees)
                     {
-                        @if (teacher.RoleId == 1)
+                        @if (teacher.RoleId == 1 && teacher.IsDeleted == 0)
                         {
                             <option value="@teacher.IdEmployee">@teacher.SurnameEmployee @teacher.NameEmployee @teacher.MiddleNameEmployee</option>
                         }

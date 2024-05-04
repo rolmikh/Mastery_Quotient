@@ -48,7 +48,7 @@
                         var idDiscipline = Model.Disciplines.Find(n => n.IdDiscipline == disciplineStudyGroup.DisciplineId)?.IdDiscipline;
                         @foreach (var discipline in Model.Disciplines.Where(n => n.IdDiscipline == idDiscipline))
                         {
-                            <option value="@discipline.IdDiscipline">@discipline.NameDiscipline</option>
+                            <option value="@discipline.IdDiscipline">@discipline.NameDiscipline  @discipline.CourseId курс</option>
                         }
                     }
 

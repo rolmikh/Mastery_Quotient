@@ -276,4 +276,23 @@
     float: right;
     margin-right: 10px;
 }
+
+.score-input {
+    text-decoration: none;
+    max-height: 25px;
+    width: 100%;
+    max-width: 100px;
+    height: 25px;
+    text-align: left;
+    border-radius: 5px;
+    border-color: #6b9ac4;
+    background-color: white;
+    font-weight: bold;
+    letter-spacing: 2px;
+    color: black;
+    transition: .15s ease-in-out;
+    font-size: 16px;
+    margin: 10px;
+    padding: 10px;
+}
     

@@ -22,7 +22,9 @@
 
         public List<TypeMaterial> TypeMaterials { get; set; }
 
-        public NewsModel(List<Employee> employees, List<Discipline> disciplines, List<DisciplineEmployee> disciplineEmployees, List<TestParameter> testParameters, List<Test> test, Student student, List<DisciplineOfTheStudyGroup> disciplineOfTheStudyGroup, StudyGroup studyGroup, List<Material> materials, List<TypeMaterial> typeMaterials)
+        public List<Course> Courses { get; set; }
+
+        public NewsModel(List<Employee> employees, List<Discipline> disciplines, List<DisciplineEmployee> disciplineEmployees, List<TestParameter> testParameters, List<Test> test, Student student, List<DisciplineOfTheStudyGroup> disciplineOfTheStudyGroup, StudyGroup studyGroup, List<Material> materials, List<TypeMaterial> typeMaterials, List<Course> courses)
         {
             Employees = employees;
             Disciplines = disciplines;
@@ -34,6 +36,7 @@
             StudyGroup = studyGroup;
             Materials = materials;
             TypeMaterials = typeMaterials;
+            Courses = courses;
         }
     }
 }

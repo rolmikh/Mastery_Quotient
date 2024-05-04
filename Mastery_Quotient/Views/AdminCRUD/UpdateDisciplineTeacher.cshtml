@@ -30,15 +30,18 @@
                         <option value="@IdDiscipline">@nameDiscipline</option>
                         @foreach (var discipline in Model.Disciplines)
                         {
-                            var course = Model.Courses.Find(n => n.IdCourse == discipline.CourseId)?.NumberCourse;
-                            <option value="@discipline.IdDiscipline">@discipline.NameDiscipline @course курс</option>
+                            if (discipline.IsDeleted == 0)
+                            {
+                                var course = Model.Courses.Find(n => n.IdCourse == discipline.CourseId)?.NumberCourse;
+                                <option value="@discipline.IdDiscipline">@discipline.NameDiscipline @course курс</option>
+                            }
                         }
                     </select>
                     <select class="CrudSelectAdmin" required id="EmployeeId" name="EmployeeId" placeholder="Преподаватель">
                         <option value="@employeeID">@employeeSurname @employeeName @employeeMiddleName</option>
                         @foreach (var teacher in Model.Employees)
                         {
-                            @if (teacher.RoleId == 1)
+                            @if (teacher.RoleId == 1 && teacher.IsDeleted == 0)
                             {
                                 <option value="@teacher.IdEmployee">@teacher.SurnameEmployee @teacher.NameEmployee @teacher.MiddleNameEmployee</option>
                             }

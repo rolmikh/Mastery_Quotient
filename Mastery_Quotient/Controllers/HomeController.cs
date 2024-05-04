@@ -121,6 +121,8 @@ namespace Mastery_Quotient.Controllers
                         }
                         else
                         {
+                            TempData["Message"] = "Неверная электронная почта или пароль!";
+
                             return BadRequest();
                         }
 
@@ -245,6 +247,7 @@ namespace Mastery_Quotient.Controllers
 
 
                 await emailService.SendEmail(StudentRegistrationModel.EmailStudent, "Код подтверждения MastQuo", $"{key} - ваш код подтверждения электронной почты");
+                TempData["Code"] = $"На электронную почту {StudentRegistrationModel.EmailStudent} был отправлен код подтверждения!";
 
                 return View("Code");
             }
@@ -297,10 +300,13 @@ namespace Mastery_Quotient.Controllers
 
                         if (responseStudent.IsSuccessStatusCode)
                         {
+                            TempData["Registration"] = "Успешная регистрация";
                             return RedirectToAction("Authorization", "Home");
                         }
                         else
                         {
+                            TempData["Registration"] = "Неуспешная регистрация";
+
                             return RedirectToAction("Registration", "Home");
                         }
                     }
