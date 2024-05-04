@@ -1,23 +1,24 @@
-﻿.divForm {
-    display: flex;
-    width: 100%;
-}
-
-    .divForm input[type="checkbox"] {
-        transform: scale(2);
-        opacity: 0.9;
+﻿@media only screen and (max-width: 480px) {
+    .divForm {
+        display: flex;
+        width: 100%;
     }
 
-    .divForm label {
-        font-size: 18px;
-        text-align: right;
-        margin:5px;
-        margin-left: 15px;
-        color:black;
-    }
+        .divForm input[type="checkbox"] {
+            transform: scale(2);
+            opacity: 0.9;
+        }
+
+        .divForm label {
+            font-size: 18px;
+            text-align: right;
+            margin: 5px;
+            margin-left: 15px;
+            color: black;
+        }
 
 
-/*.formTest {
+    /*.formTest {
     text-align: center;
     width: 390px;
     height: 360px;
@@ -28,271 +29,899 @@
     margin: 30px;
 }*/
 
-.divTestForm {
-    flex:1;
-    text-align: center;
-    width: 400px;
-    height: 400px;
-    max-height: 400px;
-    max-width: 400px;
-    border-radius: 10px;
-    box-shadow: 0 0 0 3px #737373;
-    margin: 30px;
-    padding-top:20px;
+    .divTestForm {
+        flex: 1;
+        text-align: center;
+        width: 400px;
+        height: 400px;
+        max-height: 400px;
+        max-width: 400px;
+        border-radius: 10px;
+        box-shadow: 0 0 0 3px #737373;
+        margin: 30px;
+        padding-top: 20px;
+    }
+
+        .divTestForm form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+
+
+
+    .formsContainer {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .buttonTest {
+        text-decoration: none;
+        display: inline-block;
+        width: 280px;
+        height: 40px;
+        margin-top: 80px;
+        margin-bottom: 15px;
+        border-radius: 5px;
+        text-align: center;
+        border: none;
+        background-color: #6b9ac4;
+        font-weight: bold;
+        letter-spacing: 0.2px;
+        color: white;
+        transition: .15s ease-in-out;
+        font-size: 18px;
+        vertical-align: bottom;
+    }
+
+        .buttonTest:hover {
+            background-color: #3b71d3;
+        }
+
+    .labelTest {
+        font-size: 20px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        word-wrap: break-word;
+    }
+
+    .slider {
+        width: 80%;
+        margin: 0 auto;
+    }
+
+    .formSlider {
+        width: 80%;
+        margin: 20px;
+    }
+    .h2Container {
+        margin-top:15px;
+        display: flex;
+        justify-content: center;
+    }
+    .h2form {
+        width: 80%;
+        font-size: 12px;
+        flex: 1;
+        text-align: center;
+    }
+
+        .h2form h3 {
+            font-size:12px;
+            flex: 1;
+
+        }
+
+    .formInput input[type="text"] {
+        display: inline-block;
+        width: 50%;
+        height: 45px;
+        font-size: 20px;
+        margin: 15px;
+        border-radius: 10px;
+        border: 2px solid #add9f4;
+        transition: .15s ease-in-out;
+    }
+
+    .formInput input[type="radio"], input[type="checkbox"] {
+        transform: scale(2);
+        opacity: 0.9;
+    }
+
+
+
+
+
+    .buttonPlus {
+        text-decoration: none;
+        flex: 2;
+        width: 35px;
+        height: 35px;
+        text-align: center;
+        border-radius: 5px;
+        border: none;
+        background-color: #6b9ac4;
+        font-weight: bold;
+        letter-spacing: 2px;
+        color: white;
+        transition: .15s ease-in-out;
+        font-size: 16px;
+        margin-bottom: 20px;
+        margin-right: 5px;
+        margin-left: 20px;
+    }
+
+        .buttonPlus:hover {
+            background-color: #3b71d3;
+        }
+
+        .buttonPlus a {
+            text-decoration: none;
+            color: white
+        }
+
+
+    .formAnswer {
+        text-align: left;
+        margin-left: 20px;
+    }
+
+    .number {
+        font-size: 20px;
+        flex:1;
+        font-weight: bold;
+        width: 100%;
+        max-height: 45px;
+        max-width: 45px;
+        border-radius: 10px;
+        box-shadow: 0 0 0 0.7px #737373;
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .name {
+        overflow-y: auto;
+        flex: 1;
+        font-size: 20px;
+        font-weight: bold;
+        width: 100%;
+        max-height: 100px;
+        border-radius: 10px;
+        box-shadow: 0 0 0 0.7px #737373;
+        margin-left: 20px;
+        margin-bottom: 20px;
+        margin-right: 40px;
+        padding: 10px;
+        word-wrap: break-word;
+    }
+
+    .AnswerForm {
+        overflow: auto;
+        border-radius: 10px;
+        box-shadow: 0 0 0 0.3px #737373;
+        margin-bottom: 20px;
+        padding: 10px;
+        width: 90%;
+        word-wrap: break-word;
+    }
+
+    .Answer {
+        font-size: 18px;
+        margin: 20px;
+        margin-right: 40px;
+        text-align: justify;
+        line-height: 1.5;
+        word-wrap: break-word;
+    }
+
+        .Answer input {
+            margin-right: 15px;
+        }
+
+    .flexDiv {
+        display: flex;
+        width: 90%;
+    }
+
+        
+
+    .button-container {
+        display: flex;
+        margin-left: auto;
+    }
+
+    .test_button {
+        width: 20px;
+        height: 20px;
+    }
+
+
+    .newInputTest {
+        text-decoration: none;
+        flex: 2;
+        max-height: 45px;
+        width: 80%;
+        max-width: 450px;
+        height: 45px;
+        text-align: center;
+        border-radius: 5px;
+        border: none;
+        background-color: #6b9ac4;
+        font-weight: bold;
+        letter-spacing: 2px;
+        color: white;
+        transition: .15s ease-in-out;
+        font-size: 14px;
+        margin-bottom: 35px;
+    }
+
+        .newInputTest:hover {
+            background-color: #3b71d3;
+        }
+
+        .newInputTest a {
+            text-decoration: none;
+            color: white
+        }
+
+    .textareaForm {
+        font-size: 20px;
+        height: 140px;
+        width: 80%;
+        resize: none;
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+
+
+    .slick-dots li button {
+        font-size: 20px; /* Установите размер точек */
+        width: 20px; /* Установите ширину точек */
+        height: 20px; /* Установите высоту точек */
+    }
+
+    .photoEmployee {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        margin-right: 5px;
+    }
+
+    .testDelete {
+        float: right;
+        margin-right: 10px;
+        
+    }
+
+    .score-input {
+        text-decoration: none;
+        max-height: 25px;
+        width: 100%;
+        max-width: 100px;
+        height: 25px;
+        text-align: left;
+        border-radius: 5px;
+        border-color: #6b9ac4;
+        background-color: white;
+        font-weight: bold;
+        letter-spacing: 2px;
+        color: black;
+        transition: .15s ease-in-out;
+        font-size: 16px;
+        margin: 20px;
+        padding: 10px;
+    }
+
 }
 
-    .divTestForm form {
+@media only screen and (min-width: 600px) and (max-width: 1024px) {
+    .divForm {
         display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
         width: 100%;
     }
 
-   
+        .divForm input[type="checkbox"] {
+            transform: scale(2);
+            opacity: 0.9;
+        }
 
-.formsContainer {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-}
+        .divForm label {
+            font-size: 18px;
+            text-align: right;
+            margin: 5px;
+            margin-left: 15px;
+            color: black;
+        }
 
-.buttonTest {
-    text-decoration: none;
-    display: inline-block;
-    width: 280px;
-    height: 40px;
-    margin-top: 80px;
-    margin-bottom: 15px;
-    border-radius: 5px;
+
+    /*.formTest {
     text-align: center;
-    border: none;
-    background-color: #6b9ac4;
-    font-weight: bold;
-    letter-spacing: 0.2px;
-    color: white;
-    transition: .15s ease-in-out;
-    font-size: 18px;
-    vertical-align: bottom;
-}
+    width: 390px;
+    height: 360px;
+    max-height: 360px;
+    max-width: 390px;
+    border-radius: 10px;
+    box-shadow: 0 0 0 3px #737373;
+    margin: 30px;
+}*/
 
-    .buttonTest:hover {
-        background-color: #3b71d3;
+    .divTestForm {
+        flex: 1;
+        text-align: center;
+        width: 400px;
+        height: 400px;
+        max-height: 400px;
+        max-width: 400px;
+        border-radius: 10px;
+        box-shadow: 0 0 0 3px #737373;
+        margin: 30px;
+        padding-top: 20px;
     }
 
-.labelTest {
-    font-size: 20px;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    word-wrap: break-word;
-}
+        .divTestForm form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
 
-.slider {
-    width: 80%;
-    margin: 0 auto;
-}
 
-.formSlider{
-    width:80%;
-    margin:20px;
-}
 
-.h2form {
-    width: 100%;
-    display: flex;
-    text-align:center;
-}
+    .formsContainer {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
 
-    .h2form h3 {
-        flex: 1;
+    .buttonTest {
+        text-decoration: none;
+        display: inline-block;
+        width: 280px;
+        height: 40px;
+        margin-top: 80px;
+        margin-bottom: 15px;
+        border-radius: 5px;
+        text-align: center;
+        border: none;
+        background-color: #6b9ac4;
+        font-weight: bold;
+        letter-spacing: 0.2px;
+        color: white;
+        transition: .15s ease-in-out;
+        font-size: 18px;
+        vertical-align: bottom;
+    }
+
+        .buttonTest:hover {
+            background-color: #3b71d3;
+        }
+
+    .labelTest {
+        font-size: 20px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        word-wrap: break-word;
+    }
+
+    .slider {
+        width: 80%;
+        margin: 0 auto;
+    }
+
+    .formSlider {
+        width: 80%;
         margin: 20px;
     }
 
-.formInput input[type="text"] {
-    display: inline-block;
-    width: 50%;
-    height: 45px;
-    font-size: 20px;
-    margin: 15px;
-    border-radius: 10px;
-    border: 2px solid #add9f4;
-    transition: .15s ease-in-out;
-}
-
-.formInput input[type="radio"], input[type="checkbox"] {
-    transform: scale(2);
-    opacity: 0.9;
-}
-
-
-
-
-
-.buttonPlus {
-    text-decoration: none;
-    flex: 2;
-    width: 45px;
-    height: 45px;
-    text-align: center;
-    border-radius: 5px;
-    border: none;
-    background-color: #6b9ac4;
-    font-weight: bold;
-    letter-spacing: 2px;
-    color: white;
-    transition: .15s ease-in-out;
-    font-size: 16px;
-    margin-bottom: 20px;
-    margin-right: 5px;
-    margin-left: 20px;
-
-}
-    .buttonPlus:hover {
-        background-color: #3b71d3;
+    .h2form {
+        width: 100%;
+        display: flex;
+        text-align: center;
     }
 
-    .buttonPlus a {
+        .h2form h3 {
+            flex: 1;
+            margin: 20px;
+        }
+
+    .formInput input[type="text"] {
+        display: inline-block;
+        width: 50%;
+        height: 45px;
+        font-size: 20px;
+        margin: 15px;
+        border-radius: 10px;
+        border: 2px solid #add9f4;
+        transition: .15s ease-in-out;
+    }
+
+    .formInput input[type="radio"], input[type="checkbox"] {
+        transform: scale(2);
+        opacity: 0.9;
+    }
+
+
+
+
+
+    .buttonPlus {
         text-decoration: none;
-        color: white
+        flex: 2;
+        width: 45px;
+        height: 45px;
+        text-align: center;
+        border-radius: 5px;
+        border: none;
+        background-color: #6b9ac4;
+        font-weight: bold;
+        letter-spacing: 2px;
+        color: white;
+        transition: .15s ease-in-out;
+        font-size: 16px;
+        margin-bottom: 20px;
+        margin-right: 5px;
+        margin-left: 20px;
+    }
+
+        .buttonPlus:hover {
+            background-color: #3b71d3;
+        }
+
+        .buttonPlus a {
+            text-decoration: none;
+            color: white
+        }
+
+
+    .formAnswer {
+        text-align: left;
+        margin-left: 20px;
+    }
+
+    .number {
+        font-size: 20px;
+        font-weight: bold;
+        width: 100%;
+        max-height: 45px;
+        max-width: 45px;
+        border-radius: 10px;
+        box-shadow: 0 0 0 0.7px #737373;
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .name {
+        flex: 1;
+        font-size: 20px;
+        font-weight: bold;
+        width: 100%;
+        max-height: 100px;
+        border-radius: 10px;
+        box-shadow: 0 0 0 0.7px #737373;
+        margin-left: 20px;
+        margin-bottom: 20px;
+        margin-right: 40px;
+        padding: 10px;
+    }
+
+    .AnswerForm {
+        overflow: auto;
+        border-radius: 10px;
+        box-shadow: 0 0 0 0.3px #737373;
+        margin-bottom: 20px;
+        padding: 20px;
+        width: 95%
+    }
+
+    .Answer {
+        font-size: 18px;
+        margin: 20px;
+        margin-right: 40px;
+        text-align: justify;
+        line-height: 1.5;
+    }
+
+        .Answer input {
+            margin-right: 15px;
+        }
+
+    .flexDiv {
+        display: flex;
+        width: 100%;
+    }
+
+        .flexDiv div {
+            flex: 1;
+        }
+
+    .test_button {
+        width: 100%
     }
 
 
-.formAnswer {
-    text-align: left;
-    margin-left:20px;
-    
-}
-.number {
-    font-size: 20px;
-    font-weight: bold;
-    width: 100%;
-    max-height: 45px;
-    max-width: 45px;
-    border-radius: 10px;
-    box-shadow: 0 0 0 0.7px #737373;
-    text-align: center;
-    vertical-align: middle;
-}
-
-.name {
-    flex: 1;
-    font-size: 20px;
-    font-weight: bold;
-    width: 100%;
-    max-height: 100px;
-    border-radius: 10px;
-    box-shadow: 0 0 0 0.7px #737373;
-    margin-left: 20px;
-    margin-bottom: 20px;
-    margin-right: 40px;
-    padding: 10px;
-}
-
-.AnswerForm {
-    overflow: auto;
-    border-radius: 10px;
-    box-shadow: 0 0 0 0.3px #737373;
-    margin-bottom: 20px;
-    padding: 20px;
-    width: 95%
-}
-.Answer {
-    font-size: 18px;
-    margin: 20px;
-    margin-right: 40px;
-    text-align: justify;
-    line-height: 1.5;
-}
-
-    .Answer input {
-        margin-right: 15px;
-    }
-
-.flexDiv {
-    display: flex;
-    width:100%;
-}
-
-.flexDiv div{
-    flex:1;
-}
-.test_button{
-    width:100%
-}
-
-
-.newInputTest {
-    text-decoration: none;
-    flex: 2;
-    max-height: 45px;
-    width: 100%;
-    max-width: 450px;
-    height: 45px;
-    text-align: center;
-    border-radius: 5px;
-    border: none;
-    background-color: #6b9ac4;
-    font-weight: bold;
-    letter-spacing: 2px;
-    color: white;
-    transition: .15s ease-in-out;
-    font-size: 16px;
-    margin-bottom: 35px;
-}
-
-    .newInputTest:hover {
-        background-color: #3b71d3;
-    }
-
-    .newInputTest a {
+    .newInputTest {
         text-decoration: none;
-        color: white
+        flex: 2;
+        max-height: 45px;
+        width: 100%;
+        max-width: 450px;
+        height: 45px;
+        text-align: center;
+        border-radius: 5px;
+        border: none;
+        background-color: #6b9ac4;
+        font-weight: bold;
+        letter-spacing: 2px;
+        color: white;
+        transition: .15s ease-in-out;
+        font-size: 16px;
+        margin-bottom: 35px;
     }
 
-.textareaForm {
-    font-size: 20px;
-    height: 140px;
-    width: 95%;
-    resize: none;
-    padding: 20px;
-    margin-bottom: 20px;
+        .newInputTest:hover {
+            background-color: #3b71d3;
+        }
+
+        .newInputTest a {
+            text-decoration: none;
+            color: white
+        }
+
+    .textareaForm {
+        font-size: 20px;
+        height: 140px;
+        width: 95%;
+        resize: none;
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+
+
+    .slick-dots li button {
+        font-size: 20px; /* Установите размер точек */
+        width: 20px; /* Установите ширину точек */
+        height: 20px; /* Установите высоту точек */
+    }
+
+    .photoEmployee {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        margin-right: 5px;
+    }
+
+    .testDelete {
+        float: right;
+        margin-right: 10px;
+    }
+
+    .score-input {
+        text-decoration: none;
+        max-height: 25px;
+        width: 100%;
+        max-width: 100px;
+        height: 25px;
+        text-align: left;
+        border-radius: 5px;
+        border-color: #6b9ac4;
+        background-color: white;
+        font-weight: bold;
+        letter-spacing: 2px;
+        color: black;
+        transition: .15s ease-in-out;
+        font-size: 16px;
+        margin: 10px;
+        padding: 10px;
+    }
+
+}
+     
+@media only screen and (min-width: 1024px) {
+
+    .divForm {
+        display: flex;
+        width: 100%;
+    }
+
+        .divForm input[type="checkbox"] {
+            transform: scale(2);
+            opacity: 0.9;
+        }
+
+        .divForm label {
+            font-size: 18px;
+            text-align: right;
+            margin: 5px;
+            margin-left: 15px;
+            color: black;
+        }
+
+
+    /*.formTest {
+    text-align: center;
+    width: 390px;
+    height: 360px;
+    max-height: 360px;
+    max-width: 390px;
+    border-radius: 10px;
+    box-shadow: 0 0 0 3px #737373;
+    margin: 30px;
+}*/
+
+    .divTestForm {
+        flex: 1;
+        text-align: center;
+        width: 400px;
+        height: 400px;
+        max-height: 400px;
+        max-width: 400px;
+        border-radius: 10px;
+        box-shadow: 0 0 0 3px #737373;
+        margin: 30px;
+        padding-top: 20px;
+    }
+
+        .divTestForm form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+
+
+
+    .formsContainer {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .buttonTest {
+        text-decoration: none;
+        display: inline-block;
+        width: 280px;
+        height: 40px;
+        margin-top: 80px;
+        margin-bottom: 15px;
+        border-radius: 5px;
+        text-align: center;
+        border: none;
+        background-color: #6b9ac4;
+        font-weight: bold;
+        letter-spacing: 0.2px;
+        color: white;
+        transition: .15s ease-in-out;
+        font-size: 18px;
+        vertical-align: bottom;
+    }
+
+        .buttonTest:hover {
+            background-color: #3b71d3;
+        }
+
+    .labelTest {
+        font-size: 20px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        word-wrap: break-word;
+    }
+
+    .slider {
+        width: 80%;
+        margin: 0 auto;
+    }
+
+    .formSlider {
+        width: 80%;
+        margin: 20px;
+    }
+
+    .h2form {
+        width: 100%;
+        display: flex;
+        text-align: center;
+    }
+
+        .h2form h3 {
+            flex: 1;
+            margin: 20px;
+        }
+
+    .formInput input[type="text"] {
+        display: inline-block;
+        width: 50%;
+        height: 45px;
+        font-size: 20px;
+        margin: 15px;
+        border-radius: 10px;
+        border: 2px solid #add9f4;
+        transition: .15s ease-in-out;
+    }
+
+    .formInput input[type="radio"], input[type="checkbox"] {
+        transform: scale(2);
+        opacity: 0.9;
+    }
+
+
+
+
+
+    .buttonPlus {
+        text-decoration: none;
+        flex: 2;
+        width: 45px;
+        height: 45px;
+        text-align: center;
+        border-radius: 5px;
+        border: none;
+        background-color: #6b9ac4;
+        font-weight: bold;
+        letter-spacing: 2px;
+        color: white;
+        transition: .15s ease-in-out;
+        font-size: 16px;
+        margin-bottom: 20px;
+        margin-right: 5px;
+        margin-left: 20px;
+    }
+
+        .buttonPlus:hover {
+            background-color: #3b71d3;
+        }
+
+        .buttonPlus a {
+            text-decoration: none;
+            color: white
+        }
+
+
+    .formAnswer {
+        text-align: left;
+        margin-left: 20px;
+    }
+
+    .number {
+        font-size: 20px;
+        font-weight: bold;
+        width: 100%;
+        max-height: 45px;
+        max-width: 45px;
+        border-radius: 10px;
+        box-shadow: 0 0 0 0.7px #737373;
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .name {
+        flex: 1;
+        font-size: 20px;
+        font-weight: bold;
+        width: 100%;
+        max-height: 100px;
+        border-radius: 10px;
+        box-shadow: 0 0 0 0.7px #737373;
+        margin-left: 20px;
+        margin-bottom: 20px;
+        margin-right: 40px;
+        padding: 10px;
+    }
+
+    .AnswerForm {
+        overflow: auto;
+        border-radius: 10px;
+        box-shadow: 0 0 0 0.3px #737373;
+        margin-bottom: 20px;
+        padding: 20px;
+        width: 95%
+    }
+
+    .Answer {
+        font-size: 18px;
+        margin: 20px;
+        margin-right: 40px;
+        text-align: justify;
+        line-height: 1.5;
+    }
+
+        .Answer input {
+            margin-right: 15px;
+        }
+
+    .flexDiv {
+        display: flex;
+        width: 100%;
+    }
+
+        .flexDiv div {
+            flex: 1;
+        }
+
+    .test_button {
+        width: 100%
+    }
+
+
+    .newInputTest {
+        text-decoration: none;
+        flex: 2;
+        max-height: 45px;
+        width: 100%;
+        max-width: 450px;
+        height: 45px;
+        text-align: center;
+        border-radius: 5px;
+        border: none;
+        background-color: #6b9ac4;
+        font-weight: bold;
+        letter-spacing: 2px;
+        color: white;
+        transition: .15s ease-in-out;
+        font-size: 16px;
+        margin-bottom: 35px;
+    }
+
+        .newInputTest:hover {
+            background-color: #3b71d3;
+        }
+
+        .newInputTest a {
+            text-decoration: none;
+            color: white
+        }
+
+    .textareaForm {
+        font-size: 20px;
+        height: 140px;
+        width: 95%;
+        resize: none;
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+
+
+    .slick-dots li button {
+        font-size: 20px; /* Установите размер точек */
+        width: 20px; /* Установите ширину точек */
+        height: 20px; /* Установите высоту точек */
+    }
+
+    .photoEmployee {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        margin-right: 5px;
+    }
+
+    .testDelete {
+        float: right;
+        margin-right: 10px;
+    }
+
+    .score-input {
+        text-decoration: none;
+        max-height: 25px;
+        width: 100%;
+        max-width: 100px;
+        height: 25px;
+        text-align: left;
+        border-radius: 5px;
+        border-color: #6b9ac4;
+        background-color: white;
+        font-weight: bold;
+        letter-spacing: 2px;
+        color: black;
+        transition: .15s ease-in-out;
+        font-size: 16px;
+        margin: 10px;
+        padding: 10px;
+    }
 }
 
 
-.slick-dots li button {
-    font-size: 20px; /* Установите размер точек */
-    width: 20px; /* Установите ширину точек */
-    height: 20px; /* Установите высоту точек */
-}
-
-.photoEmployee {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    margin-right: 5px;
-}
-
-.testDelete {
-    float: right;
-    margin-right: 10px;
-}
-
-.score-input {
-    text-decoration: none;
-    max-height: 25px;
-    width: 100%;
-    max-width: 100px;
-    height: 25px;
-    text-align: left;
-    border-radius: 5px;
-    border-color: #6b9ac4;
-    background-color: white;
-    font-weight: bold;
-    letter-spacing: 2px;
-    color: black;
-    transition: .15s ease-in-out;
-    font-size: 16px;
-    margin: 10px;
-    padding: 10px;
-}
     

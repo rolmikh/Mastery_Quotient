@@ -3,42 +3,60 @@
         height: auto;
         display: flex;
         align-items: center;
-        justify-content: center; /* Для центрирования содержимого по вертикали */
-        flex-direction: column; /* Размещаем элементы вертикально */
+        justify-content: center; 
+        flex-direction: column; 
         width: 100%;
+
     }
 
-        .containerForm form {
-            display: flex;
-            flex-direction: column; /* Размещаем элементы формы вертикально */
-            flex: 1;
-            width: 80%;
-            margin-top: 20px; /* Добавляем отступ сверху между формой и остальными элементами */
-            text-align: center; /* Выравниваем содержимое формы по центру */
-        }
+    .form_new {
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+        width: 80%;
+        height: 100vh;
+        max-width: 400px;
+        max-height: 700px;
+        flex-direction: column;
+    }
+    .formSearch {
+        display: flex;
+        align-items: center;
+        flex: 1;
+        width: 90%;
+        margin-top: 20px;
+        text-align: center;
+    }
+    .formFiltr {
+        display: flex;
+        flex-direction: column; 
+        align-items: center;
+        flex: 1;
+        width: 80%;
+        margin-top: 20px; 
+        text-align: center; 
+    }
 
     .CrudSelect {
         display: inline-block;
-        width: 80%;
+        width: 95%;
         height: 45px;
-        font-size: 20px;
+        font-size: 16px !important;
         margin-bottom: 15px;
-        margin-left: auto;
-        margin-right: auto;
         border-radius: 10px;
         border: 2px solid #add9f4;
-        transition: .15s ease-in-out;
         padding: 0 15px;
         box-sizing: border-box;
-        padding-right: 30px;
     }
 
 
         .CrudSelect option {
             border-style: solid;
             border-color: #6b9ac4;
-            font-size: 20px;
             font-family: Mulish;
+            font-size: 14px !important;
         }
 
     .InputFiltr {
@@ -74,9 +92,7 @@
 
     .searchInput {
         display: inline-block;
-        width: 80%;
-        flex: 0.8;
-        max-width: 400px;
+        width: 100%; 
         height: 45px;
         font-size: 20px;
         border-radius: 10px;
@@ -84,8 +100,6 @@
         transition: .15s ease-in-out;
         padding: 0 15px;
         margin-bottom: 10px;
-        margin-left: auto;
-        margin-right: auto;
     }
 
     .searchImage {
@@ -93,12 +107,193 @@
         border: none;
         vertical-align: middle;
         margin-left: 10px;
+        margin-right:10px;
         margin-bottom: 10px;
+        width: 30px;
     }
 
     .searchInput:focus {
         border-style: solid;
         border-color: #737373;
+    }
+
+
+    .table {
+        width: calc(100% - 40px);
+        margin-left: 20px;
+        border: 1px solid #dddddd;
+        border-collapse: collapse;
+    }
+
+        .table th {
+            font-weight: bold;
+            padding: 5px;
+            background: #efefef;
+            border: 1px solid #dddddd;
+        }
+
+        .table td {
+            border: 1px solid #dddddd;
+            padding: 5px;
+        }
+
+
+
+    .newInput {
+        text-decoration: none;
+        flex: 2;
+        max-height: 45px;
+        width: 100%;
+        height: 45px;
+        max-width: 250px;
+        text-align: center;
+        border-radius: 5px;
+        border: none;
+        background-color: #6b9ac4;
+        font-weight: bold;
+        letter-spacing: 2px;
+        color: white;
+        transition: .15s ease-in-out;
+        font-size: 16px;
+        margin-bottom: 35px;
+    }
+
+        .newInput:hover {
+            background-color: #3b71d3;
+        }
+
+        .newInput a {
+            text-decoration: none;
+            color: white
+        }
+
+    .newInputEmail {
+        text-decoration: none;
+        flex: 2;
+        max-height: 45px;
+        width: 100%;
+        height: 45px;
+        text-align: center;
+        border-radius: 5px;
+        border: none;
+        background-color: #6b9ac4;
+        font-weight: bold;
+        letter-spacing: 2px;
+        color: white;
+        transition: .15s ease-in-out;
+        font-size: 16px;
+        margin-bottom: 35px;
+    }
+
+        .newInputEmail:hover {
+            background-color: #3b71d3;
+        }
+
+        .newInputEmail a {
+            text-decoration: none;
+            color: white
+        }
+
+    .image_button {
+        width: 50px;
+        height: 50px;
+        border: none;
+        background-image: url('../images/delete.png');
+        background-size: cover;
+    }
+
+
+
+    .CrudSelect {
+        display: inline-block;
+        width: 100%;
+        height: 45px;
+        font-size: 20px;
+        margin-bottom: 15px;
+        margin-left: 10px;
+        border-radius: 10px;
+        border: 2px solid #add9f4;
+        transition: .15s ease-in-out;
+        padding: 0 15px;
+        box-sizing: border-box;
+        padding-right: 30px;
+    }
+
+
+        .CrudSelect option {
+            border-style: solid;
+            border-color: #6b9ac4;
+            font-size: 20px;
+            font-family: Mulish;
+        }
+
+    .CrudSelectMaterial {
+        display: inline-block;
+        width: 100%;
+        height: 45px;
+        font-size: 20px;
+        margin-bottom: 15px;
+        border-radius: 10px;
+        border: 2px solid #add9f4;
+        transition: .15s ease-in-out;
+        padding: 0 15px;
+        box-sizing: border-box;
+        padding-right: 30px;
+    }
+
+
+        .CrudSelectMaterial option {
+            border-style: solid;
+            border-color: #6b9ac4;
+            font-size: 20px;
+            font-family: Mulish;
+        }
+
+    .CrudInput {
+        display: inline-block;
+        width: calc(100% - 30px);
+        height: 45px;
+        font-size: 18px;
+        margin-bottom: 15px;
+        border-radius: 10px;
+        border: 2px solid #add9f4;
+        transition: .15s ease-in-out;
+        padding: 0 15px;
+    }
+
+        .CrudInput:focus {
+            border-style: solid;
+            border-color: #737373;
+        }
+
+    .CrudLabel {
+        display: inline-block;
+        width: calc(100% - 30px);
+        height: 45px;
+        font-size: 20px;
+        margin-bottom: 5px;
+        margin-top: 5px;
+        border-radius: 10px;
+        transition: .15s ease-in-out;
+    }
+
+
+    .form_update {
+        text-align: center;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+        width: 80%;
+        height: 100vh;
+        max-height: 700px;
+        margin-top: 50px;
+    }
+
+
+    .containerFormButton {
+        height: 100px;
+        display: flex;
+        width: 100%;
     }
 }
 
@@ -107,18 +302,13 @@
         height: 100px;
         display: flex;
         align-items: center;
-        justify-content: center; /* Для центрирования содержимого по вертикали */
-        flex-direction: column; /* Размещаем элементы вертикально */
         width: 100%;
     }
 
         .containerForm form {
             display: flex;
-            flex-direction: column; /* Размещаем элементы формы вертикально */
             flex: 1;
             width: 100%;
-            margin-top: 20px; /* Добавляем отступ сверху между формой и остальными элементами */
-            text-align: center; /* Выравниваем содержимое формы по центру */
         }
 
     .CrudSelect {
@@ -189,6 +379,18 @@
         margin-left: 20px;
     }
 
+    .form_new {
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+        width: 100%;
+        height: 100vh;
+        max-width: 600px;
+        max-height: 700px;
+    }
+
     .searchImage {
         background-color: white;
         border: none;
@@ -200,6 +402,185 @@
     .searchInput:focus {
         border-style: solid;
         border-color: #737373;
+    }
+
+
+    .table {
+        width: calc(100% - 40px);
+        margin-left: 20px;
+        border: 1px solid #dddddd;
+        border-collapse: collapse;
+    }
+
+        .table th {
+            font-weight: bold;
+            padding: 5px;
+            background: #efefef;
+            border: 1px solid #dddddd;
+        }
+
+        .table td {
+            border: 1px solid #dddddd;
+            padding: 5px;
+        }
+
+
+
+    .newInput {
+        text-decoration: none;
+        flex: 2;
+        max-height: 45px;
+        width: 100%;
+        height: 45px;
+        max-width: 250px;
+        text-align: center;
+        border-radius: 5px;
+        border: none;
+        background-color: #6b9ac4;
+        font-weight: bold;
+        letter-spacing: 2px;
+        color: white;
+        transition: .15s ease-in-out;
+        font-size: 16px;
+        margin-bottom: 35px;
+    }
+
+        .newInput:hover {
+            background-color: #3b71d3;
+        }
+
+        .newInput a {
+            text-decoration: none;
+            color: white
+        }
+
+    .newInputEmail {
+        text-decoration: none;
+        flex: 2;
+        max-height: 45px;
+        width: 100%;
+        height: 45px;
+        text-align: center;
+        border-radius: 5px;
+        border: none;
+        background-color: #6b9ac4;
+        font-weight: bold;
+        letter-spacing: 2px;
+        color: white;
+        transition: .15s ease-in-out;
+        font-size: 16px;
+        margin-bottom: 35px;
+    }
+
+        .newInputEmail:hover {
+            background-color: #3b71d3;
+        }
+
+        .newInputEmail a {
+            text-decoration: none;
+            color: white
+        }
+
+    .image_button {
+        width: 50px;
+        height: 50px;
+        border: none;
+        background-image: url('../images/delete.png');
+        background-size: cover;
+    }
+
+
+
+    .CrudSelect {
+        display: inline-block;
+        width: 100%;
+        height: 45px;
+        font-size: 20px;
+        margin-bottom: 15px;
+        margin-left: 10px;
+        border-radius: 10px;
+        border: 2px solid #add9f4;
+        transition: .15s ease-in-out;
+        padding: 0 15px;
+        box-sizing: border-box;
+        padding-right: 30px;
+    }
+
+
+        .CrudSelect option {
+            border-style: solid;
+            border-color: #6b9ac4;
+            font-size: 20px;
+            font-family: Mulish;
+        }
+
+    .CrudSelectMaterial {
+        display: inline-block;
+        width: 100%;
+        height: 45px;
+        font-size: 20px;
+        margin-bottom: 15px;
+        border-radius: 10px;
+        border: 2px solid #add9f4;
+        transition: .15s ease-in-out;
+        padding: 0 15px;
+        box-sizing: border-box;
+        padding-right: 30px;
+    }
+
+
+        .CrudSelectMaterial option {
+            border-style: solid;
+            border-color: #6b9ac4;
+            font-size: 20px;
+            font-family: Mulish;
+        }
+
+    .CrudInput {
+        display: inline-block;
+        width: calc(100% - 30px);
+        height: 45px;
+        font-size: 20px;
+        margin-bottom: 15px;
+        border-radius: 10px;
+        border: 2px solid #add9f4;
+        transition: .15s ease-in-out;
+        padding: 0 15px;
+    }
+
+        .CrudInput:focus {
+            border-style: solid;
+            border-color: #737373;
+        }
+
+    .CrudLabel {
+        display: inline-block;
+        width: calc(100% - 30px);
+        height: 45px;
+        font-size: 20px;
+        margin-bottom: 5px;
+        margin-top: 5px;
+        border-radius: 10px;
+        transition: .15s ease-in-out;
+    }
+
+
+    .form_update {
+        text-align: center;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+        width: 80%;
+        height: 100vh;
+        max-height: 700px;
+        margin-top: 50px;
+    }
+
+
+    .containerFormButton {
+        height: 100px;
+        display: flex;
+        width: 100%;
     }
 }
 
@@ -285,6 +666,18 @@
         margin-left: 20px;
     }
 
+    .form_new {
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+        width: 100%;
+        height: 100vh;
+        max-width: 600px;
+        max-height: 700px;
+    }
+
     .searchImage {
         background-color: white;
         border: none;
@@ -297,7 +690,6 @@
         border-style: solid;
         border-color: #737373;
     }
-}
 
 
     .table {
@@ -319,7 +711,7 @@
             padding: 5px;
         }
 
-   
+
 
     .newInput {
         text-decoration: none;
@@ -349,52 +741,42 @@
             color: white
         }
 
-.newInputEmail {
-    text-decoration: none;
-    flex: 2;
-    max-height: 45px;
-    width: 100%;
-    height: 45px;
-    text-align: center;
-    border-radius: 5px;
-    border: none;
-    background-color: #6b9ac4;
-    font-weight: bold;
-    letter-spacing: 2px;
-    color: white;
-    transition: .15s ease-in-out;
-    font-size: 16px;
-    margin-bottom: 35px;
-}
-
-    .newInputEmail:hover {
-        background-color: #3b71d3;
-    }
-
-    .newInputEmail a {
+    .newInputEmail {
         text-decoration: none;
-        color: white
-    }
-
-.image_button {
-    width: 50px;
-    height: 50px;
-    border: none;
-    background-image: url('../images/delete.png');
-    background-size: cover;
-}
-
-    .form_new {
-        text-align: center;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto;
+        flex: 2;
+        max-height: 45px;
         width: 100%;
-        height: 100vh;
-        max-width: 600px;
-        max-height: 700px;
+        height: 45px;
+        text-align: center;
+        border-radius: 5px;
+        border: none;
+        background-color: #6b9ac4;
+        font-weight: bold;
+        letter-spacing: 2px;
+        color: white;
+        transition: .15s ease-in-out;
+        font-size: 16px;
+        margin-bottom: 35px;
     }
+
+        .newInputEmail:hover {
+            background-color: #3b71d3;
+        }
+
+        .newInputEmail a {
+            text-decoration: none;
+            color: white
+        }
+
+    .image_button {
+        width: 50px;
+        height: 50px;
+        border: none;
+        background-image: url('../images/delete.png');
+        background-size: cover;
+    }
+
+
 
     .CrudSelect {
         display: inline-block;
@@ -470,16 +852,16 @@
     }
 
 
-.form_update {
-    text-align: center;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto;
-    width: 80%;
-    height: 100vh;
-    max-height: 700px;
-    margin-top: 50px;
-}
+    .form_update {
+        text-align: center;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+        width: 80%;
+        height: 100vh;
+        max-height: 700px;
+        margin-top: 50px;
+    }
 
 
     .containerFormButton {
@@ -487,3 +869,7 @@
         display: flex;
         width: 100%;
     }
+}
+
+
+   

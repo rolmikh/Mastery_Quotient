@@ -47,22 +47,25 @@
 </head>
 <body>
     <main>
-        <div class="h2form">
+        <div class="h2Container">
+            <div class="h2form">
 
-            <h3>Название теста</h3>
-            <h3>Дата создания теста</h3>
-            <h3>Преподаватель</h3>
-            <h3>Срок сдачи</h3>
+                <h3>Название теста</h3>
+                <h3>Дата создания теста</h3>
+                <h3>Преподаватель</h3>
+                <h3>Срок сдачи</h3>
 
+            </div>
+            <div class="h2form">
+
+                <h3>@Model.Test.NameTest</h3>
+                <h3>@Model.Test.DateCreatedTest</h3>
+                <h3>@Model.Employee.SurnameEmployee @Model.Employee.NameEmployee @Model.Employee.MiddleNameEmployee</h3>
+                <h3>@Model.Test.Deadline</h3>
+
+            </div>
         </div>
-        <div class="h2form">
-            
-            <h3>@Model.Test.NameTest</h3>
-            <h3>@Model.Test.DateCreatedTest</h3>
-            <h3>@Model.Employee.SurnameEmployee @Model.Employee.NameEmployee @Model.Employee.MiddleNameEmployee</h3>
-            <h3>@Model.Test.Deadline</h3>
 
-        </div>
 
         <hr />
         <br />
@@ -122,7 +125,7 @@
                 </div>
             </div>
         }
-        <br/>
+        <br />
         @if (TempData["ErrorValidation"] != null)
         {
             <div class="alert alert-danger">
@@ -149,7 +152,7 @@
             var questionTypeID = Model.Question.Find(n => n.IdQuestion == question.QuestionId)?.TypeQuestionId;
 
             var questionID = Model.Question.Find(n => n.IdQuestion == question.QuestionId)?.IdQuestion;
-           
+
             <div class="formAnswer">
                 <div class="flexDiv">
                     <div class="number">
@@ -158,19 +161,22 @@
                     <div class="name">
                         @questionName
                     </div>
-                    <div class="test_button">
-                        <form id="deleteForm" asp-controller="Test" asp-action="DeleteQuestion" method="post">
-                            <input type="hidden" value="@question.IdTestQuestion" name="IdTestQuestion" />
-                            <input type="hidden" name="IdQuestion" value="@questionID" />
-                            <input type="hidden" value="@questionTypeID" name="questionTypeID" />
-                            <button class="image_button" width="50" height="50" type="button">
-                                <img>
-                            </button>
-                        </form>
+                    <div class="button-container">
+                        <div class="test_button">
+
+                            <form id="deleteForm" asp-controller="Test" asp-action="DeleteQuestion" method="post">
+                                <input type="hidden" value="@question.IdTestQuestion" name="IdTestQuestion" />
+                                <input type="hidden" name="IdQuestion" value="@questionID" />
+                                <input type="hidden" value="@questionTypeID" name="questionTypeID" />
+                                <button class="image_button" width="50" height="50" type="button">
+                                    <img>
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 </div>
-                
-                
+
+
                 @if (questionTypeID == 1)
                 {
                     <textarea class="textareaForm" name="AnswerOptionViewModels[@questionID].AnswerOption" placeholder="Введите ответ"></textarea>
@@ -188,7 +194,7 @@
                             </div>
                         }
                     </div>
-                    
+
                 }
                 @if (questionTypeID == 3)
                 {
@@ -198,12 +204,12 @@
                             var answerContent = Model.AnswerOption.Find(n => n.IdAnswerOptions == answer.AnswerOptionsId)?.ContentAnswer;
 
                             <div class="Answer">
-                                <input type="checkbox" id="answer@(answer.AnswerOptionsId)"  name="AnswerOptionViewModels[@questionID].SelectedAnswer" value="@answer.AnswerOptionsId" />
+                                <input type="checkbox" id="answer@(answer.AnswerOptionsId)" name="AnswerOptionViewModels[@questionID].SelectedAnswer" value="@answer.AnswerOptionsId" />
                                 <label for="answer@(answer.AnswerOptionsId)">@answerContent</label>
                             </div>
                         }
                     </div>
-                    
+
                 }
             </div>
         }
@@ -223,7 +229,7 @@
                 <p>Вы уверены, что хотите удалить этот вопрос?</p>
                 <form id="deleteForm" asp-controller="Test" asp-action="DeleteQuestion" method="post">
                     <input type="hidden" id="IdTestQuestion" name="IdTestQuestion" />
-                    <input type="hidden" id="IdQuestion" name="IdQuestion" />      
+                    <input type="hidden" id="IdQuestion" name="IdQuestion" />
                     <input type="hidden" id="questionTypeID" name="questionTypeID" />
                     <button id="confirmDeleteBtnModal" class="newInput">Да</button>
                     <button id="confirmBack" class="newInput">Отмена</button>
@@ -235,9 +241,9 @@
             var modal = document.getElementById('myModal'); // Получаем модальное окно по его id
             var confirmDeleteBtn = document.getElementById('confirmDeleteBtnModal'); // Получаем кнопку подтверждения удаления
             var confirmBackBtn = document.getElementById('confirmBack'); // Получаем кнопку отмены
-            var IdTestQuestionInput = document.getElementById('IdTestQuestion'); // Получаем скрытое поле для id 
+            var IdTestQuestionInput = document.getElementById('IdTestQuestion'); // Получаем скрытое поле для id
             var closeButton = document.querySelector('.modal-content .close');
-            var IdQuestionInput = document.getElementById('IdQuestion'); // Получаем скрытое поле для id 
+            var IdQuestionInput = document.getElementById('IdQuestion'); // Получаем скрытое поле для id
             var questionTypeIDInput = document.getElementById('questionTypeID'); // Получаем скрытое поле для id
 
 
@@ -247,7 +253,7 @@
                 btn.addEventListener('click', function () {
                     // При нажатии кнопки удаления открываем модальное окно
                     modal.style.display = 'block';
-                    // Устанавливаем значение скрытого поля равным id  из соответствующей строки 
+                    // Устанавливаем значение скрытого поля равным id  из соответствующей строки
                     IdTestQuestionInput.value = btn.closest('div').querySelector('[name="IdTestQuestion"]').value;
                     IdQuestionInput.value = btn.closest('div').querySelector('[name="IdQuestion"]').value;
                     questionTypeIDInput.value = btn.closest('div').querySelector('[name="questionTypeID"]').value;
@@ -277,7 +283,7 @@
         </script>
 
     </main>
-    <br/>
+    <br />
     <br />
     <br />
     <footer>

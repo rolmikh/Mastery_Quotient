@@ -34,13 +34,13 @@
 <body>
     <main>
         <div class="containerForm">
-            <form asp-antiforgery="true" asp-action="MaterialStudentMain" asp-controller="Student">
+            <form asp-antiforgery="true" class="formSearch" asp-action="MaterialStudentMain" asp-controller="Student">
                 <input class="searchInput" type="text" name="Search" />
                 <button class="searchImage" type="submit">
                     <img width="40" height="40" src="../images/icons8-лупа-64.png" />
                 </button>
             </form>
-            <form asp-antiforgery="true" asp-action="FiltrationMaterialStudentMain" asp-controller="Student">
+            <form asp-antiforgery="true" class="formFiltr" asp-action="FiltrationMaterialStudentMain" asp-controller="Student">
                 <select class="CrudSelect" required id="disciplineID" name="disciplineID" placeholder="Дисциплина">
                     <option selected disabled>Дисциплина</option>
                     @foreach (var disciplineStudyGroup in Model.DisciplineOfTheStudyGroup)
@@ -97,7 +97,7 @@
 
                             <input type="image" class="imageMaterial" width="187" height="177" src="@item.PhotoMaterial" />
                             <label class="nameMaterial">@item.NameMaterial</label>
-                            <label>
+                            <label class="labelMaterial">
                                 <img class="photoEmployee" src="@photoEmployee" width="20" height="20" /> 
                                 @surnameEmployee @nameEmployee @middleNameEmployee
                             </label>
@@ -113,13 +113,13 @@
         </div>
 
         <div class="containerForm">
-            <form asp-antiforgery="true" asp-action="TestStudentMain" asp-controller="Student">
+            <form asp-antiforgery="true" class="formSearch" asp-action="TestStudentMain" asp-controller="Student">
                 <input class="searchInput" type="text" name="Search" />
                 <button class="searchImage" type="submit">
                     <img width="40" height="40" src="../images/icons8-лупа-64.png" />
                 </button>
             </form>
-            <form asp-antiforgery="true" asp-action="FiltrationTestStudentMain" asp-controller="Student">
+            <form asp-antiforgery="true" class="formFiltr" asp-action="FiltrationTestStudentMain" asp-controller="Student">
                 <select class="CrudSelect" required id="disciplineID" name="disciplineID" placeholder="Дисциплина">
                     <option selected disabled>Дисциплина</option>
                     @foreach (var discipline in Model.Disciplines)
@@ -170,7 +170,7 @@
                                 <br />
                                 <div class="labelTest">Дата создания: @string.Format("{0:dd.MM.yyyy}", @item.DateCreatedTest)</div>
                                     <br />
-                                <div>
+                                    <div class="labelTest">
                                     <img class="photoEmployee" src="@photoEmployee" width="20" height="20" />
                                     @surnameEmployee @nameEmployee @middleNameEmployee
                                 </div>

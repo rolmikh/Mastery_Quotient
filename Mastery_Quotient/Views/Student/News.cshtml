@@ -33,13 +33,13 @@
 <body>
     <main>
         <div class="containerForm">
-            <form asp-antiforgery="true" asp-action="MaterialStudentNews" asp-controller="Student">
+            <form class="formSearch" asp-antiforgery="true" asp-action="MaterialStudentNews" asp-controller="Student">
                 <input class="searchInput" type="text" name="Search" />
                 <button class="searchImage" type="submit">
                     <img width="40" height="40" src="../images/icons8-лупа-64.png" />
                 </button>
             </form>
-            <form asp-antiforgery="true" asp-action="FiltrationMaterialStudentNews" asp-controller="Student">
+            <form class="formFiltr" asp-antiforgery="true" asp-action="FiltrationMaterialStudentNews" asp-controller="Student">
                 <select class="CrudSelect" required id="disciplineID" name="disciplineID" placeholder="Дисциплина">
                     <option selected disabled>Дисциплина</option>
                     @foreach (var discipline in Model.Disciplines)
@@ -89,13 +89,13 @@
             }
         </div>
         <div class="containerForm">
-            <form asp-antiforgery="true" asp-action="TestStudent" asp-controller="Student">
+            <form asp-antiforgery="true" class="formSearch" asp-action="TestStudent" asp-controller="Student">
                 <input class="searchInput" type="text" name="Search" />
                 <button class="searchImage" type="submit">
                     <img width="40" height="40" src="../images/icons8-лупа-64.png" />
                 </button>
             </form>
-            <form asp-antiforgery="true" asp-action="FiltrationTestStudent" asp-controller="Student">
+            <form asp-antiforgery="true" class="formFiltr" asp-action="FiltrationTestStudent" asp-controller="Student">
                 <select class="CrudSelect" required id="disciplineID" name="disciplineID" placeholder="Дисциплина">
                     <option selected disabled>Дисциплина</option>
                     @foreach (var discipline in Model.Disciplines)

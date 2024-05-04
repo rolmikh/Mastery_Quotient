@@ -42,13 +42,13 @@
 <body>
     <main>
         <div class="containerForm">
-            <form asp-antiforgery="true" asp-action="TestTeacher" asp-controller="Test">
+            <form asp-antiforgery="true" class="formSearch" asp-action="TestTeacher" asp-controller="Test">
                 <input class="searchInput" type="text" name="Search" />
                 <button class="searchImage" type="submit">
                     <img width="40" height="40" src="../images/icons8-лупа-64.png" />
                 </button>
             </form>
-            <form asp-antiforgery="true" asp-action="FiltrationTest" asp-controller="Test">
+            <form asp-antiforgery="true" class="formFiltr" asp-action="FiltrationTest" asp-controller="Test">
                 <select class="CrudSelect" required id="disciplineID" name="disciplineID" placeholder="Дисциплина">
                     <option selected disabled>Дисциплина</option>
                     @foreach (var discipline in Model.DisciplineEmployees)

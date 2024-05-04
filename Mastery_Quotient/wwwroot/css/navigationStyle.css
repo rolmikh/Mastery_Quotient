@@ -1,16 +1,16 @@
 ﻿@media only screen and (max-width: 480px) {
     .container {
         display: flex;
-        flex-direction: column; /* Изменение направления контейнера на вертикальное */
+        flex-direction: column;
+        align-items: center; 
     }
 
     .navigation_ul,
     .navigation_ul_right {
         list-style-type: none;
-        margin: 0;
-        padding: 0;
         background-color: white;
-        width: 100%; /* Занимает всю ширину контейнера */
+        width: 100%; 
+
     }
 
     .navigation_a,
@@ -21,6 +21,7 @@
         color: #737373;
         font-size: 16px;
         font-weight: 600;
+        align-items: center;
     }
 
         .navigation_a:hover,
@@ -29,11 +30,10 @@
         }
     .glow_button {
         text-decoration: none;
-        display: inline-block;
         margin-top: 15px;
-        margin-right: 10px;
-        width: 550px;
-        max-width: 550px;
+        width: 80%;
+        align-items: center;
+        justify-content: center;
         height: 45px;
         text-align: center;
         border-radius: 5px;
@@ -42,7 +42,6 @@
         font-weight: bold;
         letter-spacing: 2px;
         color: white;
-        transition: .15s ease-in-out;
         font-size: 16px;
     }
 
@@ -50,48 +49,101 @@
             background-color: #3b71d3;
         }
 
-        .glow_button img {
-            margin-left: 5px;
-            margin-right: 5px;
-            max-width: 50px;
-            max-height: 50px;
-        }
+        
 
         .glow_button a {
             text-decoration: none;
             color: white
         }
+
+    .navigation_img {
+        display: block;
+        margin: 0 auto;
+        height: 60px;
+        width: 240px;
+        cursor: pointer;
+    }
 }
 
 @media only screen and (min-width: 600px) and (max-width: 1024px) {
-    .container {
-        display: flex;
-        flex-direction: column; /* Изменение направления контейнера на вертикальное */
-    }
-
-    .navigation_ul,
-    .navigation_ul_right {
+    .navigation_ul {
         list-style-type: none;
-        margin: 0;
+        margin-top: 15px;
+        margin-left: 20px;
         padding: 0;
+        top: 0;
         background-color: white;
-        width: 100%; /* Занимает всю ширину контейнера */
+        width: 100%;
     }
 
-    .navigation_a,
-    .navigation_a_right {
+    .navigation_li {
+        margin-right: 10px;
+        display: inline;
+        float: left;
+    }
+
+    .navigation_a {
         display: block;
         padding: 14px 7px;
         text-decoration: none;
         color: #737373;
+        text-align: center;
         font-size: 16px;
         font-weight: 600;
     }
 
-        .navigation_a:hover,
-        .navigation_a_right:hover {
+        .navigation_a:hover {
             color: #6b9ac4;
         }
+
+    .navigation_ul_right {
+        list-style-type: none;
+        margin-top: 15px;
+        margin-right: 30px;
+        padding: 0;
+        top: 0;
+        background-color: white;
+        width: 50%;
+    }
+
+    .navigation_li_right {
+        display: inline;
+        float: left;
+    }
+
+    .navigation_a_right {
+        display: block;
+        padding: 14px 16px;
+        text-decoration: none;
+        color: #6b9ac4;
+        text-align: center;
+        font-size: 16px;
+        font-weight: 600;
+    }
+
+        .navigation_a_right:hover {
+            color: #737373;
+        }
+
+    .navigation_img {
+        margin-left: 10px;
+        height: 60px;
+        width: 240px;
+        cursor: pointer;
+    }
+
+
+    input[type="submit"],
+    button {
+        cursor: pointer;
+    }
+
+
+
+    .container {
+        display: flex;
+        justify-content: space-between;
+    }
 
     .glow_button {
         text-decoration: none;

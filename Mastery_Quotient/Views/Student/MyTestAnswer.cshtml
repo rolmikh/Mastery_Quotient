@@ -34,21 +34,22 @@
 <body>
     <main>
 
+        <div class="h2Container">
+            <div class="h2form">
 
-        <div class="h2form">
+                <h3>Название теста</h3>
+                <h3>Дата прохождения</h3>
+                <h3>Срок сдачи</h3>
+                <h3>Результат</h3>
 
-            <h3>Название теста</h3>
-            <h3>Дата прохождения</h3>
-            <h3>Срок сдачи</h3>
-            <h3>Результат</h3>
+            </div>
+            <div class="h2form">
+                <h3>@Model.Test.NameTest</h3>
+                <h3>@Model.StudentTests.Find(n => n.TestId == Model.Test.IdTest)?.DateCompleted</h3>
+                <h3>@Model.Test.Deadline</h3>
+                <h3>@Model.StudentTests.Find(n => n.TestId == Model.Test.IdTest)?.Result из @Model.TestQuestions.Count(n => n.TestId == Model.Test.IdTest)</h3>
 
-        </div>
-        <div class="h2form">
-            <h3>@Model.Test.NameTest</h3>
-            <h3>@Model.StudentTests.Find(n => n.TestId == Model.Test.IdTest)?.DateCompleted</h3>
-            <h3>@Model.Test.Deadline</h3>
-            <h3>@Model.StudentTests.Find(n => n.TestId == Model.Test.IdTest)?.Result из @Model.TestQuestions.Count(n => n.TestId == Model.Test.IdTest)</h3>
-
+            </div>
         </div>
         <hr />
         <br />

@@ -1,63 +1,199 @@
-﻿/* Скрыть модальное окно по умолчанию */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.4);
-}
+﻿@media only screen and (max-width: 480px) {
 
-/* Отображение модального окна и его содержимого */
-.modal-content {
-    background-color: #fefefe;
-    margin: 15% auto;
-    padding: 20px;
-    border: 5px solid #6b9ac4;
-    width: 50%;
-}
-
-.newInput {
-    text-decoration: none;
-    display: inline-block;
-    margin-right: 20px;
-    margin-left: 20px;
-    margin-top: 20px;
-    width: 150px;
-    text-align: center;
-    border-radius: 5px;
-    border: none;
-    background-color: #6b9ac4;
-    font-weight: bold;
-    letter-spacing: 2px;
-    color: white;
-    transition: .15s ease-in-out;
-    font-size: 16px;
-    vertical-align: middle;
-    padding: 10px;
-}
-
-    .newInput input[type="file"] {
-        display: none; /* Скрываем сам input */
+    /* Скрыть модальное окно по умолчанию */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0,0,0,0.4);
     }
-/* Кнопка для закрытия модального окна */
-.close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
 
-    .close:hover,
-    .close:focus {
-        color: black;
+
+    /* Отображение модального окна и его содержимого */
+    .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 5px solid #6b9ac4;
+        width: 50%;
+    }
+
+    .newInput {
         text-decoration: none;
-        cursor: pointer;
+        display: inline-block;
+        margin-top: 20px;
+        width: 100%;
+        text-align: center;
+        border-radius: 5px;
+        border: none;
+        background-color: #6b9ac4;
+        font-weight: bold;
+        letter-spacing: 2px;
+        color: white;
+        transition: .15s ease-in-out;
+        font-size: 16px;
+        vertical-align: middle;
+        padding: 10px;
+    }
+    .modal p {
+        margin-top: 30px;
     }
 
-.inputFile{
+        .newInput input[type="file"] {
+            display: none; /* Скрываем сам input */
+        }
+    /* Кнопка для закрытия модального окна */
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
 
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
 }
+@media only screen and (min-width: 600px) and (max-width: 1024px) {
+    /* Скрыть модальное окно по умолчанию */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0,0,0,0.4);
+    }
+
+
+    /* Отображение модального окна и его содержимого */
+    .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 5px solid #6b9ac4;
+        width: 50%;
+    }
+
+    .newInput {
+        text-decoration: none;
+        display: inline-block;
+        margin-right: 20px;
+        margin-left: 20px;
+        margin-top: 20px;
+        width: 150px;
+        text-align: center;
+        border-radius: 5px;
+        border: none;
+        background-color: #6b9ac4;
+        font-weight: bold;
+        letter-spacing: 2px;
+        color: white;
+        transition: .15s ease-in-out;
+        font-size: 16px;
+        vertical-align: middle;
+        padding: 10px;
+    }
+
+        .newInput input[type="file"] {
+            display: none; /* Скрываем сам input */
+        }
+    /* Кнопка для закрытия модального окна */
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+}
+
+
+@media only screen and (min-width: 1024px) {
+
+    /* Скрыть модальное окно по умолчанию */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0,0,0,0.4);
+    }
+
+
+    /* Отображение модального окна и его содержимого */
+    .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 5px solid #6b9ac4;
+        width: 50%;
+    }
+
+    .newInput {
+        text-decoration: none;
+        display: inline-block;
+        margin-right: 20px;
+        margin-left: 20px;
+        margin-top: 20px;
+        width: 150px;
+        text-align: center;
+        border-radius: 5px;
+        border: none;
+        background-color: #6b9ac4;
+        font-weight: bold;
+        letter-spacing: 2px;
+        color: white;
+        transition: .15s ease-in-out;
+        font-size: 16px;
+        vertical-align: middle;
+        padding: 10px;
+    }
+
+        .newInput input[type="file"] {
+            display: none; /* Скрываем сам input */
+        }
+    /* Кнопка для закрытия модального окна */
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+}
+
+
+    
+
+   
+
+    .inputFile {
+    }
