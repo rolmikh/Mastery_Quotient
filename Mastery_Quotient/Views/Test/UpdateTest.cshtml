@@ -48,8 +48,9 @@
                         {
                             var disciplinesID = Model.Disciplines.Find(n => n.IdDiscipline == discipline.DisciplineId)?.IdDiscipline;
                             var disciplinesName = Model.Disciplines.Find(n => n.IdDiscipline == discipline.DisciplineId)?.NameDiscipline;
+                            var disciplinesCourse = Model.Disciplines.Find(n => n.IdDiscipline == discipline.DisciplineId)?.CourseId;
 
-                            <option value="@disciplinesID">@disciplinesName</option>
+                            <option value="@disciplinesID">@disciplinesName @disciplinesCourse курс</option>
                         }
                     </select>
 

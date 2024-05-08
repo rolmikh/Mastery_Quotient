@@ -866,7 +866,9 @@ namespace Mastery_Quotient.Controllers
                 }
                 if (photo == null || photo.Length == 0)
                 {
-                    return BadRequest("Файл не был загружен");
+                    TempData["ErrorPhoto"] = "Файл не был загружен";
+                    return RedirectToAction("PersonalAccountAdmin", "Admin");
+
                 }
 
                 string fileName = Guid.NewGuid().ToString() + Path.GetExtension(photo.FileName);
@@ -1483,7 +1485,7 @@ namespace Mastery_Quotient.Controllers
 
             TempData.Keep("AuthUser");
 
-            if (nameFile.Contains("youtu.be"))
+            if (nameFile.Contains("youtu.be") || nameFile.Contains("youtube"))
             {
                 string[] fileNameParts = nameFile.Split("https://youtu.be/");
                 string fileNameID = fileNameParts[1];

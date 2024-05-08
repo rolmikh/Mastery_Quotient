@@ -88,7 +88,7 @@ namespace Mastery_Quotient.Controllers
                         studyGroups = JsonConvert.DeserializeObject<List<StudyGroup>>(apiResponse);
                     }
                 }
-                StudyGroup studentGroup = studyGroups.Find(n => n.IdStudyGroup == student.StudyGroupId);
+                StudyGroup? studentGroup = studyGroups.Find(n => n.IdStudyGroup == student.StudyGroupId);
                 StudentPersonalAccountModel studentPersonalAccountModel = new StudentPersonalAccountModel(student, studentGroup);
                 return View(studentPersonalAccountModel);
             }
@@ -214,7 +214,8 @@ namespace Mastery_Quotient.Controllers
                 }
                 if (photo == null || photo.Length == 0)
                 {
-                    return BadRequest("Файл не был загружен");
+                    TempData["ErrorPhoto"] = "Файл не был загружен";
+                    return RedirectToAction("PersonalAccountStudent", "Student");
                 }
 
                 string fileName = Guid.NewGuid().ToString() + Path.GetExtension(photo.FileName);
@@ -364,7 +365,7 @@ namespace Mastery_Quotient.Controllers
                         string apiResponse = await response.Content.ReadAsStringAsync();
                         studyGroups = JsonConvert.DeserializeObject<List<StudyGroup>>(apiResponse);
                     }
-                    var group = studyGroups.Find(n => n.IdStudyGroup == student.StudyGroupId).IdStudyGroup;
+                    var group = studyGroups.Find(n => n.IdStudyGroup == student.StudyGroupId)?.IdStudyGroup;
                     using (var response = await httpClient.GetAsync(apiUrl + "DisciplineOfTheStudyGroups/Filtration?idStudyGroup=" + group))
                     {
                         string apiResponse = await response.Content.ReadAsStringAsync();
@@ -382,7 +383,7 @@ namespace Mastery_Quotient.Controllers
                     }
                    
                 }
-                StudyGroup studyGroup = studyGroups.Find(n => n.IdStudyGroup == student.StudyGroupId);
+                StudyGroup? studyGroup = studyGroups.Find(n => n.IdStudyGroup == student.StudyGroupId);
 
                 StudentMaterialModel studentMaterialModel = new StudentMaterialModel(materials, disciplines, typeMaterials, studyGroup, disciplineOfTheStudyGroups,employees,disciplineEmployees, student);
                 return View(studentMaterialModel);
@@ -490,7 +491,7 @@ namespace Mastery_Quotient.Controllers
                         string apiResponse = await response.Content.ReadAsStringAsync();
                         studyGroups = JsonConvert.DeserializeObject<List<StudyGroup>>(apiResponse);
                     }
-                    var group = studyGroups.Find(n => n.IdStudyGroup == student.StudyGroupId).IdStudyGroup;
+                    var group = studyGroups.Find(n => n.IdStudyGroup == student.StudyGroupId)?.IdStudyGroup;
                     using (var response = await httpClient.GetAsync(apiUrl + "DisciplineOfTheStudyGroups/Filtration?idStudyGroup=" + group))
                     {
                         string apiResponse = await response.Content.ReadAsStringAsync();
@@ -505,7 +506,7 @@ namespace Mastery_Quotient.Controllers
 
 
                 }
-                StudyGroup studyGroup = studyGroups.Find(n => n.IdStudyGroup == student.StudyGroupId);
+                StudyGroup? studyGroup = studyGroups.Find(n => n.IdStudyGroup == student.StudyGroupId);
                 TestViewStudent testViewStudent = new TestViewStudent(employees, disciplines, disciplineEmployees, testParameters, tests, student, disciplineOfTheStudyGroups, studyGroup, studentTests);
                 return View(testViewStudent);
                 
@@ -521,7 +522,7 @@ namespace Mastery_Quotient.Controllers
         /// </summary>
         /// <param name="testId"></param>
         /// <returns></returns>
-        public async Task<IActionResult> OneTestStudent(int testId)
+        public async Task<IActionResult> OneTestStudent(int testId, int idEmployee)
         {
             try
             {
@@ -611,7 +612,7 @@ namespace Mastery_Quotient.Controllers
                         questionAnswerOptions = JsonConvert.DeserializeObject<List<QuestionAnswerOption>>(apiResponse);
                     }
 
-                    using (var response = await httpClient.GetAsync(apiUrl + "Employees/" + id))
+                    using (var response = await httpClient.GetAsync(apiUrl + "Employees/" + idEmployee))
                     {
                         string apiResponse = await response.Content.ReadAsStringAsync();
                         employee = JsonConvert.DeserializeObject<Employee>(apiResponse);
@@ -629,8 +630,8 @@ namespace Mastery_Quotient.Controllers
                         disciplineEmployees = JsonConvert.DeserializeObject<List<DisciplineEmployee>>(apiResponse);
                     }
                 }
-                List<DisciplineEmployee> discipline = disciplineEmployees.Where(n => n.EmployeeId == employee.IdEmployee).ToList();
-                List<TestQuestion> testQuestionsList = testQuestions.Where(n => n.TestId == test.IdTest).ToList();
+                List<DisciplineEmployee?> discipline = disciplineEmployees.Where(n => n.EmployeeId == employee.IdEmployee).ToList();
+                List<TestQuestion?> testQuestionsList = testQuestions.Where(n => n.TestId == test.IdTest).ToList();
 
                 ViewTestModel viewTestModel = new ViewTestModel(test, typeQuestions, questions, testQuestionsList, answerOptions, questionAnswerOptions, employee, disciplines, discipline);
 

@@ -209,6 +209,11 @@ namespace Mastery_Quotient.Controllers
                         StudentRegistrationModel.MiddleNameStudent = string.Empty;
                     }
                 }
+                else
+                {
+                    TempData["Error"] = "Некорректный формат ФИО";
+                    return RedirectToAction("Registration", "Home");
+                }
 
                 StudentRegistrationModel.EmailStudent = emailUser;
                 StudentRegistrationModel.PasswordStudent = passwordUser;
@@ -305,7 +310,7 @@ namespace Mastery_Quotient.Controllers
                         }
                         else
                         {
-                            TempData["Registration"] = "Неуспешная регистрация";
+                            TempData["Registration"] = "Неуспешная регистрация. Пользователь уже существует!";
 
                             return RedirectToAction("Registration", "Home");
                         }
@@ -564,11 +569,14 @@ namespace Mastery_Quotient.Controllers
                     if (response.IsSuccessStatusCode)
                     {
                         TempData["NewPassword"] = "Пароль успешно изменен!";
+                        TempData.Remove("AuthUser");
                         return RedirectToAction("Authorization", "Home");
                     }
                     else
                     {
-                        return BadRequest("Ошибка!");
+                        TempData["NewPassword"] = "Срок действия ссылки истек!";
+                        return RedirectToAction("Authorization", "Home");
+                        
                     }
                 }
             }catch (Exception ex)

@@ -73,7 +73,7 @@
 
                     <label hidden>Отчество</label>
                     <br />
-                    <input class="personalAccountInput" type="text" required value="@Model.Employee.MiddleNameEmployee" name="middleNameUser"
+                    <input class="personalAccountInput" type="text"  value="@Model.Employee.MiddleNameEmployee" name="middleNameUser"
                            placeholder="Отчество" />
                     <br />
 
@@ -92,7 +92,12 @@
 
             </div>
             <br />
-
+            @if (TempData["ErrorPhoto"] != null)
+            {
+                <div class="alert alert-danger">
+                    @TempData["ErrorPhoto"]
+                </div>
+            }
             @if (TempData["ErrorValidation"] != null)
             {
                 <div class="alert alert-danger">

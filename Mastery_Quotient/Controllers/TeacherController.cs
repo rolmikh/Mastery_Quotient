@@ -150,7 +150,8 @@ namespace Mastery_Quotient.Controllers
                 {
                     if (file == null || file.Length == 0)
                     {
-                        return BadRequest("Файл не был загружен");
+                        TempData["ErrorPhoto"] = "Файл не был загружен";
+                        return RedirectToAction("TeacherWindowMaterial", "Teacher");
                     }
                     string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
                     string fileUrl = await firebaseService.UploadMaterial(file.OpenReadStream(), fileName);
@@ -410,7 +411,8 @@ namespace Mastery_Quotient.Controllers
                 }
                 if (photo == null || photo.Length == 0)
                 {
-                    return BadRequest("Файл не был загружен");
+                    TempData["ErrorPhoto"] = "Файл не был загружен";
+                    return RedirectToAction("PersonalAccountTeacher", "Teacher");
                 }
 
                 string fileName = Guid.NewGuid().ToString() + Path.GetExtension(photo.FileName);
@@ -815,7 +817,7 @@ namespace Mastery_Quotient.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> UpdateMaterial(int IdMaterial, string nameMaterial, int typeMaterial, int disciplineMaterial, IFormFile file, IFormFile filePhoto)
+        public async Task<IActionResult> UpdateMaterial(int IdMaterial, string nameMaterial, string videoMaterial, int typeMaterial, int disciplineMaterial, IFormFile file, IFormFile filePhoto)
         {
             try
             {
@@ -833,18 +835,33 @@ namespace Mastery_Quotient.Controllers
                         return RedirectToAction("Authorization", "Home");
                     }
                 }
-                if (file == null || file.Length == 0)
+                Material material = new Material();
+
+                if (videoMaterial == null || videoMaterial.Length == 0)
                 {
-                    return BadRequest("Файл не был загружен");
+                    if (file == null || file.Length == 0)
+                    {
+                        TempData["ErrorPhoto"] = "Файл не был загружен";
+                        return RedirectToAction("UpdateMaterial", "Teacher");
+                    }
+                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                    string fileUrl = await firebaseService.UploadMaterial(file.OpenReadStream(), fileName);
+                    material.FileMaterial = fileUrl;
+
+                }
+                else
+                {
+                    material.FileMaterial = videoMaterial;
+
                 }
                 if (filePhoto == null || filePhoto.Length == 0)
                 {
-                    return BadRequest("Файл не был загружен");
+                    TempData["ErrorPhoto"] = "Файл не был загружен";
+                    return RedirectToAction("UpdateMaterial", "Teacher");
                 }
+                
 
-
-                string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-                string fileUrl = await firebaseService.UploadMaterial(file.OpenReadStream(), fileName);
+                
 
                 string fileNamePhoto = Guid.NewGuid().ToString() + Path.GetExtension(filePhoto.FileName);
                 string fileUrlPhoto = await firebaseService.UploadPhotoMaterial(filePhoto.OpenReadStream(), fileNamePhoto);
@@ -857,11 +874,9 @@ namespace Mastery_Quotient.Controllers
 
                 TempData.Keep("AuthUser");
 
-                Material material = new Material();
                 material.IdMaterial = IdMaterial;
                 material.NameMaterial = nameMaterial;
                 material.DateCreatedMaterial = DateTime.Now;
-                material.FileMaterial = fileUrl;
                 material.DisciplineId = disciplineMaterial;
                 material.TypeMaterialId = typeMaterial;
                 material.EmployeeId = id;
@@ -877,7 +892,7 @@ namespace Mastery_Quotient.Controllers
                     {
                         var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
                         TempData["ErrorValidation"] = errorMessages;
-                        return RedirectToAction("TeacherWindowMaterial", "Teacher");
+                        return RedirectToAction("UpdateMaterial", "Teacher");
                     }
 
                 }
@@ -885,7 +900,7 @@ namespace Mastery_Quotient.Controllers
                 {
                     var errorMessages = new List<string> { ex.Message };
                     TempData["ErrorValidation"] = errorMessages;
-                    return RedirectToAction("TeacherWindowMaterial", "Teacher");
+                    return RedirectToAction("UpdateMaterial", "Teacher");
                 }
                 StringContent content = new StringContent(JsonConvert.SerializeObject(material), Encoding.UTF8, "application/json");
 
@@ -901,7 +916,7 @@ namespace Mastery_Quotient.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("TeacherWindowMaterial", "Teacher");
+                        return RedirectToAction("UpdateMaterial", "Teacher");
                     }
                 }
             }

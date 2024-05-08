@@ -15,7 +15,7 @@ namespace Mastery_Quotient.ModelsValidation
             .MaximumLength(15)
             .WithMessage("Название учебной группы не должно превышать 15 символов!")
             .MinimumLength(5)
-            .WithMessage("Название учебной группы не должно быть меньше 5 символов");
+            .WithMessage("Название учебной группы не должно быть меньше 5 символов!");
 
             this.RuleFor(x => x.CourseId)
                 .Must(x => !x.Equals(0))

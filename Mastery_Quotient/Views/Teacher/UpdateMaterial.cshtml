@@ -26,9 +26,9 @@
 
                     <input name="IdMaterial" class="CrudInput" hidden readonly placeholder="Код материала" value="@material.IdMaterial" />
                     <input name="nameMaterial" class="CrudInput" placeholder="Название материала" value="@material.NameMaterial" />
-                    <label class="CrudLabel">Выберите файл материала</label>
-
-                    <input name="file" type="file" class="CrudInput" placeholder="Выберите файл материала" value="@material.FileMaterial" />
+                    <label class="CrudLabel">Выберите файл материала или введите ссылку на видеоматериал</label>
+                    <input name="file" type="file" class="CrudInput" placeholder="Выберите файл материала" />
+                    <input name="videoMaterial" class="CrudInput" placeholder="Ссылка на видео" />
                     <label class="CrudLabel">Выберите фото материала</label>
 
                     <input name="filePhoto" type="file" class="CrudInput" placeholder="Выберите фото материала" value="@material.PhotoMaterial" />
@@ -48,8 +48,9 @@
                         {
                             var disciplinesID = Model.Disciplines.Find(n => n.IdDiscipline == discipline.DisciplineId)?.IdDiscipline;
                             var disciplinesName = Model.Disciplines.Find(n => n.IdDiscipline == discipline.DisciplineId)?.NameDiscipline;
+                            var disciplinesCourse = Model.Disciplines.Find(n => n.IdDiscipline == discipline.DisciplineId)?.CourseId;
 
-                            <option value="@disciplinesID">@disciplinesName</option>
+                            <option value="@disciplinesID">@disciplinesName @disciplinesCourse курс</option>
                         }
                     </select>
                     <input type="submit" class="newInput" value="Изменить материал" />
@@ -72,6 +73,12 @@
             </div>
         }
         <br />
+        @if (TempData["ErrorPhoto"] != null)
+        {
+            <div class="alert alert-danger">
+                @TempData["ErrorPhoto"]
+            </div>
+        }
 
     </main>
 
