@@ -60,7 +60,8 @@
 
                 </div>
 
-
+                <label class="CrudLabel">Введите срок сдачи</label>
+                <br/>
                 <input name="deadlineDate" type="date" id="deadlineDate" class="CrudInput" placeholder="Срок сдачи" />
 
 
@@ -86,6 +87,12 @@
             </div>
         }
         <br />
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger">
+                <p>@TempData["Error"]</p>
+            </div>
+        }
 
 
 

@@ -9,7 +9,9 @@ namespace Mastery_Quotient.ModelsValidation
         {
 
             this.RuleFor(x => x.NameMaterial)
-                .Must(x => x.ToUpper().First() == x.First())
+                .NotEmpty().WithMessage("Название материала не должно быть пустым")
+                .Must(x => !string.IsNullOrWhiteSpace(x)).WithMessage("Название материала не должно состоять только из пробелов")
+                .Must(x => x != null && !string.IsNullOrWhiteSpace(x) && x.ToUpper().First() == x.First()).WithMessage("Первая буква названия материала должна быть заглавной!")
                 .WithMessage("Первая буква названия материала должна быть заглавной!")
                 .MinimumLength(4)
                 .WithMessage("Название материала не должно быть меньше 4 символов")

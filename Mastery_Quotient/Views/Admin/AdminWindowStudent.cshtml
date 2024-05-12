@@ -90,7 +90,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var student in Model.Students)
+                @foreach (var student in Model?.Students)
                 {
                     var group = Model.StudyGroups.Find(n => n.IdStudyGroup == student.StudyGroupId)?.NameStudyGroup;
                     <tr>

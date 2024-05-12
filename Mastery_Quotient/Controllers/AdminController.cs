@@ -369,7 +369,7 @@ namespace Mastery_Quotient.Controllers
                 }
                 else
                 {
-                    return BadRequest("Введите корректное ФИО!");
+                    return BadRequest("Введите корректное ФИО! Фамилия, имя и отчество должны разделяться пробелом");
                 }
 
                 employee.EmailEmployee = emailUser;
@@ -1487,10 +1487,21 @@ namespace Mastery_Quotient.Controllers
 
             if (nameFile.Contains("youtu.be") || nameFile.Contains("youtube"))
             {
-                string[] fileNameParts = nameFile.Split("https://youtu.be/");
-                string fileNameID = fileNameParts[1];
-                ViewBag.FileType = "youtube";
-                ViewBag.NameFile = fileNameID;
+                if(nameFile.Contains("youtube"))
+                {
+                    string[] fileNameParts = nameFile.Split("https://youtube/");
+                    string fileNameID = fileNameParts[1];
+                    ViewBag.FileType = "youtube";
+                    ViewBag.NameFile = fileNameID;
+                }
+                else
+                {
+                    string[] fileNameParts = nameFile.Split("https://youtu.be/");
+                    string fileNameID = fileNameParts[1];
+                    ViewBag.FileType = "youtube";
+                    ViewBag.NameFile = fileNameID;
+                }
+                
 
             }
             else

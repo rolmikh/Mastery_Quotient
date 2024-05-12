@@ -9,7 +9,8 @@ namespace Mastery_Quotient.ModelsValidation
         {
 
             this.RuleFor(x => x.NameDiscipline)
-                .Must(x => x.ToUpper().First() == x.First())
+                .NotEmpty().WithMessage("Название дисциплины не должно быть пустым")
+                .Must(x => x != null && !string.IsNullOrWhiteSpace(x) && x.ToUpper().First() == x.First())
                 .WithMessage("Первая буква названия дисциплины должна быть заглавной!")
                 .MinimumLength(5)
                 .WithMessage("Название дисциплины не должно быть меньше 5 символов");

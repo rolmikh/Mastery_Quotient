@@ -38,7 +38,7 @@
   <Class Name="Mastery_Quotient.Controllers.TestController">
     <Position X="19" Y="4.5" Width="2.75" />
     <TypeIdentifier>
-      <HashCode>AAABBAAAAggAAAECAAAgAAgQIACAAQICAIBAACIAIAA=</HashCode>
+      <HashCode>AAABBAAAAggAAAECAAAgAAgQIACIAQICAIBAACIAIAA=</HashCode>
       <FileName>Controllers\TestController.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -206,7 +206,7 @@
   <Class Name="Mastery_Quotient.Models.NewsModel">
     <Position X="28.5" Y="4.5" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AECAAAAAQAAAAAAAQAAAAABACAAAAAIAACAACAgAAAA=</HashCode>
+      <HashCode>AECAAAAAQAAAAAAAQAAAAABACAAAAAIAACAACBgAAAA=</HashCode>
       <FileName>Models\NewsModel.cs</FileName>
     </TypeIdentifier>
   </Class>

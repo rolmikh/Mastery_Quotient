@@ -18,7 +18,7 @@ namespace Mastery_Quotient.ModelsValidation
             this.RuleFor(x => x.NameQuestion)
                 .NotEmpty()
                 .WithMessage("Вопрос не должен быть пустым")
-                .Must(x => x.ToUpper().First() == x.First())
+                .Must(x => x != null && !string.IsNullOrWhiteSpace(x) && x.ToUpper().First() == x.First())
                 .WithMessage("Первая буква вопроса должна быть заглавной!");
 
 

@@ -9,7 +9,7 @@ namespace Mastery_Quotient.ModelsValidation
         {
             this.RuleFor(x => x.ContentAnswer)
                 .NotEmpty()
-                .WithMessage("Вариант ответ не должен быть пустым");
+                .WithMessage("Вариант ответа не должен быть пустым");
         
         }
 

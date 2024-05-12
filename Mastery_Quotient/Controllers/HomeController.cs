@@ -191,6 +191,11 @@ namespace Mastery_Quotient.Controllers
 
 
                 key = new Random().Next(100000,999999);
+                if(nameUser == null)
+                {
+                    TempData["Error"] = "Некорректный формат ФИО! Фамилия, имя и отчество должны разделяться пробелом";
+                    return RedirectToAction("Registration", "Home");
+                }
                 string[] subs = nameUser.Split();
 
 
@@ -211,7 +216,7 @@ namespace Mastery_Quotient.Controllers
                 }
                 else
                 {
-                    TempData["Error"] = "Некорректный формат ФИО";
+                    TempData["Error"] = "Некорректный формат ФИО! Фамилия, имя и отчество должны разделяться пробелом";
                     return RedirectToAction("Registration", "Home");
                 }
 

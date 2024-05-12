@@ -8,7 +8,8 @@ namespace Mastery_Quotient.ModelsValidation
         public TestValidator() 
         {
             this.RuleFor(x => x.NameTest)
-                .Must(x => x.ToUpper().First() == x.First())
+                .NotEmpty().WithMessage("Название тестирования не должно быть пустым")
+                .Must(x => x != null && !string.IsNullOrWhiteSpace(x) && x.ToUpper().First() == x.First())
                 .WithMessage("Первая буква названия тестирования должна быть заглавной!")
                 .MinimumLength(4)
                 .WithMessage("Название тестирования не должно быть меньше 4 символов")

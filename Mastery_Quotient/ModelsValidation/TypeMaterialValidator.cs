@@ -8,7 +8,8 @@ namespace Mastery_Quotient.ModelsValidation
         public TypeMaterialValidator() 
         {
             this.RuleFor(x => x.NameTypeMaterial)
-                .Must(x => x.ToUpper().First() == x.First())
+                .NotEmpty().WithMessage("Название типа материала не должно быть пустым")
+                .Must(x => x != null && !string.IsNullOrWhiteSpace(x) && x.ToUpper().First() == x.First())
                 .WithMessage("Первая буква типа материала должна быть заглавной!")
                 .MaximumLength(50)
                 .WithMessage("Тип материала не должен превышать 50 символов!");

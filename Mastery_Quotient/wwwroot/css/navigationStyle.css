@@ -2,16 +2,21 @@
     .container {
         display: flex;
         flex-direction: column;
-        align-items: center; 
+        align-items: center;
     }
 
     .navigation_ul,
     .navigation_ul_right {
         list-style-type: none;
         background-color: white;
-        width: 100%; 
-
+        width: 100%;
     }
+
+        .navigation_ul li,
+        .navigation_ul_right li {
+            display: block;
+            width: 100%;
+        }
 
     .navigation_a,
     .navigation_a_right {
@@ -28,6 +33,7 @@
         .navigation_a_right:hover {
             color: #6b9ac4;
         }
+
     .glow_button {
         text-decoration: none;
         margin-top: 15px;
@@ -77,9 +83,9 @@
     }
 
     .navigation_li {
-        margin-right: 10px;
-        display: inline;
-        float: left;
+        margin-right: 0;
+        display: block;
+        width: 100%;
     }
 
     .navigation_a {
@@ -103,12 +109,12 @@
         padding: 0;
         top: 0;
         background-color: white;
-        width: 50%;
+        width: 100%;
     }
 
     .navigation_li_right {
-        display: inline;
-        float: left;
+        display: block;
+        width: 100%;
     }
 
     .navigation_a_right {

@@ -163,7 +163,11 @@ namespace Mastery_Quotient.Controllers
                 test.IsDeleted = 0;
                 test.Active = 1;
 
-                
+                if (test.Deadline == null)
+                {
+                    TempData["Error"] = "Выберите срок сдачи!";
+                    return RedirectToAction("TeacherWindowTest", "Test");
+                }
                 try
                 {
                     var validationResult = await testValidator.ValidateAsync(test);
@@ -1687,7 +1691,11 @@ namespace Mastery_Quotient.Controllers
                 test.IsDeleted = 0;
                 test.Active = 1;
 
-                
+                if(test.Deadline == null)
+                {
+                    TempData["Error"] = "Выберите срок сдачи!";
+                    return RedirectToAction("UpdateTest", "Test");
+                }
 
                 try
                 {
@@ -1697,7 +1705,7 @@ namespace Mastery_Quotient.Controllers
                     {
                         var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
                         TempData["ErrorValidation"] = errorMessages;
-                        return RedirectToAction("TestTeacher", "Test");
+                        return RedirectToAction("UpdateTest", "Test");
                     }
 
                 }
@@ -1705,7 +1713,7 @@ namespace Mastery_Quotient.Controllers
                 {
                     var errorMessages = new List<string> { ex.Message };
                     TempData["ErrorValidation"] = errorMessages;
-                    return RedirectToAction("TestTeacher", "Test");
+                    return RedirectToAction("UpdateTest", "Test");
                 }
 
                 StringContent content = new StringContent(JsonConvert.SerializeObject(test), Encoding.UTF8, "application/json");

@@ -8,9 +8,10 @@ namespace Mastery_Quotient.ModelsValidation
         public StudyGroupValidator()
         {
             this.RuleFor(x => x.NameStudyGroup)
+             .NotEmpty().WithMessage("Название учебной группы не должно быть пустым")
             .Matches(@".*-\d{2}$")
             .WithMessage("Название учебной группы не соответствует формату!")
-            .Must(x => x.ToUpper().First() == x.First())
+            .Must(x => x != null && !string.IsNullOrWhiteSpace(x) && x.ToUpper().First() == x.First())
             .WithMessage("Первая буква названия учебной группы должна быть заглавной!")
             .MaximumLength(15)
             .WithMessage("Название учебной группы не должно превышать 15 символов!")
