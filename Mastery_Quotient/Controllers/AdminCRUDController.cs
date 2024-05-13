@@ -2,12 +2,17 @@
 using Mastery_Quotient.Models;
 using Mastery_Quotient.ModelsValidation;
 using Mastery_Quotient.Service;
+using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging.Abstractions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
+using Microsoft.SqlServer.Management.Common;
+using Microsoft.SqlServer.Management.Smo;
 
 namespace Mastery_Quotient.Controllers
 {
@@ -92,6 +97,44 @@ namespace Mastery_Quotient.Controllers
                 return BadRequest(ex.Message);
             }
 
+        }
+
+        public async Task<IActionResult> SQLScript()
+        {
+            string connectionString = "Data Source=ROLMIKH;Initial Catalog=Mastery_Quotient_Database;Persist Security Info=True;User ID=sa;Password=1505;Encrypt=True;";
+
+            try
+            {
+                SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(connectionString);
+                ServerConnection serverConnection = new ServerConnection(builder.DataSource, builder.UserID, builder.Password);
+                Server server = new Server(serverConnection);
+                Database database = server.Databases[builder.InitialCatalog];
+
+                ScriptingOptions options = new ScriptingOptions();
+                options.ScriptData = true;
+                options.ScriptSchema = true;
+                options.EnforceScriptingOptions = true;
+
+                StringBuilder script = new StringBuilder();
+                foreach (Table table in database.Tables)
+                {
+                    IEnumerable<string> tableScripts = table.EnumScript(options);
+                    foreach (string tableScript in tableScripts)
+                    {
+                        script.AppendLine(tableScript);
+                    }
+                }
+
+                string outputFileName = "DatabaseScript.sql";
+                byte[] fileBytes = Encoding.UTF8.GetBytes(script.ToString());
+
+                return File(fileBytes, "application/force-download", outputFileName);
+            }
+            catch (Exception ex)
+            {
+                // Log the error and return an error message or view
+                return Content("Error: " + ex.Message);
+            }
         }
 
         /// <summary>
